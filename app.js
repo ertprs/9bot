@@ -14,7 +14,7 @@ const laisDictionary = lais.Dictionary(ceatDictionary);
 
 const laisSimpleIntentResolver = lais.SimpleIntentResolver();
 
-const PORT = (process.env.VCAP_APP_PORT || process.env.server.port || 5000);
+const PORT = (process.env.VCAP_APP_PORT || process.env.port || process.env.server_port || 5000);
 
 let botDialogFlow = require('./bot-dialog-flow');
 
