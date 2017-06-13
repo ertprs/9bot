@@ -21,7 +21,8 @@ let botDialogFlow = require('./bot-dialog-flow');
 
 let bot = controller.spawn({
     appId: process.env.app_id,
-    appPassword: process.env.app_password
+    appPassword: process.env.app_password,
+    require_delivery: true
 });
 
 // if you are already using Express, you can use your own server instance...
@@ -145,6 +146,7 @@ controller.hears(['.*'], 'message_received', function(bot, message) {
                 console.log("respondendo reply:"+JSON.stringify(replyArr));
                 replyArr.forEach(msg=>bot.reply(message, msg))
                 console.log("respondido");
+
             }else{
                 console.log("Nenuma reply, responder mensagem padrão");
                 bot.reply(message, "(worry) humm... Não tenho uma resposta para isso!")

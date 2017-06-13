@@ -1,4 +1,231 @@
 module.exports = [
+    //DESPEDIDA
+    {
+        "id": "despedida",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "despedida"
+        },
+        "action": {
+            "reply": [
+                "Até a próxima!"
+            ],
+            "defineContext": { "intent": null, "entities": null },
+            "listenTo": [
+                "entities",
+                "intent"
+            ]
+        }
+    },
+    //FIM DESPEDIDA
+    //AGRADECIMENTO
+    {
+        "id": "agradecimento",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "agradecimento"
+        },
+        "action": {
+            "reply": [
+                "Disponha sempre! (like)"
+            ],
+            "defineContext": { "intent": null, "entities": null },
+            "listenTo": [
+                "entities",
+                "intent"
+            ]
+        }
+    },
+    //FIM AGRADECIMENTO
+
+    // ABERTURA DE CHAMADO
+    {
+        "id": "abrir_chamado_reset_senha",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "abrir_chamado_reset_senha",
+            "entities": {
+                "sistema": "logistica reversa",
+                "tipo_chamado": "reset senha"
+            }
+        },
+        "action": {
+            "reply": [
+                "Confirma abrir um chamado para o sistema Logística Reversa para resetar sua senha?"
+            ]
+        }
+    },
+    {
+        "id": "confirmar_abrir_chamado",
+        "fromNode": "abrir_chamado_reset_senha",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "decisao_resposta",
+            "entities": {
+                "sistema": "logistica reversa",
+                "tipo_chamado": "reset senha",
+                "tipo_resposta": "sim"
+            }
+        },
+        "action": {
+            "reply": [
+                "Sua sena foi resetada. A nova senha é #lasa2017" + "\n\n" +
+                "por favor anote em um lugar seguro."
+            ],
+            "defineContext": { "intent": null, "entities": null }
+        }
+    },
+    {
+        "id": "confirmar_abrir_chamado",
+        "fromNode": "abrir_chamado_reset_senha",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "decisao_resposta",
+            "entities": {
+                "sistema": "logistica reversa",
+                "tipo_chamado": "reset senha",
+                "tipo_resposta": "nao"
+            }
+        },
+        "action": {
+            "reply": [
+                "Ok, chamado cancelado."
+            ],
+            "defineContext": { "intent": null, "entities": null }
+        }
+    },
+    {
+        "id": "abrir_chamado_reset_senha2",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "abrir_chamado_reset_senha",
+            "entities": {
+                "sistema": null,
+                "tipo_chamado": "reset senha"
+            }
+        },
+        "action": {
+            "reply": [
+                "Para qual sistema gostaria de resetar a senha?"
+            ],
+            "listenTo": [
+                "entities"
+            ]
+        }
+    },
+    {
+        "id": "abrir_chamado_reset_senha3",
+        "fromNode": "abrir_chamado_reset_senha2",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "abrir_chamado_reset_senha",
+            "entities": {
+                "sistema": "logistica reversa",
+                "tipo_chamado": "reset senha"
+            }
+        },
+        "action": {
+            "reply": [
+                "Confirma abrir um chamado para o sistema Logística Reversa para resetar sua senha? (3)"
+            ],
+            "defineContext": { "intent": null, "entities": null},
+            "listenTo": [
+                "intent", "entities"
+            ]
+        }
+    },
+    {
+        "id": "confirmar_abrir_chamado3",
+        "fromNode": "abrir_chamado_reset_senha3",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "decisao_resposta",
+            "entities": {
+                "tipo_resposta": "sim"
+            }
+        },
+        "action": {
+            "reply": [
+                "Sua sena foi resetada. A nova senha é #lasa2017" + "\n\n" +
+                "por favor anote em um lugar seguro."
+            ],
+            "listenTo": [
+                "entities", "intent"
+            ],
+            "defineContext": { "intent": null, "entities": null }
+        }
+    },
+    {
+        "id": "confirmar_abrir_chamado4",
+        "fromNode": "abrir_chamado_reset_senha3",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "decisao_resposta",
+            "entities": {
+                "tipo_resposta": "nao"
+            }
+        },
+        "action": {
+            "reply": [
+                "Ok, chamado cancelado."
+            ],
+            "listenTo": [
+                "entities", "intent"
+            ],
+            "defineContext": { "intent": null, "entities": null }
+        }
+    },
+
+    {
+        "id": "abrir_chamado",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "abrir_chamado",
+            "entities": {
+                "sistema": null,
+                "tipo_chamado": null
+            }
+        },
+        "action": {
+            "reply": [
+                "Por enquanto só é possível abrir um chamado de reset de senha para o Logística Reversa."
+            ]
+        }
+    },
+
+    {
+        "id": "ajuda_tipo_chamado",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "ajuda_tipo_chamado"
+        },
+        "action": {
+            "reply": [
+                "Os tipos de chamados são:" + "\n\n" +
+                "- Reset de Senha (Logística Reversa apenas)" + "\n\n" +
+                "- Problema com o PDV"
+            ]
+        }
+    },
+
+    // FIM CHAMADO
+
+    // FUNCIONAMENTO LAIS
+    {
+        "id": "funcionamento_lais",
+        "priority": -100,
+        "scoreRule": {
+            "intent": "funcionamento_lais"
+        },
+        "action": {
+            "reply": [
+                "Ainda sou jovem, consigo apenas ajudar com o perecíveis ou abrir alguns chamados específicos."
+            ],
+            "defineContext": { "intent": null, "entities": null }
+        }
+    },
+    // FIM FUNCIONAMENTO LAIS
+    //SOBRE LAIS
     {
         "id": "sobre_lais",
         "priority": -100,
@@ -11,7 +238,8 @@ module.exports = [
         "action": {
             "reply": [
                 "Por incrível que pareça tenho alguns pais..."
-            ]
+            ],
+            "defineContext": { "entities": null }
         }
     },
     {
@@ -26,8 +254,10 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Meu nome é LASA Artificial Intelligence System ou Lais para os mais íntimos."
-            ]
+                "Meu nome é LASA Artificial Intelligence System ou Lais para os mais íntimos.",
+                "Em que posso te ajudar?"
+            ],
+            "defineContext": { "entities": null }
         }
     },
     {
@@ -43,9 +273,13 @@ module.exports = [
         "action": {
             "reply": [
                 "Atualmente meu uptime é de menos de 24hs."
-            ]
+            ],
+            "defineContext": { "entities": null }
         }
     },
+
+    //FIM SOBRE
+    // GERAL
     {
         "id": "nao_entendeu",
         "fromNode": null,
@@ -54,33 +288,23 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Fiquei com dúvida e não consegui entender. Poderia ser um pouco mais específico??"
-            ]
+                "Ainda estou aprendendo e no momento ajudo com dúvidas no sistema perecíveis ou " +
+                "chamados para reset de senhas.",
+                "Então, posso ajudar em algo?"
+            ],
+            "defineContext": { "intent": null, "entities": null }
         }
     },
+    //FIM GERAL
     {
-        "id": "nao_entendeu2",
-        "fromNode": null,
-        "priority": -999,
-        "scoreRule": {
-            "intent": null,
-            "saudacaoFeita": null
-        },
-        "action": {
-            "reply": [
-                "Fiquei com dúvida e não consegui entender. Poderia ser um pouco mais específico?"
-            ]
-        }
-    },
-    {
+        "id": "saudacao",
         "scoreRule": {
             "intent": "saudacao",
             "saudacaoFeita": null
         },
         "action": {
             "reply": [
-                "Olá, me chamo Lais.",
-                "Em que posso ajudar?"
+                "Olá, em que posso ajudar?"
             ],
             "defineContext": {
                 "saudacaoFeita": true
@@ -88,6 +312,7 @@ module.exports = [
         }
     },
     {
+        "id": "saudacao2",
         "scoreRule": {
             "intent": "saudacao",
             "saudacaoFeita": true
@@ -98,6 +323,7 @@ module.exports = [
             ]
         }
     },
+
     {
         "id": "problema_sist_qual_sistema",
         "scoreRule": {
@@ -271,6 +497,7 @@ module.exports = [
         }
     },
     {
+        "id": "resposta_problema",
         "scoreRule": {
             "intent": "problema_sistema",
             "entities": {
@@ -280,14 +507,14 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Para permitir a utilização da câmera, siga os seguintes passos:" +
-                "a) Puxar a parte superior da tela para baixo;" +
-                "b) Selecionar a opção “configurações”, representada pelo símbolo de uma engrenagem;" +
-                "c) Selecionar a aba “geral”;" +
-                "d) Selecionar a opção “Aplicativos”;" +
-                "e) Selecione o aplicativo “Perecíveis”;" +
-                "f) Selecione a opção “Permissões”;" +
-                "g) Na opção câmera arraste o botão localizado do lado direito para a direita, habilitando a opção de utilização da câmera." +
+                "Para permitir a utilização da câmera, siga os seguintes passos:" + "\n\n" +
+                "a) Puxar a parte superior da tela para baixo;" + "\n\n" +
+                "b) Selecionar a opção “configurações”, representada pelo símbolo de uma engrenagem;" + "\n\n" +
+                "c) Selecionar a aba “geral”;" + "\n\n" +
+                "d) Selecionar a opção “Aplicativos”;" + "\n\n" +
+                "e) Selecione o aplicativo “Perecíveis”;" + "\n\n" +
+                "f) Selecione a opção “Permissões”;" + "\n\n" +
+                "g) Na opção câmera arraste o botão localizado do lado direito para a direita, habilitando a opção de utilização da câmera." + "\n\n" +
                 "h) Entre novamente no aplicativo e confira se a câmera funcionou.",
                 "Posso te ajudar com mais alguma coisa?"
             ],
@@ -300,6 +527,27 @@ module.exports = [
                 "entities",
                 "intent"
             ]
+        }
+    },
+    {
+        "id": "resposta_problema",
+        "fromNode": "*",
+        "priority": -1001,
+        "scoreRule": {
+            "intent": "decisao_resposta",
+            "entities": {
+                "tipo_resposta": "nao"
+            }
+        },
+        "action": {
+            "reply": [
+                "Certo, se precisar estou aqui."
+            ],
+            "defineContext": {
+                "descobrindotopico": null,
+                "intent": null,
+                "entities": null
+            }
         }
     },
     {

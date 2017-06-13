@@ -184,11 +184,11 @@ let DialogFlowResolver = function(initArgs){
     };
 
     let applyListenTo = function(listenToAttr){
+        console.log("listenToAttr:"+listenToAttr);
         if(!listenToAttr) return;
         if(!_.isArray(listenToAttr)){
             listenToAttr = [listenToAttr];
         }
-
         context.__.listenOnly = listenToAttr;
     };
 
@@ -225,6 +225,9 @@ let DialogFlowResolver = function(initArgs){
         mergeMessageIntoContext(aiResponse);
         let winner = getWinnerRule();
         addLastRuleToContext(winner);//TODO Não deve ser chamado neste metodo
+        console.log("Winner:"+JSON.stringify(winner));
+        console.log("Context:"+JSON.stringify(context));
+
         return winner;
     };
 
