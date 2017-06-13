@@ -2,8 +2,11 @@ module.exports = {
 
     "saudacao": [
         "{{bomDiaNoiteTarde}}",
+        "oi",
         "olá",
-        "oi"
+        "pois não",
+        "olá. {{bomDiaNoiteTarde}}",
+        "oi. {{bomDiaNoiteTarde}}"
     ],
     "deNada":[
         "de nada",
@@ -24,7 +27,7 @@ module.exports = {
         } else if (curHr < 18) {
             ret = "boa tarde";
         } else {
-            ret = "boa Noite";
+            ret = "boa noite";
         }
         return ret;
     },

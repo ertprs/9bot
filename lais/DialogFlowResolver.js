@@ -4,7 +4,7 @@ let DialogFlowResolver = function(initArgs){
     let me = {};
     let flowDefinition = [],
         context = {},
-        defaultContext = {"__":{"listenOnly":["intent","entities"],"lastNode":null,"lastNodes":[]}},
+        defaultContext = {"persistent":{},"__":{"listenOnly":["intent","entities"],"lastNode":null,"lastNodes":[]}},
         replyPromise = null, //lazy populated
     INTENT_CONFIDENCE_THRESHOLD = 0.5
     ;
@@ -84,8 +84,11 @@ let DialogFlowResolver = function(initArgs){
             context.intent = aiContextToMerge.intent || context.intent;
         }
 
+        console.log("context.entities:"+JSON.stringify(aiContextToMerge));
         // console.log("context:",context);
-        context.entities = _.merge(context.entities,aiContextToMerge.entities);
+        console.log("context.entities:"+JSON.stringify(context.entities));
+        context.entities = _.merge((context.entities||{}),aiContextToMerge.entities);
+        console.log("mergedContext:"+JSON.stringify(context));
         //Object.assign({},context.entities,aiContextToMerge.entities);
     };
 
@@ -116,7 +119,7 @@ let DialogFlowResolver = function(initArgs){
             ret = (src === ref);
         }
         if(ret===false && typeof refAttr !== "undefined" && refAttr !== null){
-            console.log("\t\t(FALSE)Rule broke on ("+refAttr+"):"+detail)
+            console.log("\t\t\t\t(FALSE)Rule broke on ("+refAttr+"):"+detail)
         }
 
         return ret;
@@ -133,7 +136,7 @@ let DialogFlowResolver = function(initArgs){
         if(isObject(fr.scoreRule)){
             // console.log("allElementsMatch("+JSON.stringify(fr.scoreRule)+","+JSON.stringify(context)+")");
             ret = allElementsMatch(fr.scoreRule,context);
-            if(ret===true)console.log("\t\t(TURE) Aplicable rule.");
+            if(ret===true)console.log("\t\t(TURE) Aplicable rule.["+fr.priority+"]");
         }
         else if(isFunction(fr.scoreRule)){
             ret = fr.scoreRule(context);
@@ -153,6 +156,7 @@ let DialogFlowResolver = function(initArgs){
             })
             .filter(filterDuplicates);
 
+        console.log("Unique Priorities("+uniquePriorities.length+"):"+JSON.stringify(uniquePriorities));
         if(uniquePriorities.length<=1){
             if(uniquePriorities.length===0){
                 throw new Error("Cannot elect winner rule from candidate rules.No candidates found");
@@ -162,7 +166,6 @@ let DialogFlowResolver = function(initArgs){
                 });
                 throw new Error("Cannot elect winner rule from candidate rules. candidates= "+JSON.stringify(errData,null,2)+"\ncontext="+JSON.stringify(context,null,2));
             }
-
         }
 
         return candidateRules.reduce(function(ant,atual){
@@ -215,9 +218,13 @@ let DialogFlowResolver = function(initArgs){
         applyListenTo(flowRule.action.listenTo);
         //processar proccessNext
         if(flowRule.action.evaluateNow===true){
-            let nextFlowRule = _.cloneDeep(me.resolve());
-            nextFlowRule.action.reply = nextFlowRule.action.reply || [];
-            nextFlowRule.action.reply = nextFlowRule.action.reply.concat(originalReplies || [])
+            console.log("evaluate next");
+            let nextFlowRule = _.cloneDeep(getAppliedRule());
+            console.log("evaluated rule:"+JSON.stringify(nextFlowRule));
+            if(nextFlowRule.action){
+                nextFlowRule.action.reply = nextFlowRule.action.reply || [];
+                nextFlowRule.action.reply = nextFlowRule.action.reply.concat(originalReplies || [])
+            }
             return nextFlowRule;
         }
         return flowRule;
@@ -252,13 +259,17 @@ let DialogFlowResolver = function(initArgs){
         return winner;
     };
 
-    me.resolve = function(aiResponse){
+    let getAppliedRule = function(aiResponse){
         let rule = me.getRule(aiResponse);
         rule = applyRule(rule);
+        return rule;
+    };
+
+    me.resolve = function(aiResponse){
+        let rule = getAppliedRule(aiResponse);
         if(rule.action){
             return rule.action.reply;
         }
-
     };
 
     me.getContext = function(){

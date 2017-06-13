@@ -16,8 +16,8 @@ const laisSimpleIntentResolver = lais.SimpleIntentResolver();
 
 const PORT = (process.env.VCAP_APP_PORT || process.env.PORT || process.env.server_port || 5000);
 
-let botDialogFlow = require('./bot-dialog-flow');
-
+//let botDialogFlow = require('./bot-dialog-flow');
+let botDialogFlow = require('./bot-dialog');
 
 let bot = controller.spawn({
     appId: process.env.app_id,
@@ -122,19 +122,6 @@ controller.hears(['.*'], 'message_received', function(bot, message) {
 
     console.log("context:"+JSON.stringify(context));
 
-
-        // let p = laisClient.talk(message);
-    // console.log("laisClient.talk::Return::",p);
-    // let p2 = p.then(data => laisSimpleIntentResolver.dictionarize(data.intents));
-    // console.log("p2",p2);
-    // let p3 =  p2.then(msg => laisDictionary.resolve(msg));
-    // console.log("p3",p3);
-    // let p4 = p3.then(msg => bot.reply(message, msg));
-    // console.log("p4",p4);
-    // p4.catch((err)=>{
-    //         console.log(err);
-    //         bot.reply(message, "(puke) \n Opss... Não estou me sentindo muito bem. Tente mais tarde.")
-    //     });
     laisClient.talk(message.text).then(data => {
             console.log("resolver mensagem recebida da AI");
             let ret = dialogFR.resolve(data);
@@ -144,7 +131,12 @@ controller.hears(['.*'], 'message_received', function(bot, message) {
         .then(replyArr => {
             if(replyArr.length>0){
                 console.log("respondendo reply:"+JSON.stringify(replyArr));
-                replyArr.forEach(msg=>bot.reply(message, msg))
+                replyArr.forEach(msg=>{
+                    if(typeof msg ==="string"){
+                       msg = laisDictionary.resolve(msg);
+                    }
+                    bot.reply(message, msg)
+                });
                 console.log("respondido");
 
             }else{
