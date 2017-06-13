@@ -39,9 +39,11 @@ let DialogFlowResolver = function(initArgs){
         fr.priority = (fr.priority || 0);
         fr.fromNode = (fr.fromNode || "*");
         fr.scoreRule = (fr.scoreRule || function(){return false});
+        fr.action = (fr.action || {});
+        fr.action.reply = (fr.action.reply || []);
         //fr.setListenOnly = fr.setListenOnly; default value is undefined
         return fr;
-    }
+    };
 
     let convertAiResponseToScoreRule = function(aiResponse){
         let ret = {};
@@ -61,13 +63,14 @@ let DialogFlowResolver = function(initArgs){
         if(aiResponse.entities){
             aiResponse.entities.forEach(function(e){
                 entities[e.entity] = e.value;
-            })
+            });
             ret.entities = entities;
         }
         return ret;
     };
 
     let mergeMessageIntoContext = function(aiResponse){
+        if(!aiResponse) return;
         let aiContextToMerge = {};
         let parsedAiResponse = convertAiResponseToScoreRule(aiResponse);
         console.log("aiParsedContext:"+JSON.stringify(parsedAiResponse));
@@ -86,25 +89,34 @@ let DialogFlowResolver = function(initArgs){
         //Object.assign({},context.entities,aiContextToMerge.entities);
     };
 
-    let allElementsMatch = function(src,ref){
+    let allElementsMatch = function(src,ref,refAttr){
         // console.log("src:",src,"ref:",ref);
+        let ret,detail = "";
         if(src==="*"){
-            return (typeof ref !== "undefined" && ref !== null);
+            detail = "src==='*'";
+            ret = (typeof ref !== "undefined" && ref !== null);
         }
         else if(src===null){
-            return (typeof ref === "undefined" || ref === null);
+            detail = "src===null";
+            ret = (typeof ref === "undefined" || ref === null);
         }
-
         else if(isObject(src) && isObject(ref)){
             // console.log("src is object");
-            for(attr in src){
-                let test = allElementsMatch(src[attr],ref[attr]);
-                if (test === false) return false;
+            ret = true;
+            for(let attr in src){
+                let test = allElementsMatch(src[attr],ref[attr],attr);
+                if (test === false){
+                    ret = false;
+                    break;
+                }
             }
-            return true;
         }
         else{
-            return src === ref;
+            detail = "src===ref";
+            ret = (src === ref);
+        }
+        if(ret===false && typeof refAttr !== "undefined" && refAttr !== null){
+            console.log("\t\t(FALSE)Rule broke on ("+refAttr+"):"+detail)
         }
 
         return ret;
@@ -117,9 +129,11 @@ let DialogFlowResolver = function(initArgs){
     let isRuleApplicableForContext = function(fr){
         let ret;
         // console.group();
+        console.log("evaluating rule: "+fr.id);
         if(isObject(fr.scoreRule)){
             // console.log("allElementsMatch("+JSON.stringify(fr.scoreRule)+","+JSON.stringify(context)+")");
             ret = allElementsMatch(fr.scoreRule,context);
+            if(ret===true)console.log("\t\t(TURE) Aplicable rule.");
         }
         else if(isFunction(fr.scoreRule)){
             ret = fr.scoreRule(context);
@@ -127,7 +141,6 @@ let DialogFlowResolver = function(initArgs){
         else{
             throw Error("Unsupported flow rule type in rule: "+fr.id);
         }
-        //console.log("evaluating rule:",fr.id,"result:",ret);
         // console.groupEnd();
         return ret;
     };
@@ -195,12 +208,20 @@ let DialogFlowResolver = function(initArgs){
     let applyRule = function(flowRule){
         if(!flowRule.action) return;
         //processar replies
-
+        let originalReplies = flowRule.action.reply;
         //processar defineContext
         applyDefineContext(flowRule.action.defineContext);
-
         //processar listenOnlyto
         applyListenTo(flowRule.action.listenTo);
+        //processar proccessNext
+        if(flowRule.action.evaluateNow===true){
+            let nextFlowRule = _.cloneDeep(me.resolve());
+            nextFlowRule.action.reply = nextFlowRule.action.reply || [];
+            nextFlowRule.action.reply = nextFlowRule.action.reply.concat(originalReplies || [])
+            return nextFlowRule;
+        }
+        return flowRule;
+
     };
 
     // me.applyRule = applyRule;
@@ -233,7 +254,7 @@ let DialogFlowResolver = function(initArgs){
 
     me.resolve = function(aiResponse){
         let rule = me.getRule(aiResponse);
-        applyRule(rule);
+        rule = applyRule(rule);
         if(rule.action){
             return rule.action.reply;
         }

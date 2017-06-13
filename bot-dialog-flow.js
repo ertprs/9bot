@@ -126,7 +126,7 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Confirma abrir um chamado para o sistema Logística Reversa para resetar sua senha? (3)"
+                "Confirma abrir um chamado para o sistema Logística Reversa para resetar sua senha?"
             ],
             "defineContext": { "intent": null, "entities": null},
             "listenTo": [
@@ -146,7 +146,7 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Sua sena foi resetada. A nova senha é #lasa2017" + "\n\n" +
+                "Sua sehna foi resetada. A nova senha é #lasa2017" + "\n\n" +
                 "por favor anote em um lugar seguro."
             ],
             "listenTo": [
@@ -192,6 +192,59 @@ module.exports = [
             ]
         }
     },
+
+    {
+        "id": "abrir_chamado_logistica_qual_tipo",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "abrir_chamado",
+            "entities": {
+                "sistema": "logistica reversa",
+                "tipo_chamado": null
+            }
+        },
+        "action": {
+            "reply": [
+                "Posso abrir um chamado do logísitca reversa para você. Qual tipo devo usar?"
+            ]
+        }
+    },
+
+    {
+        "id": "abrir_chamado_sistema_nao_suportado",
+        "priority": -10,
+        "scoreRule": {
+            "intent": "abrir_chamado",
+            "entities": {
+                "sistema": "*"
+            }
+        },
+        "action": {
+            "reply": [
+                "Infelizmente só consigo abrir chamados para o logística reversa por enquanto.\n\n"
+                +"Estou constantemente aprendendo. Em breve, tenho certeza que poderei ajudá-lo."
+            ]
+        }
+    },
+
+    {
+        "id": "abrir_chamado_logistica_reset",
+        "priority": 0,
+        "scoreRule": {
+            "intent": "abrir_chamado",
+            "entities": {
+                "sistema": "logistica reversa",
+                "tipo_chamado": "reset senha"
+            }
+        },
+        "action": {
+            "evaluateNow":true,
+            "defineContext":{
+                "intent": "abrir_chamado_reset_senha"
+            }
+        }
+    },
+
 
     {
         "id": "ajuda_tipo_chamado",
