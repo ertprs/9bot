@@ -6,7 +6,7 @@ let DialogFlowResolver = function(initArgs){
         context = {},
         defaultContext = {"persistent":{},"__":{"listenOnly":["intent","entities"],"lastNode":null,"lastNodes":[]}},
         replyPromise = null, //lazy populated
-    INTENT_CONFIDENCE_THRESHOLD = 0.5
+    INTENT_CONFIDENCE_THRESHOLD = 0.7
     ;
 
     let init = function(){
