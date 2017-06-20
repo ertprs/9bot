@@ -1,5 +1,6 @@
 const Mustache = require('mustache');
 const chance = require('chance')();
+const _ = require('lodash');
 
 const DictionaryTemplate = function(dictionaryDefinition){
     let me = {};
@@ -62,7 +63,7 @@ const DictionaryTemplate = function(dictionaryDefinition){
     };
 
     me.resolveWithContext = function(srcTemplate,context){
-        let _ctxDictionary = Object.assign({},_dictionary,buildViewFromDictionary(context));
+        let _ctxDictionary = _.merge({},_dictionary,buildViewFromDictionary(context));
         return Mustache.render(srcTemplate,_ctxDictionary);
     };
 

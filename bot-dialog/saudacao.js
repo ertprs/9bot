@@ -8,7 +8,20 @@ module.exports = [
         },
         "action": {
             "reply": [                          
-                " {{saudacao_inicial}}" 
+                " {{saudacao_inicial}}",
+                {
+                    "type":"choice",
+                    "content":[
+                        "Opt1","Opt2","Opt3"
+                    ]
+                },
+                {
+                    "type":"choice",
+                    "meta":{"title":"Qual opção você quer escolher?","subtitle":"Escolha com sabedoria","text":"sua escolha é muito importante!"},
+                    "content":[
+                        "Opt1",{"text":"Opt2","value":"Escolhida a opção 2"},"Opt3"
+                    ]
+                }
             ],
             "defineContext": { "saudacao_inicial_feita": 1 }
         }

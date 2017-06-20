@@ -16,7 +16,7 @@ let fnClearContext = function(ctx){
 module.exports = {
     getUserName: fnGetUserName,
     clearContext: fnClearContext,
-    buildClearContextAndDefine:function(newContext){
+    buildClearContextAndDefine: function(newContext){
         return function(ctx){
             let ctxZerado = fnClearContext(ctx);
             return _.merge(ctxZerado,newContext);
