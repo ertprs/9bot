@@ -1,15 +1,16 @@
 module.exports =[
     {
-        "id": "sobre_nome",
+        "id": "info_loja_venda",
         "scoreRule": {
-            "intent": "sobre_lais",
+            "intent": "informacao_loja",
             "entities": {
-                "info_lais": "nome"
-            }
+                "info_loja": "venda",
+                "sys-number": "*"
+            }            
         },
         "action": {
             "reply": [
-                "Meu nome é LAIS, Lasa Artificial Intelligence System!!"
+                "A venda para a loja é de R${venda}" 
             ],
             "defineContext": { "intent": null, "entities": null },
             "listenTo": [
@@ -19,16 +20,17 @@ module.exports =[
         }
     },
     {
-        "id": "sobre_idade",
+        "id": "info_loja_venda",
         "scoreRule": {
-            "intent": "sobre_lais",
+            "intent": "informacao_loja",
             "entities": {
-                "info_lais": "idade"
-            }
+                "info_loja": "previsao",
+                "sys-number": "*"
+            }            
         },
         "action": {
             "reply": [
-                "{{idade}}"
+                "A previsão para a loja é de R$ 95.000" 
             ],
             "defineContext": { "intent": null, "entities": null },
             "listenTo": [
@@ -37,18 +39,18 @@ module.exports =[
             ]
         }
     },
-
     {
-        "id": "sobre_pais",
+        "id": "info_loja_venda",
         "scoreRule": {
-            "intent": "sobre_lais",
+            "intent": "informacao_loja",
             "entities": {
-                "info_lais": "pai"
-            }
+                "info_loja": "atingimento",
+                "sys-number": "*"
+            }            
         },
         "action": {
             "reply": [
-                "{{pai}}"
+                "O atingimento para a loja é de 87%" 
             ],
             "defineContext": { "intent": null, "entities": null },
             "listenTo": [
@@ -56,24 +58,5 @@ module.exports =[
                 "intent"
             ]
         }
-    },
-
-    {
-        "id": "sobre_generico",
-        "priority":-1,
-        "scoreRule": {
-            "intent": "sobre_lais"
-        },
-        "action": {
-            "reply": [
-                "Acho que não sei informar sobre isso."
-            ],
-            "defineContext": { "intent": null, "entities": null },
-            "listenTo": [
-                "entities",
-                "intent"
-            ]
-        }
-    }
-
+    }        
 ];

@@ -1,3 +1,8 @@
+
+let fnGetUserName = function (ctx){
+    return ctx;
+};
+
 let fnClearContext = function(ctx){
     let internal = ctx.__;
     let persistent = ctx.persistent;
@@ -9,6 +14,7 @@ let fnClearContext = function(ctx){
 };
 
 module.exports = {
+    getUserName: fnGetUserName,
     clearContext: fnClearContext,
     buildClearContextAndDefine:function(newContext){
         return function(ctx){

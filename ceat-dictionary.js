@@ -1,14 +1,45 @@
 module.exports = {
+    "contexto_nao_entendido_ajuda_externa":[
+        "Acho que vamos precisar de ajuda.\n\n"+
+        "O que acha de abrir um chamado contando com o conteúdo dessa conversa?"
+    ],
+    "ajuda_geral": [
+        "Atualmente posso ajudar com os tópicos abaixo:\n\n" +
+        "- Problemas ou dúvidas com o aplicativo Perecíveis \n\n" +
+        "- Reset de senha para o sistema Logística Reversa\n\n"
+    ],
+    "pai": [
+        "Acredite ou não, tenho muitos pais, mas nenhuma mãe..."
+    ],
+    "palavrao": [
+        "Opa, acho que alguém está de mau humor. Por favor, sem palavras ofensivas. (swear)",
+        "Infelizmente não gosto de conversas com palavrões."
+    ],
+    "agradecimento": [
+        "Disponha, estou aqui para ajudar.",
+        "Estou a disposição!",
+        "Sempre que precisar"
+    ],
+    "idade": [
+        "Na nona dimensão tenho 45.987 anos.",
+        "Isso não é algo que se pergunte para uma dama.",
+        "Ainda sou muito jovem!"
+    ],
+    "saudacao_inicial": [
+        "{{bomDiaNoiteTarde}}\n\n{{ajuda_geral}} ",
+        "Olá. {{bomDiaNoiteTarde}}\n\n{{ajuda_geral}}",
+        "Oi. {{bomDiaNoiteTarde}}\n\n{{ajuda_geral}}",
+        "{{bomDiaNoiteTarde}}, em que posso ser útil?\n\n{{ajuda_geral}}",
+        "Olá, meu nome é Lais, em que posso ajudar?\n\n{{ajuda_geral}}"
+    ],
 
-    "saudacao": [
-        "{{bomDiaNoiteTarde}}",
+    "saudacao_geral": [
         "oi",
         "olá",
         "pois não",
-        "olá. {{bomDiaNoiteTarde}}",
-        "oi. {{bomDiaNoiteTarde}}"
+        "posso ajudar?"
     ],
-    "deNada":[
+    "deNada": [
         "de nada",
         "obrigado eu",
         "não há de que",
@@ -31,20 +62,13 @@ module.exports = {
         }
         return ret;
     },
-    "possoAjudar_EOL":[
+    "possoAjudar_EOL": [
         "em que posso ajudar ?",
         "como posso ser útil ?",
         'precisa de ajuda ?',
         "o que está precisando ?",
         "como posso lhe ajudar hoje ?"
-    ],
-    "mensagemSaudacao": "{{saudacao}},{{possoAjudar}}?",
-    "Acom":"{{saudacao}}, vejo que você quer saber informações sobre compras na Americanas.com",
-    "Agradecimento":"{{deNada}}",
-    "Cartao": "hum... acho que você está querendo saber mais sobre o cartão.",
-    "Funcionamento_de_Loja": "ah sim... Sei tudo sobre funcionamento de loja.... ééééé... esqueci (hestonfacepalm) ",
-    "none":"(whatsgoingon) Opss... não sei o que dizer",
-    "Ola":"{{saudacao}}, {{possoAjudar_EOL}}"
+    ]
 };
 
 

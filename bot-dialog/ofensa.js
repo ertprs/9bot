@@ -1,15 +1,13 @@
-const util = require('./util');
 module.exports = [
-
     {
-        "id": "geral_nao_entendi",
-        "priority":-9999,
+        "id": "ofensa",
+        "priority":0,
         "scoreRule": {
+            "intent": "ofensa"
         },
         "action": {
             "reply": [
-                "Não entendi o que você quis dizer, tente reformular sua frase por favor.\n\n"+
-                "Em caso de dúvidas do que pode fazer, é só pedir por ajuda."
+                "{{palavrao}}"
             ],
             "defineContext": { "intent": null, "entities": null },
             "listenTo": [
@@ -18,4 +16,4 @@ module.exports = [
             ]
         }
     }
-];
+]

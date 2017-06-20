@@ -24,7 +24,7 @@ const connector = new builder.ChatConnector({
 });
 
 // Setup Restify Server
-const server = restify.createServer({'name':"lais-bot"});
+const server = restify.createServer({ 'name': "lais-bot" });
 server.post('/api/messages', connector.listen());
 server.listen(process.env.port || process.env.PORT || 3978, function () {
     nineBanner.print();
@@ -32,8 +32,8 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 
 });
 
-let runReset = function(session){
-    if(session.message.text==='_reset'){
+let runReset = function (session) {
+    if (session.message.text === '_reset') {
         ctxManager.clearAll();
         session.send("(worry) Do que a gente estava falando mesmo?!?!");
         return true;
@@ -57,105 +57,102 @@ let loadImage = function (collection, id, path, contentType) {
 
     });
 };
-loadImage(IMAGES, 'lais', './bot-dialog/images/lais.png','image/png');
-loadImage(IMAGES, 'lais_2', './bot-dialog/images/lais-2.jpg','image/jpg');
-loadImage(IMAGES, 'sheldon', './bot-dialog/images/sheldon_gif.gif','image/gif');
-loadImage(IMAGES, 'chart', './bot-dialog/images/chart.jpg','image/jpg');
-loadImage(IMAGES, 'chart2', './bot-dialog/images/chart2.jpg','image/jpg');
+loadImage(IMAGES, 'lais', './bot-dialog/images/lais.png', 'image/png');
+loadImage(IMAGES, 'lais_2', './bot-dialog/images/lais-2.jpg', 'image/jpg');
+loadImage(IMAGES, 'sheldon', './bot-dialog/images/sheldon_gif.gif', 'image/gif');
+loadImage(IMAGES, 'chart', './bot-dialog/images/chart.jpg', 'image/jpg');
+loadImage(IMAGES, 'chart2', './bot-dialog/images/chart2.jpg', 'image/jpg');
 
 
-let displayImages = function(session){
+let displayImages = function (session) {
     let images = new builder.Message(session)
         .attachmentLayout(builder.AttachmentLayout.carousel)
         .attachments(
-            [
-                {
-                    "contentType": IMAGES.chart.contentType,
-                    "contentUrl": IMAGES.chart.url,
-                    "name": "chart.jpg"
-                }
+        [
+            {
+                "contentType": IMAGES.chart.contentType,
+                "contentUrl": IMAGES.chart.url,
+                "name": "chart.jpg"
+            }
 
-            ]
+        ]
         );
     session.send(images);
-
 
     let images2 = new builder.Message(session)
         .attachmentLayout(builder.AttachmentLayout.carousel)
         .attachments(
-            [
-                {
-                    "contentType": IMAGES.chart2.contentType,
-                    "contentUrl": IMAGES.chart2.url,
-                    "name": "chart2.jpg"
-                }
+        [
+            {
+                "contentType": IMAGES.chart2.contentType,
+                "contentUrl": IMAGES.chart2.url,
+                "name": "chart2.jpg"
+            }
 
-            ]
+        ]
         );
     session.send(images2);
-
 };
 
 
 
-let displayCarousel = function(session){
+let displayCarousel = function (session) {
     let carousselCards = new builder.Message(session)
         .attachmentLayout(builder.AttachmentLayout.carousel)
         .attachments(
-            [
-                new builder.HeroCard(session)
-                    .title('Azure Storage')
-                    .subtitle('Offload the heavy lifting of data center management')
-                    .text('Store and help protect your data. Get durable, highly available data storage across the globe and pay only for what you use.')
-                    .images([
-                        builder.CardImage.create(session, 'https://docs.microsoft.com/en-us/azure/storage/media/storage-introduction/storage-concepts.png')
-                    ])
-                    .buttons([
-                        builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/storage/', 'Learn More')
-                    ]),
-                new builder.ThumbnailCard(session)
-                    .title('DocumentDB')
-                    .subtitle('Blazing fast, planet-scale NoSQL')
-                    .text('NoSQL service for highly available, globally distributed apps—take full advantage of SQL and JavaScript over document and key-value data without the hassles of on-premises or virtual machine-based cloud database options.')
-                    .images([
-                        builder.CardImage.create(session, 'https://docs.microsoft.com/en-us/azure/documentdb/media/documentdb-introduction/json-database-resources1.png')
-                    ])
-                    .buttons([
-                        builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/documentdb/', 'Learn More')
-                    ]),
-                new builder.HeroCard(session)
-                    .title('Azure Functions')
-                    .subtitle('Process events with a serverless code architecture')
-                    .text('An event-based serverless compute experience to accelerate your development. It can scale based on demand and you pay only for the resources you consume.')
-                    .images([
-                        builder.CardImage.create(session, 'https://azurecomcdn.azureedge.net/cvt-5daae9212bb433ad0510fbfbff44121ac7c759adc284d7a43d60dbbf2358a07a/images/page/services/functions/01-develop.png')
-                    ])
-                    .buttons([
-                        builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/functions/', 'Learn More')
-                    ]),
-                new builder.ThumbnailCard(session)
-                    .title('Cognitive Services')
-                    .subtitle('Build powerful intelligence into your applications to enable natural and contextual interactions')
-                    .text('Enable natural and contextual interaction with tools that augment users\' experiences using the power of machine-based intelligence. Tap into an ever-growing collection of powerful artificial intelligence algorithms for vision, speech, language, and knowledge.')
-                    .images([
-                        builder.CardImage.create(session, 'https://azurecomcdn.azureedge.net/cvt-68b530dac63f0ccae8466a2610289af04bdc67ee0bfbc2d5e526b8efd10af05a/images/page/services/cognitive-services/cognitive-services.png')
-                    ])
-                    .buttons([
-                        builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/cognitive-services/', 'Learn More')
-                    ])
-            ]
+        [
+            new builder.HeroCard(session)
+                .title('Azure Storage')
+                .subtitle('Offload the heavy lifting of data center management')
+                .text('Store and help protect your data. Get durable, highly available data storage across the globe and pay only for what you use.')
+                .images([
+                    builder.CardImage.create(session, 'https://docs.microsoft.com/en-us/azure/storage/media/storage-introduction/storage-concepts.png')
+                ])
+                .buttons([
+                    builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/storage/', 'Learn More')
+                ]),
+            new builder.ThumbnailCard(session)
+                .title('DocumentDB')
+                .subtitle('Blazing fast, planet-scale NoSQL')
+                .text('NoSQL service for highly available, globally distributed apps—take full advantage of SQL and JavaScript over document and key-value data without the hassles of on-premises or virtual machine-based cloud database options.')
+                .images([
+                    builder.CardImage.create(session, 'https://docs.microsoft.com/en-us/azure/documentdb/media/documentdb-introduction/json-database-resources1.png')
+                ])
+                .buttons([
+                    builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/documentdb/', 'Learn More')
+                ]),
+            new builder.HeroCard(session)
+                .title('Azure Functions')
+                .subtitle('Process events with a serverless code architecture')
+                .text('An event-based serverless compute experience to accelerate your development. It can scale based on demand and you pay only for the resources you consume.')
+                .images([
+                    builder.CardImage.create(session, 'https://azurecomcdn.azureedge.net/cvt-5daae9212bb433ad0510fbfbff44121ac7c759adc284d7a43d60dbbf2358a07a/images/page/services/functions/01-develop.png')
+                ])
+                .buttons([
+                    builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/functions/', 'Learn More')
+                ]),
+            new builder.ThumbnailCard(session)
+                .title('Cognitive Services')
+                .subtitle('Build powerful intelligence into your applications to enable natural and contextual interactions')
+                .text('Enable natural and contextual interaction with tools that augment users\' experiences using the power of machine-based intelligence. Tap into an ever-growing collection of powerful artificial intelligence algorithms for vision, speech, language, and knowledge.')
+                .images([
+                    builder.CardImage.create(session, 'https://azurecomcdn.azureedge.net/cvt-68b530dac63f0ccae8466a2610289af04bdc67ee0bfbc2d5e526b8efd10af05a/images/page/services/cognitive-services/cognitive-services.png')
+                ])
+                .buttons([
+                    builder.CardAction.openUrl(session, 'https://azure.microsoft.com/en-us/services/cognitive-services/', 'Learn More')
+                ])
+        ]
         );
-        session.send(carousselCards);
+    session.send(carousselCards);
 };
 
-
-let displayHerCardButtons = function(session){
+let displayHerCardButtons = function (session) {
     let heroCardButtons = new builder.Message(session)
         .attachmentLayout(builder.AttachmentLayout.list)
         .attachments([
             new builder.HeroCard(session)
                 .title('Como você avalia estes recursos ?')
-                .subtitle('seja honesto')
+                .subtitle('seja honesto ')
                 .buttons([
                     builder.CardAction.postBack(session, 'Não gostei', 'Não gostei :('),
                     builder.CardAction.postBack(session, 'Ok, vai', 'Mais ou menos'),
@@ -166,14 +163,14 @@ let displayHerCardButtons = function(session){
     session.send(heroCardButtons);
 };
 
-let runMessageTypes = function(session){
-    if(session.message.text==='_card'){
+let runMessageTypes = function (session) {
+    if (session.message.text === '_card') {
         displayCarousel(session);
         return true;
-    }else if(session.message.text==='_choice'){
+    } else if (session.message.text === '_choice') {
         displayHerCardButtons(session);
         return true;
-    }else if(session.message.text==='_image'){
+    } else if (session.message.text === '_image') {
         displayImages(session);
         return true;
     }
@@ -189,20 +186,20 @@ const bot = new builder.UniversalBot(connector,
 );
 
 bot.dialog('lais', [
-    function (session,result){
-        console.log("#####dialog.lais.message.text:",session.message.text,"######result:",result);
+    function (session, result) {
+        console.log("#####dialog.lais.message.text:", session.message.text, "######result:", result);
         let userId = session.message.address.user.id;
-        let context  =ctxManager.getContext(userId);
+        let context = ctxManager.getContext(userId);
 
-        context.dialogFlowResolver =  context.dialogFlowResolver || lais.DialogFlowResolver({'flowDefinition':botDialogFlow});
+        context.dialogFlowResolver = context.dialogFlowResolver || lais.DialogFlowResolver({ 'flowDefinition': botDialogFlow });
         let dialogFlow = context.dialogFlowResolver;
 
         let message = session.message;
-        let s  = session;
+        let s = session;
 
-        if(
+        if (
             runReset(session)
-            || runMessageTypes(session)){
+            || runMessageTypes(session)) {
             return;
         }
 
@@ -229,30 +226,11 @@ bot.dialog('lais', [
             .catch((err) => {
                 console.log("ERROR:" + err.message);
                 session.send("(puke) \n Opss... Não estou me sentindo muito bem. Tente mais tarde.");
-
-                // session.reply(message, "(puke) \n Opss... Não estou me sentindo muito bem. Tente mais tarde.",
-                //     () => bot.reply(message, "erro:" + err.message,
-                //         () => bot.reply(message, "context >> " + JSON.stringify(dialogFR.getContext(), null, 2))
-                //     )
-                // );
-
             });
     },
 
     function (session, results) {
         session.replaceDialog('lais', results);
     }
-
-    ]
+]
 );
-
-
-//
-//
-// bot.dialog('/reset', [
-//     function (session) {
-//         lais.DialogFlowResolver({'flowDefinition': botDialogFlow});
-//         session.endDialog("(worry) Do que a gente estava falando mesmo?!?!");
-//         console.log("___________CONTEXT__CLEARED___________")
-//     }
-// ]);
