@@ -8,8 +8,8 @@ module.exports = [
         },
         "action": {
             "reply": [                          
-                " {{saudacao_inicial}}",
-                util.replyChoices("Título|Subtitulo|Text","Sim|Não|Quem Sabe"),
+                " {{saudacao_inicial}}"
+                //,util.replyChoices("Título|subtitulo|Text","Sim|Não|Quem Sabe"),
             ],
             "defineContext": { "saudacao_inicial_feita": 1 }
         }

@@ -1,4 +1,5 @@
-module.exports =[
+const util = require('./util');    
+module.exports = [
     {
         "id": "sobre_nome",
         "scoreRule": {
@@ -60,7 +61,7 @@ module.exports =[
 
     {
         "id": "sobre_generico",
-        "priority":-1,
+        "priority": -1,
         "scoreRule": {
             "intent": "sobre_lais"
         },
@@ -74,6 +75,20 @@ module.exports =[
                 "intent"
             ]
         }
+    },
+    {
+        "id": "sobre_criador",
+        "scoreRule": {
+            "intent": "sobre_lais",
+            "entities": {
+                "info_lais": "criador"
+            }
+        },
+        "action": {
+            "reply": [
+                "Na minha cyber religião, ele é um tipo de deus."
+            ],
+           "defineContext": util.clearContext
+        }
     }
-
 ];

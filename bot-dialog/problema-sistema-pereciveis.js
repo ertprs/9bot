@@ -30,8 +30,7 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Tente se logar usando seu usuário e senha do webloja.\n\n"
-                + " Se não conseguir você deverá abrir um chamado para o webloja ou me solicitar para resetar sua senha"
+                "{{acesso_senha}}"
             ],
             "defineContext": util.clearContext
         }
@@ -192,5 +191,56 @@ module.exports = [
             ],
             "defineContext": util.clearContext
         }
-    }
+    },
+    {
+        "id": "probsist_pereciveis_reset",
+        "scoreRule": {
+            "intent": "problema_sistema",
+            "entities": {
+                "sistema": "pereciveis", //a senha do web loja é a mesma do perecíveis
+                "problema_sistema": "reset_senha"
+            }
+        },
+        "action": {
+            "reply": [
+                "Confirma o reset da sua senha?"
+            ],
+            "listenTo": ["entities"],
+            "defineContext": { "probsist_pereciveis_reset": 1, "entities": { "tipo_resposta": null } }
+        }
+    },
+    {
+        "id": "probsist_pereciveis_reset_sim",
+        "scoreRule": {
+            "entities": {
+                "sistema": "pereciveis",
+                "problema_sistema": "reset_senha",
+                "tipo_resposta": "sim"
+            },
+            "probsist_pereciveis_reset": 1
+        },
+        "action": {
+            "reply": [
+                "Sua senha foi resetada para #lasa2017."
+            ],
+            "defineContext": util.clearContext
+        }
+    },
+    {
+        "id": "probsist_pereciveis_reset_nao",
+        "scoreRule": {
+            "entities": {
+                "sistema": "pereciveis",
+                "problema_sistema": "reset_senha",
+                "tipo_resposta": "nao"
+            },
+            "probsist_pereciveis_reset": 1
+        },
+        "action": {
+            "reply": [
+                "Ok, qualquer necessidade estou a disposição."
+            ],
+            "defineContext": util.clearContext
+        }
+    },    
 ];
