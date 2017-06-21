@@ -1,9 +1,10 @@
+const _ = require('lodash');
 //carregar lib da lais
 const lais = require('./lais');
 //carregar dicionario
 const ceatDictionary = require('./ceat-dictionary');
 const laisDictionary = lais.Dictionary(ceatDictionary);
-const _ = require('lodash');
+
 
 const builder = require('botbuilder');
 const AttachmentLayout = {
@@ -19,7 +20,6 @@ const ReplyType = {
 let resolvers = {
     [ReplyType.TEXT] : function(session,reply, ctx){
         let msg = new builder.Message(session);
-        console.log('####msg:',msg);
         return msg.text(laisDictionary.resolveWithContext(reply.content,ctx))
     },
     /**

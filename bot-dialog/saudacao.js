@@ -10,6 +10,8 @@ module.exports = [
             "reply": [                          
                 " {{saudacao_inicial}}",
                 util.replyChoices("Título|Subtitulo|Text","Sim|Não|Quem Sabe"),
+                util.replyMedia("https://www.blogdainformatica.com.br/wp-content/uploads/2015/12/giphy.gif"),
+                util.replyStaticMedia("lais.png")
             ],
             "defineContext": { "saudacao_inicial_feita": 1 }
         }

@@ -119,7 +119,7 @@ let DialogFlowResolver = function(initArgs){
             ret = (src === ref);
         }
         if(ret===false && typeof refAttr !== "undefined" && refAttr !== null){
-            console.log("\t\t\t\t(FALSE)Rule broke on ("+refAttr+"):"+detail)
+            // console.log("\t\t\t\t(FALSE)Rule broke on ("+refAttr+"):"+detail)
         }
 
         return ret;
@@ -132,11 +132,11 @@ let DialogFlowResolver = function(initArgs){
     let isRuleApplicableForContext = function(fr){
         let ret;
         // console.group();
-        console.log("evaluating rule: "+fr.id);
+        // console.log("evaluating rule: "+fr.id);
         if(isObject(fr.scoreRule)){
             // console.log("allElementsMatch("+JSON.stringify(fr.scoreRule)+","+JSON.stringify(context)+")");
             ret = allElementsMatch(fr.scoreRule,context);
-            if(ret===true)console.log("\t\t(TURE) Aplicable rule.["+fr.priority+"]");
+            if(ret===true)console.log("\t"+fr.id+": (TURE) Aplicable rule.["+fr.priority+"]");
         }
         else if(isFunction(fr.scoreRule)){
             ret = fr.scoreRule(context);
@@ -180,9 +180,9 @@ let DialogFlowResolver = function(initArgs){
     };
 
     let getWinnerRule = function(){
-        //console.log('flowDefinition:',flowDefinition);
+        console.log("----------- Evaluating rules -----------");
         let candidates = flowDefinition.filter(filterFromNode).filter(isRuleApplicableForContext);
-        //console.log('context:',context,'candidates:',candidates);
+        console.log("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_");
         return electWinner(candidates);
     };
 
@@ -253,7 +253,7 @@ let DialogFlowResolver = function(initArgs){
         mergeMessageIntoContext(aiResponse);
         let winner = getWinnerRule();
         addLastRuleToContext(winner);//TODO Não deve ser chamado neste metodo
-        console.log("Winner:"+JSON.stringify(winner));
+        // console.log("Winner:"+JSON.stringify(_.merge({},winner,{'action':{'reply':"[Ommited Object]"}}) ));
         console.log("Context:"+JSON.stringify(context));
 
         return winner;
