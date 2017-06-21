@@ -119,7 +119,7 @@ let DialogFlowResolver = function(initArgs){
             ret = (src === ref);
         }
         if(ret===false && typeof refAttr !== "undefined" && refAttr !== null){
-            // console.log("\t\t\t\t(FALSE)Rule broke on ("+refAttr+"):"+detail)
+            //console.log("(FALSE)Rule broke on ("+refAttr+"):"+detail)
         }
 
         return ret;
@@ -132,7 +132,7 @@ let DialogFlowResolver = function(initArgs){
     let isRuleApplicableForContext = function(fr){
         let ret;
         // console.group();
-        // console.log("evaluating rule: "+fr.id);
+        //console.log("evaluating rule: "+fr.id);
         if(isObject(fr.scoreRule)){
             // console.log("allElementsMatch("+JSON.stringify(fr.scoreRule)+","+JSON.stringify(context)+")");
             ret = allElementsMatch(fr.scoreRule,context);

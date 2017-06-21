@@ -197,7 +197,7 @@ module.exports = [
         "scoreRule": {
             "intent": "problema_sistema",
             "entities": {
-                "sistema": "pereciveis", //a senha do web loja é a mesma do perecíveis
+                "sistema": "pereciveis", 
                 "problema_sistema": "reset_senha"
             }
         },

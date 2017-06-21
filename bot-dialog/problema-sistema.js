@@ -118,7 +118,7 @@ module.exports = [
                 "- Perecíveis\n\n"+
                 "- WebLoja\n\n"+
                 "- Oper\n\n",
-                "Qual sistema gostaria deresetar sua senha?"
+                "Qual sistema gostaria de redefinir sua senha?"
             ],
             "listenTo": ["entities"]
         }

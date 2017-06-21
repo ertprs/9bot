@@ -4,6 +4,8 @@ let geral = require('./geral');
 let problemaSistema = require('./problema-sistema');
 let problemaSistemaPereciveis = require('./problema-sistema-pereciveis');
 let problemaSistemaLogistica = require('./problema-sistema-logistica');
+let problemaSistemaWebLoja = require('./problema-sistema-webloja');
+let problemaSistemaOper = require('./problema-sistema-oper');
 let ofensa = require('./ofensa');
 let infoLoja = require('./loja-info');
 let saudacao = require('./saudacao');
@@ -16,6 +18,8 @@ let tudo = []
     .concat(problemaSistema)
     .concat(problemaSistemaPereciveis)
     .concat(problemaSistemaLogistica)
+    .concat(problemaSistemaOper)
+    .concat(problemaSistemaWebLoja)
     .concat(ofensa)
     .concat(infoLoja);
 module.exports = tudo;
