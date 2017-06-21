@@ -1,6 +1,5 @@
 const util = require('./util');
 module.exports = [
-
     {
         "id": "probsist_generico",
         "priority": -10,
@@ -22,24 +21,6 @@ module.exports = [
             "defineContext": { "probsist_generico": 1 }
         }
     },
-
-    {
-        "id": "probsist_generico_2",
-        "priority": -10,
-        "scoreRule": {
-            "intent": "problema_sistema",
-            "sistema": null,
-            "problema_sistema": null,
-            "probsist_generico": 1
-        },
-        "action": {
-            "reply": [
-                "{{ajuda_geral}}"
-            ],
-            "defineContext": util.clearContext
-        }
-    },
-
     {
         "id": "probsist_qual_sistema",
         "scoreRule": {
@@ -52,7 +33,7 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Tudo bem. Preciso saber de qual sistema você está falando."
+                "Preciso saber de qual sistema você tem esse problema."
             ],
             "listenTo": [
                 "entities"
@@ -73,7 +54,7 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Não consegui entender corretamente. Tente informar seu problema detalhadamente ou " +
+                "Não consegui entender o problema. Tente informar seu problema detalhadamente ou " +
                 "pergunte-me em que posso te ajudar para maiores detalhes."
             ],
             "defineContext": util.clearContext
@@ -92,7 +73,7 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Tudo bem. Descreva qual dúvida ou problema você está tendo."
+                "Tudo bem identifiquei o sistema. Descreva qual dúvida ou problema que você tem."
             ],
             "listenTo": [
                 "entities"
@@ -114,66 +95,34 @@ module.exports = [
         "action": {
             "reply": [
                 "Desculpe, não consegui entender sua necessidade.\n\n" +
-                "Tente descrever da melhor maneira possível ou " +
-                "pergunte-me em que posso te ajudar para maiores detalhes."
+                "Tente descrever da melhor maneira possível ex.:" +
+                "Gostaria de resetar minha senha do logística reversa ou " +
+                "Não consigo acessar a câmera do aplicativo perecíveis."
             ],
-            "defineContext": { "probsist_qual_problema": 2 }
+            "defineContext": util.clearContext
         }
-    },
+    }, 
     {
-        "id": "probsist_qual_problema_3",
+        "id": "problema_sistema_reset_senha",
         "scoreRule": {
             "intent": "problema_sistema",
             "entities": {
-                "sistema": "*",
-                "problema_sistema": null
-            },
-            "probsist_qual_problema": 2
+                "sistema": null, 
+                "problema_sistema": "reset_senha"
+            }
         },
         "action": {
             "reply": [
-                "{{contexto_nao_entendido_ajuda_externa}}"
+                "Atualmente você pedir um reset de senha para os sistemas:\n\n"+
+                "- Logística Reversa\n\n"+
+                "- Perecíveis\n\n"+
+                "- WebLoja\n\n"+
+                "- Oper\n\n",
+                "Qual sistema gostaria deresetar sua senha?"
             ],
-            "defineContext": { "abrir_chamado_geral": 1 },
-            "listenTo": [
-                "entities"
-            ]
+            "listenTo": ["entities"]
         }
     },
-    {
-        "id": "abrir_chamado_geral_sim",
-        "scoreRule": {
-            "intent": "*",
-            "entities": {
-                "tipo_resposta": "sim"
-            },
-            "abrir_chamado_geral": 1
-        },
-        "action": {
-            "reply": [
-                "O chamado de número #000002 foi aberto.\n\n" +
-                "Se precisar de mais alguma ajuda é só pedir. ;)"
-            ],
-            "defineContext": util.clearContext
-        }
-    },
-    {
-        "id": "abrir_chamado_geral_nao",
-        "scoreRule": {
-            "intent": "*",
-            "entities": {
-                "tipo_resposta": "nao"
-            },
-            "abrir_chamado_geral": 1
-        },
-        "action": {
-            "reply": [
-                "Certo. Se desejar mais alguma coisa, pergunte-me como posso ajudar."
-            ],
-            "defineContext": util.clearContext
-        }
-    },
-
     {
         "id": "sistema_identificado_nao_tratado",
         "priority": -900,

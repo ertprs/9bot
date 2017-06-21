@@ -1,12 +1,16 @@
 module.exports = {
-    "contexto_nao_entendido_ajuda_externa":[
-        "Acho que vamos precisar de ajuda.\n\n"+
+    "acesso_senha": [
+        "Tente se logar usando seu usuário e senha do webloja.\n\n"
+        + "Se ainda sim não conseguir, é só me pedir para resetar a senha."
+    ],
+    "contexto_nao_entendido_ajuda_externa": [
+        "Acho que vamos precisar de ajuda.\n\n" +
         "O que acha de abrir um chamado contando com o conteúdo dessa conversa?"
     ],
     "ajuda_geral": [
-        "Atualmente posso ajudar com os tópicos abaixo:\n\n" +
-        "- Problemas ou dúvidas com o aplicativo Perecíveis \n\n" +
-        "- Reset de senha para o sistema Logística Reversa\n\n"
+        "Atualmente posso tentar ajudar com os tópicos abaixo:\n\n" +
+        "- Problemas ou dúvidas com o aplicativo Perecíveis\n\n" +
+        "- Reset de senha para alguns sistemas\n\n"
     ],
     "pai": [
         "Acredite ou não, tenho muitos pais, mas nenhuma mãe..."
@@ -65,7 +69,7 @@ module.exports = {
     "possoAjudar_EOL": [
         "em que posso ajudar ?",
         "como posso ser útil ?",
-        'precisa de ajuda ?',
+        "precisa de ajuda ?",
         "o que está precisando ?",
         "como posso lhe ajudar hoje ?"
     ]
