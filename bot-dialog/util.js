@@ -118,6 +118,15 @@ let replyChoices = function (title, choices) {
         "content": arrChoicesObj
     };
 };
+/**
+ * exemplos:
+ *
+ * util.replyChoices("Título|Subtitulo|Text","Sim|Não|Quem Sabe"),
+ * util.replyMedia("https://www.blogdainformatica.com.br/wp-content/uploads/2015/12/giphy.gif"),
+ * util.replyStaticMedia("lais.png")
+ * @type {{getUserName: getUserName, clearContext: clearContext, replyChoices: replyChoices, replyMedia: replyMedia, replyStaticMedia: replyStaticMedia, buildClearContextAndDefine: module.exports.buildClearContextAndDefine}}
+ */
+
 
 module.exports = {
     getUserName,
