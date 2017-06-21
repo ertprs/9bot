@@ -29,8 +29,9 @@ server.post('/api/messages', connector.listen());
 server.listen(process.env.port || process.env.PORT || 3978, function () {
     nineBanner.print();
     console.log('%s listening to %s', server.name, server.url);
-
 });
+
+const msgBuilder = require('./messageBuilder');
 
 let runReset = function (session) {
     if (session.message.text === '_reset') {
@@ -177,6 +178,10 @@ let runMessageTypes = function (session) {
     return false;
 };
 
+const buildMessageFromReply = function(){
+
+};
+
 const bot = new builder.UniversalBot(connector,
     [
         function (session) {
@@ -209,10 +214,8 @@ bot.dialog('lais', [
             .then(replyArr => {
                 if (replyArr.length > 0) {
                     console.log("respondendo reply:" + JSON.stringify(replyArr));
-                    replyArr.forEach(msg => {
-                        if (typeof msg === "string") {
-                            msg = laisDictionary.resolve(msg);
-                        }
+                    replyArr.forEach(reply => {
+                        let msg = msgBuilder.build(session,reply,{"ctx":session.message});
                         session.send(msg);
                     });
                     console.log("respondido");
