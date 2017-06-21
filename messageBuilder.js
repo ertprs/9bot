@@ -58,6 +58,7 @@ let resolvers = {
             card = card.text(meta.text.toString());
         }
 
+
         if(!_.isArray(reply.content)){
             throw new Error("Invalid choice content. Expected Array");
         }
