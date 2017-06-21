@@ -12,7 +12,8 @@ const AttachmentLayout = {
 };
 const ReplyType = {
     "TEXT":"text",
-    "CHOICE":"choice"
+    "CHOICE":"choice",
+    "MEDIA":"media"
 };
 
 let resolvers = {
@@ -74,11 +75,63 @@ let resolvers = {
            } else{
                throw new Error("Invalid choice content element. Expected Object{text,value} or String");
            }
-           return builder.CardAction.postBack(session, opt.text, opt.value);
+           return builder.CardAction.imBack(session, opt.value, opt.text);
         });
 
         return msg.attachments([card.buttons(cardActions)]);
+    },
+    /**
+     *
+     * @param session
+     * @param reply
+     *      reply.content:
+                 {
+                     "contentType": IMAGES.chart2.contentType,
+                     "contentUrl": IMAGES.chart2.url,
+                     "name": "chart2.jpg"
+                 }
+     * @param context
+     * @returns {Message}
+     */
+    [ReplyType.MEDIA]: function(session,reply,context){
+        let meta = reply.meta || {};
+        let layout = meta.layout || AttachmentLayout.COROUSEL;
+
+        if(!_.isArray(reply.content)){
+            reply.content = [reply.content];
+        }
+
+        return new builder.Message(session)
+            .attachmentLayout(layout)
+            .attachments(
+                    reply.content
+            )
     }
+    ,"animation": function(session,reply,context){
+        return new builder.Message(session).addAttachment(
+            new builder.AnimationCard(session)
+            .title('Microsoft Bot Framework')
+            .subtitle('Animation Card')
+            .media([
+                { url: 'https://www.blogdainformatica.com.br/wp-content/uploads/2015/12/giphy.gif' }
+            ])
+        );
+    }
+
+    // ,"suggested": function(session,reply,context){
+    //     return  new builder.Message(session)
+    //         .text("Thank you for expressing interest in our premium golf shirt! What color of shirt would you like?")
+    //         .suggestedActions(
+    //             builder.SuggestedActions.create(
+    //                 session, [
+    //                     builder.CardAction.postBack(session, "productId=1&color=yellow","Yellow"),
+    //                     builder.CardAction.postBack(session, "productId=1&color=green","Green"),
+    //                     builder.CardAction.postBack(session, "productId=1&color=blue","Blue"),
+    //                     builder.CardAction.postBack(session, "productId=1&color=red","Red")
+    //                 ]
+    //             ));
+    //
+    // }
 };
 
 module.exports = {
