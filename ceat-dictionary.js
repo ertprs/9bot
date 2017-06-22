@@ -11,7 +11,7 @@ module.exports = {
         "Atualmente posso tentar ajudar com os tópicos abaixo:\n\n" +
         "- Problemas ou dúvidas com o aplicativo Perecíveis\n\n" +
         "- Reset de senha para alguns sistemas\n\n"+
-        "- Problemas com PDV"
+        "- Problemas simples com PDV (PDV não está funcionando)"
     ],
     "pai": [
         "Acredite ou não, tenho muitos pais, mas nenhuma mãe..."
