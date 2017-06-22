@@ -1,3 +1,4 @@
+const util = require('./util');
 module.exports =[
     {
         "id": "info_loja_venda",
@@ -10,7 +11,9 @@ module.exports =[
         },
         "action": {
             "reply": [
-                "A venda para a loja é de R$35.000" 
+                "A venda para a loja é de R$35.000\n\n"+
+                "A divisão de venda entre os departamentos seria:",
+                 util.replyStaticMedia("chart.jpg")
             ],
             "defineContext": { "intent": null, "entities": null },
             "listenTo": [
@@ -21,6 +24,7 @@ module.exports =[
     },
     {
         "id": "info_loja_venda_minha_loja",
+        "priority": -10,
         "scoreRule": {
             "intent": "informacao_loja",
             "entities": {
@@ -29,7 +33,9 @@ module.exports =[
         },
         "action": {
             "reply": [
-                "Olá GGL Saulo, a venda da sua loja (L022) até o momento é de R$ 45.00" 
+                "Olá GGL Saulo, a venda da sua loja (L022) até o momento é de R$ 45.00\n\n"+
+                "A divisão de venda entre os departamentos seria:",
+                 util.replyStaticMedia("chart2.jpg")
             ],
             "defineContext": { "intent": null, "entities": null },
             "listenTo": [

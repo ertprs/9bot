@@ -10,6 +10,7 @@ let problemaSistemaOper = require('./problema-sistema-oper');
 let ofensa = require('./ofensa');
 let infoLoja = require('./loja-info');
 let saudacao = require('./saudacao');
+let problemaLoja = require('./problema-pdv');
 
 let tudo = []
     .concat(sobreLais)
@@ -21,6 +22,7 @@ let tudo = []
     .concat(problemaSistemaLogistica)
     .concat(problemaSistemaOper)
     .concat(problemaSistemaWebLoja)
+    .concat(problemaLoja)
     .concat(ofensa)
     .concat(infoLoja);
 module.exports = tudo;
