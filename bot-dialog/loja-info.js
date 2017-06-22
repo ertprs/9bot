@@ -10,7 +10,7 @@ module.exports =[
         },
         "action": {
             "reply": [
-                "A venda para a loja é de R${venda}" 
+                "A venda para a loja é de R$35.000" 
             ],
             "defineContext": { "intent": null, "entities": null },
             "listenTo": [
@@ -19,6 +19,26 @@ module.exports =[
             ]
         }
     },
+    {
+        "id": "info_loja_venda_minha_loja",
+        "scoreRule": {
+            "intent": "informacao_loja",
+            "entities": {
+                "info_loja": "venda"
+            }            
+        },
+        "action": {
+            "reply": [
+                "Olá GGL Saulo, a venda da sua loja (L022) até o momento é de R$ 45.00" 
+            ],
+            "defineContext": { "intent": null, "entities": null },
+            "listenTo": [
+                "entities",
+                "intent"
+            ]
+        }
+    },
+
     {
         "id": "info_loja_venda",
         "scoreRule": {
