@@ -35,9 +35,36 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 
 const msgBuilder = require('./messageBuilder');
 
+
+const bot = new builder.UniversalBot(connector,
+    [
+        function (session) {
+            session.beginDialog('lais');
+        }
+    ]
+);
+
 let runVersion = function (session) {
     if (session.message.text === '_ver') {
         session.send("regras: "+VERSAO_REGRAS);
+        return true;
+    }
+    return false;
+};
+
+let sendProactiveMessage = function (addr,textMessage) {
+    let msg = new builder.Message().address(addr);
+    msg.text(textMessage);
+    msg.textLocale('pt-BR');
+    bot.send(msg);
+};
+
+let runNotify = function(session){
+    console.log('running notify!!!!!!!!!!!!!!!!!!!!!!!!!!!11');
+    if (session.message.text === '_notify') {
+        for(let addrId in _globalUserAddressIndex){
+            sendProactiveMessage(_globalUserAddressIndex[addrId],"Atenção item sem venda!")
+        }
         return true;
     }
     return false;
@@ -52,27 +79,22 @@ let runReset = function (session) {
     return false;
 };
 
-const bot = new builder.UniversalBot(connector,
-    [
-        function (session) {
-            session.beginDialog('lais');
-        }
-    ]
-);
+let _globalUserAddressIndex = {};
 
 bot.dialog('lais', [
     function (session, result) {
-        console.log("#####dialog.lais.message.text:", session.message.text);//, "######result:", result);
+        console.log("#####dialog.lais.message:", session.message);//, "######result:", result);
         let userId = session.message.address.user.id;
         let context = ctxManager.getContext(userId);
 
         context.dialogFlowResolver = context.dialogFlowResolver || lais.DialogFlowResolver({ 'flowDefinition': botDialogFlow });
+        _globalUserAddressIndex[session.message.address.user.id] = _globalUserAddressIndex[session.message.address.user.id] || session.message.address;
         let dialogFlow = context.dialogFlowResolver;
 
         let message = session.message;
         let s = session;
 
-        if ( runReset(session) || runVersion(session)){
+        if ( runReset(session) || runVersion(session) || runNotify(session)){
             return;
         }
 
