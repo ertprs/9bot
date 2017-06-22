@@ -113,8 +113,9 @@ module.exports = [
         "action": {
             "reply": [
                 "Tente seguir este procedimento para resolver seu problema de Baixa de Item:\n\n" +
-                "Na lista de itens, você precisa expandir os lotes e selecionar aquele desejado. Em seguida, aperte o ícone '+'.\n\n" +
-                "Selecione 'Solicitar baixa', em seguida, confira os dados e confirme a solicitação."
+                "- Na lista de itens, você precisa expandir os lotes e selecionar aquele desejado.\n\n"+
+                "- Em seguida, aperte o ícone '+'.\n\n" +
+                "- Selecione 'Solicitar baixa', em seguida, confira os dados e confirme a solicitação."
             ],
             "defineContext": util.clearContext
         }
@@ -187,10 +188,11 @@ module.exports = [
         "action": {
             "reply": [
                 "Antes de iniciarmos um cadastro, você precisa entrar na aplicação com os seus dados.\n\n" +
-                "Após a confirmação dos seus dados, siga as instruções abaixo para realizar um cadastro ou acompanhe a vinheta acima." +
-                "Selecione ' + ' e em seguida escaneie o código de barras ou digite o EAN do produto." +
-                "Após a adição do código, insira o lote, data de vencimento e uantidade.\n\n" +
-                "Em seguida, aperte o 'check'."
+                "Após a confirmação, siga as instruções abaixo para realizar um cadastro:\n\n" +
+                "- Selecione ' + ' e em seguida escaneie o código de barras ou digite o EAN do produto.\n\n" +
+                "- Após a adição do código, insira o lote, data de vencimento e uantidade.\n\n" +
+                "- Em seguida, aperte o 'check'.",
+                "Você sempre poderá obter mais ajuda em: http://perecivel.lasa.com.br/perecivel-manual/"
             ],
             "defineContext": util.clearContext
         }
