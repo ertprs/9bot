@@ -78,7 +78,7 @@ module.exports = [
             "listenTo": [
                 "entities"
             ],
-            "defineContext": { "probsist_qual_problema": 1 }
+            "defineContext": { "probsist_qual_problema": 1}
         }
     },
 
@@ -95,23 +95,27 @@ module.exports = [
         "action": {
             "reply": [
                 "Desculpe, não consegui entender sua necessidade.\n\n" +
-                "Tente descrever da melhor maneira possível ex.:" +
-                "Gostaria de resetar minha senha do logística reversa ou " +
-                "Não consigo acessar a câmera do aplicativo perecíveis."
+                "Tente descrever da melhor maneira possível ex.:\n\n" +
+                "- Gostaria de resetar minha senha do logística reversa\n\n" +
+                "- Não consigo acessar a câmera do aplicativo perecíveis."
             ],
             "defineContext": util.clearContext
         }
     },
+
+    /*
+     quando pergunta qual problema ou dúvida. uma maneira de responder NENHUM...
+    */
     {
         "id": "probsist_qual_problema_3",
+        "fromNode": "probsist_qual_problema",
         "scoreRule": {
             "intent": "problema_sistema",
             "entities": {
                 "sistema": "*",
                 "problema_sistema": null,
                 "tipo_resposta": "nao"
-            },
-            "probsist_qual_problema": 1
+            }
         },
         "action": {
             "reply": [

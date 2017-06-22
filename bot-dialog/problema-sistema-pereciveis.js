@@ -13,8 +13,8 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Infelizmente ainda não posso ajudar com esse problema do Perecíveis.",
-                "Você sempre pode consultar o hot site do Perecíveis disponível em:",
+                "Infelizmente ainda não posso ajudar com esse problema do Perecíveis.\n\n"+
+                "Mas você pode consultar o hotsite do perecíveis buscando mais informações:",
                 "http://perecivel.lasa.com.br/perecivel-manual/"
             ],
             "defineContext": util.clearContext
@@ -96,7 +96,8 @@ module.exports = [
                 + "e)Selecione o aplicativo “Perecíveis”;\n\n"
                 + "f)Selecione a opção “Permissões”;\n\n"
                 + "g)Na opção câmera arraste o botão localizado do lado direito para a direita, habilitando a opção de utilização da câmera.\n\n"
-                + "h)Entre novamente no aplicativo"
+                + "h)Entre novamente no aplicativo",
+                util.replyStaticMedia("pereciveis_problema_camera.png")
             ],
             "defineContext": util.clearContext
         }
