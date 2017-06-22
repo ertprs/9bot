@@ -191,8 +191,9 @@ module.exports = [
                 "Após a confirmação, siga as instruções abaixo para realizar um cadastro:\n\n" +
                 "- Selecione ' + ' e em seguida escaneie o código de barras ou digite o EAN do produto.\n\n" +
                 "- Após a adição do código, insira o lote, data de vencimento e uantidade.\n\n" +
-                "- Em seguida, aperte o 'check'.",
-                "Você sempre poderá obter mais ajuda em: http://perecivel.lasa.com.br/perecivel-manual/"
+                "- Em seguida, aperte o 'check'.\n\n"+
+                "Você sempre poderá obter mais ajuda em:",
+                "http://perecivel.lasa.com.br/perecivel-manual/"
             ],
             "defineContext": util.clearContext
         }

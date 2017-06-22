@@ -132,7 +132,7 @@ module.exports = [
         },
         "action": {
             "reply": [
-                util.replyChoices("Reset de Senha|Atualmente você pedir um reset de senha para os sistemas|Qual sistema gostaria de redefinir sua senha?",
+                util.replyChoices("Reset de Senha|Atualmente você pode pedir um reset de senha para os sistemas|Qual sistema gostaria de redefinir sua senha?",
                     "Logística Reversa|Perecíveis|WebLoja|Oper")
             ],
             "listenTo": ["entities"]
