@@ -9,7 +9,6 @@ module.exports = [
         "action": {
             "reply": [                          
                 " {{saudacao_inicial}}"
-                //,util.replyChoices("Título|subtitulo|Text","Sim|Não|Quem Sabe"),
             ],
             "defineContext": { "saudacao_inicial_feita": 1 }
         }
@@ -26,6 +25,20 @@ module.exports = [
             ]
         }
     },
+   {
+        "id": "saudacao_por_nome",
+        "scoreRule": {
+            "intent": "saudacao",
+            "entities": {
+                "info_lais":"nome"
+            }
+        },        
+        "action": {
+            "reply": [
+                "{{saudacao_geral}}"
+            ]
+        }
+    },    
     {
         "id": "geral_agradecimento",
         "scoreRule": {

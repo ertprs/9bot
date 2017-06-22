@@ -1,6 +1,6 @@
 const util = require('./util');
+//http://perecivel.lasa.com.br/perecivel-manual/
 module.exports = [
-
     {
         "id": "probsist_pereciveis_problema_invalido",
         "priority": -2,
@@ -13,7 +13,9 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Infelizmente ainda não posso ajudar com esse problema do Perecíveis."
+                "Infelizmente ainda não posso ajudar com esse problema do Perecíveis.",
+                "Você sempre pode consultar o hot site do Perecíveis disponível em:",
+                "http://perecivel.lasa.com.br/perecivel-manual/"
             ],
             "defineContext": util.clearContext
         }
@@ -65,9 +67,10 @@ module.exports = [
         "action": {
             "reply": [
                 "Tente seguir este procedimento para resolver seu problema:\n\n"
-                + "Efetuar a desconexão e reconexão do aplicativo.\n\n"
-                + "Favor entrar em: configuração - aplicativos - perecíveis - armazenamento - apagar dados.\n\n"
-                + "Desconecte da aplicação, selecionando o botão no canto superior direito, ao lado das palavras LOJA MOBILE, e depois entrar com o seu usuário e senha novamente.\n\n"
+                + "- Efetuar a desconexão e reconexão do aplicativo.\n\n"
+                + "- Favor entrar em: configuração - aplicativos - perecíveis - armazenamento - apagar dados.\n\n"
+                + "- Desconecte da aplicação, selecionando o botão no canto superior direito, ao lado das palavras LOJA MOBILE, e depois entrar com o seu usuário e senha novamente.\n\n",
+                util.replyStaticMedia("pereciveis_problema_deslogar.png")
             ],
             "defineContext": util.clearContext
         }

@@ -6,6 +6,8 @@ const builder = require('botbuilder');
 const nineBanner = require('./nine-banner');
 const ctxManager = require('./bot-context/UserContextManager');
 
+const VERSAO_REGRAS='1.0';
+
 //carregar regras de dialogo
 const botDialogFlow = require('./bot-dialog');
 
@@ -32,6 +34,14 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
 });
 
 const msgBuilder = require('./messageBuilder');
+
+let runVersion = function (session) {
+    if (session.message.text === '_ver') {
+        session.send("regras: "+VERSAO_REGRAS);
+        return true;
+    }
+    return false;
+};
 
 let runReset = function (session) {
     if (session.message.text === '_reset') {
@@ -62,7 +72,7 @@ bot.dialog('lais', [
         let message = session.message;
         let s = session;
 
-        if ( runReset(session) ){
+        if ( runReset(session) || runVersion(session)){
             return;
         }
 

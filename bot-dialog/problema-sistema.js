@@ -101,26 +101,57 @@ module.exports = [
             ],
             "defineContext": util.clearContext
         }
-    }, 
+    },
+    {
+        "id": "probsist_qual_problema_3",
+        "scoreRule": {
+            "intent": "problema_sistema",
+            "entities": {
+                "sistema": "*",
+                "problema_sistema": null,
+                "tipo_resposta": "nao"
+            },
+            "probsist_qual_problema": 1
+        },
+        "action": {
+            "reply": [
+                "Certo, se precisar de ajuda pergunte-me sobre como posso te ajudar."
+            ],
+            "defineContext": util.clearContext
+        }
+    },
+
     {
         "id": "problema_sistema_reset_senha",
         "scoreRule": {
             "intent": "problema_sistema",
             "entities": {
-                "sistema": null, 
+                "sistema": null,
                 "problema_sistema": "reset_senha"
             }
         },
         "action": {
             "reply": [
-                "Atualmente você pedir um reset de senha para os sistemas:\n\n"+
-                "- Logística Reversa\n\n"+
-                "- Perecíveis\n\n"+
-                "- WebLoja\n\n"+
-                "- Oper\n\n",
-                "Qual sistema gostaria de redefinir sua senha?"
+                util.replyChoices("Reset de Senha|Atualmente você pedir um reset de senha para os sistemas|Qual sistema gostaria de redefinir sua senha?",
+                    "Logística Reversa|Perecíveis|WebLoja|Oper")
             ],
             "listenTo": ["entities"]
+        }
+    },
+    {
+        "id": "problema_sistema_reset_senha_cancelamento",
+        "scoreRule": {
+            "intent": "problema_sistema",
+            "entities": {
+                "problema_sistema": "reset_senha",
+                "tipo_resposta": "nao"
+            }
+        },
+        "action": {
+            "reply": [
+                "Ok, se precisar de algo é só chamar."
+            ],
+            "defineContext": util.clearContext
         }
     },
     {
