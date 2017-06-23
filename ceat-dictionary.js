@@ -1,4 +1,8 @@
 module.exports = {
+    "resumo_pereciveis":[
+        "O controle de perecíveis, permite que você faça a gestão de produtos com prazo de valida e que "+
+        "possa atribuir um desconto progressivo para esse produto conforme a data de validade se aproxime."
+    ],
     "acesso_senha": [
         "Tente se logar usando seu usuário e senha do webloja.\n\n"
         + "Se ainda sim não conseguir, é só me pedir para resetar a senha."

@@ -253,7 +253,8 @@ let DialogFlowResolver = function(initArgs){
         mergeMessageIntoContext(aiResponse);
         let winner = getWinnerRule();
         addLastRuleToContext(winner);//TODO Não deve ser chamado neste metodo
-        // console.log("Winner:"+JSON.stringify(_.merge({},winner,{'action':{'reply':"[Ommited Object]"}}) ));
+        console.log("Winner:"+JSON.stringify(winner));
+        //console.log("Winner:"+JSON.stringify(_.merge({},winner,{'action':{'reply':"[Ommited Object]"}}) ));
         console.log("Context:"+JSON.stringify(context));
 
         return winner;

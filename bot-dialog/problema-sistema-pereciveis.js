@@ -13,7 +13,7 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Infelizmente ainda não posso ajudar com esse problema do Perecíveis.\n\n"+
+                "Infelizmente ainda não posso ajudar com esse problema do Perecíveis.\n\n" +
                 "Mas você pode consultar o hotsite do perecíveis buscando mais informações:",
                 "http://perecivel.lasa.com.br/perecivel-manual/"
             ],
@@ -114,7 +114,7 @@ module.exports = [
         "action": {
             "reply": [
                 "Tente seguir este procedimento para resolver seu problema de Baixa de Item:\n\n" +
-                "- Na lista de itens, você precisa expandir os lotes e selecionar aquele desejado.\n\n"+
+                "- Na lista de itens, você precisa expandir os lotes e selecionar aquele desejado.\n\n" +
                 "- Em seguida, aperte o ícone '+'.\n\n" +
                 "- Selecione 'Solicitar baixa', em seguida, confira os dados e confirme a solicitação."
             ],
@@ -192,7 +192,7 @@ module.exports = [
                 "Após a confirmação, siga as instruções abaixo para realizar um cadastro:\n\n" +
                 "- Selecione ' + ' e em seguida escaneie o código de barras ou digite o EAN do produto.\n\n" +
                 "- Após a adição do código, insira o lote, data de vencimento e uantidade.\n\n" +
-                "- Em seguida, aperte o 'check'.\n\n"+
+                "- Em seguida, aperte o 'check'.\n\n" +
                 "Você sempre poderá obter mais ajuda em:",
                 "http://perecivel.lasa.com.br/perecivel-manual/"
             ],
@@ -204,7 +204,7 @@ module.exports = [
         "scoreRule": {
             "intent": "problema_sistema",
             "entities": {
-                "sistema": "pereciveis", 
+                "sistema": "pereciveis",
                 "problema_sistema": "reset_senha"
             }
         },
@@ -249,5 +249,23 @@ module.exports = [
             ],
             "defineContext": util.clearContext
         }
-    },    
+    },
+    {
+        "id": "probsist_pereciveis_duvida_uso",
+        "scoreRule": {
+            "intent": "problema_sistema",
+            "entities": {
+                "sistema": "pereciveis",
+                "problema_sistema": "duvida_uso"
+            }
+        },
+        "action": {
+            "reply": [
+                "{{resumo_pereciveis}}\n\n"+
+                ";) Você pode achar mais dicas em",
+                "http://perecivel.lasa.com.br/perecivel-manual/"
+            ],
+           "defineContext": util.clearContext
+        }
+    },
 ];
