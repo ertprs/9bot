@@ -6,7 +6,7 @@ const builder = require('botbuilder');
 const nineBanner = require('./nine-banner');
 const ctxManager = require('./bot-context/UserContextManager');
 
-const VERSAO_REGRAS='1.2';
+const VERSAO_REGRAS='1.3';
 
 //carregar regras de dialogo
 const botDialogFlow = require('./bot-dialog');
