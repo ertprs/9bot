@@ -66,7 +66,7 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Sua senha foi redefinida para #lasa2017."
+                "{{reset_senha}}"
             ],
             "defineContext": util.clearContext
         }

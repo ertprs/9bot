@@ -69,7 +69,9 @@ module.exports = [
                 "Tente seguir este procedimento para resolver seu problema:\n\n"
                 + "- Efetuar a desconexão e reconexão do aplicativo.\n\n"
                 + "- Favor entrar em: configuração - aplicativos - perecíveis - armazenamento - apagar dados.\n\n"
-                + "- Desconecte da aplicação, selecionando o botão no canto superior direito, ao lado das palavras LOJA MOBILE, e depois entrar com o seu usuário e senha novamente.\n\n",
+                + "- Desconecte da aplicação, selecionando o botão no canto superior direito, ao lado das palavras LOJA MOBILE,"
+                + " e depois entrar com o seu usuário e senha novamente.\n\n"
+                + "Veja se a imagem abaixo pode te ajudar",
                 util.replyStaticMedia("pereciveis_problema_deslogar.png")
             ],
             "defineContext": util.clearContext
@@ -96,7 +98,8 @@ module.exports = [
                 + "e)Selecione o aplicativo “Perecíveis”;\n\n"
                 + "f)Selecione a opção “Permissões”;\n\n"
                 + "g)Na opção câmera arraste o botão localizado do lado direito para a direita, habilitando a opção de utilização da câmera.\n\n"
-                + "h)Entre novamente no aplicativo",
+                + "h)Entre novamente no aplicativo \n\n"
+                + "Veja se a imagem abaixo pode te ajudar",
                 util.replyStaticMedia("pereciveis_problema_camera.png")
             ],
             "defineContext": util.clearContext
@@ -228,7 +231,7 @@ module.exports = [
         },
         "action": {
             "reply": [
-                "Sua senha foi resetada para #lasa2017."
+                 "{{reset_senha}}"
             ],
             "defineContext": util.clearContext
         }

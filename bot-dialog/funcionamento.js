@@ -1,5 +1,4 @@
 module.exports =[
-
     {
         "id": "funcionamento_geral",
         "priority": -900,
@@ -9,7 +8,8 @@ module.exports =[
         "action": {
             "reply": [
                 "{{ajuda_geral}}",
-                "Em breve muito mais! ;)"
+                "Em breve eu espero em outros assuntos "+
+                "{{random_emoji}}"
             ],
             "defineContext": { "intent": null, "entities": null },
             "listenTo": [
