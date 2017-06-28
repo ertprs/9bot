@@ -29,9 +29,8 @@ const connector = new builder.ChatConnector({
 const server = restify.createServer({ 'name': "lais-bot" });
 server.post('/api/messages', connector.listen());
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-    //nineBanner.print(); removido a pedido do ALEX
-    console.log('\n\n     %s listening to %s', server.name, server.url);
-    console.log('\n     LAIS ver %s ONLINE', VERSAO_REGRAS);
+    nineBanner.print();
+    console.log('%s listening to %s', server.name, server.url);
 });
 
 const msgBuilder = require('./messageBuilder');
