@@ -2,6 +2,10 @@
   "name": "lais-bot",
   "version": "1.0.0",
   "description": "Bot para POC da Lais",
+  "engines": {
+    "node": ">=6.10.2",
+    "npm":"4.x"
+  },
   "main": "app.js",
   "scripts": {
     "test": "echo 'implement testing'",
@@ -23,6 +27,8 @@
     "figlet": "^1.2.0",
     "lodash": "^4.17.4",
     "mime-types": "^2.1.15",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
     "mustache": "^2.3.0",
     "node-fetch": "^1.7.1",
     "restify": "^4.3.0",

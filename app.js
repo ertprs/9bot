@@ -29,7 +29,11 @@ const connector = new builder.ChatConnector({
 const server = restify.createServer({ 'name': "lais-bot" });
 server.post('/api/messages', connector.listen());
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-    nineBanner.print();
+    // nineBanner.print(); Comentado a pedido do Alex
+
+    var today = moment().tz("America/Sao_Paulo");
+    var curHr = parseInt(today.format('HH'));
+
     console.log('%s listening to %s', server.name, server.url);
 });
 
