@@ -1,6 +1,3 @@
-const moment = require('moment-timezone');
-
-
 module.exports = {
     "random_emoji":[
         "(yn)",
@@ -72,12 +69,8 @@ module.exports = {
         "às ordens"
     ],
     "bomDiaNoiteTarde": function () {
-        // console.log('##############################################################moment:'+moment());
-        // console.log("timezone:",moment.tz.guess());
-        var today = moment().tz("America/Sao_Paulo");
-        // console.log("today:",today);
-        // console.log("hour:",today.format('HH'));
-        var curHr = parseInt(today.format('HH'));
+        var today = new Date()
+        var curHr = today.getHours()
         var ret = "";
         if (curHr < 12) {
             ret = "bom dia";

@@ -1,12 +1,4 @@
 const _ = require('lodash');
-const moment = require('moment');
-// const oc = console.log;
-// console.log = function(){
-//     let timestamp = "[9"+"be"+"el"+"og@" + moment().format("YYYY-MM-DD HH:mm:ss:SSS") + "] ";
-//     // Array.prototype.unshift.call(arguments, timestamp);
-//     oc(timestamp);
-//     oc.apply(this, arguments);
-// };
 
 let DialogFlowResolver = function(initArgs){
     let me = {};
@@ -14,7 +6,7 @@ let DialogFlowResolver = function(initArgs){
         context = {},
         defaultContext = {"persistent":{},"__":{"listenOnly":["intent","entities"],"lastNode":null,"lastNodes":[]}},
         replyPromise = null, //lazy populated
-        INTENT_CONFIDENCE_THRESHOLD = 0.7
+    INTENT_CONFIDENCE_THRESHOLD = 0.7
     ;
 
     let init = function(){
