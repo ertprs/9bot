@@ -176,6 +176,8 @@ bot.dialog('lais', [
         let userId = session.message.address.user.id;
         let context = ctxManager.getContext(userId);
 
+
+
         context.dialogFlowResolver = context.dialogFlowResolver || lais.DialogFlowResolver({ 'flowDefinition': botDialogFlow });
         _globalUserAddressIndex[session.message.address.user.id] = _globalUserAddressIndex[session.message.address.user.id] || session.message.address;
         let dialogFlow = context.dialogFlowResolver;
@@ -188,7 +190,11 @@ bot.dialog('lais', [
         }
 
         laisClient.talk(message.text).then(data => {
-            return dialogFlow.resolve(data);
+            let retorno = dialogFlow.resolve(data,ctx);
+
+            atualizarcontexto(retorno.contexto);
+            return retorno.replies;
+
         })
             .then(replyArr => {
                 if (replyArr.length > 0) {
