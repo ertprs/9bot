@@ -1,5 +1,6 @@
 const dialogs = require('./dialogs');
 const rules = [].concat([
+    "root",
     "problema_sistema"
     ,"reset_senha"
     ,"reset_senha_sap"

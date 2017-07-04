@@ -1,4 +1,4 @@
-const {get,add} = require('./util');
+const {get,add, clearAll} = require('./util');
 
 module.exports = [
     {
@@ -10,18 +10,26 @@ module.exports = [
         },
         "actions":[
             {
-                "match":(c)=>get("count_PS_qual_sist_prob",c)===null,
+                "match":(c)=>get("count_PS_qual_sist_prob",c)<1,
                 "setContext": (c)=>{c.count_PS_qual_sist_prob = add('count_PS_qual_sist_prob',c);return c},
                 "replies": [
                     "Informe o sistema e o problema que você está tendo."
                 ]
             },
             {
-                "match":(c)=>get("count_PS_qual_sist_prob",c)!==null,
-                "setContext": (c)=>{c.count_PS_qual_sist_prob = null;return c},
+                "match":(c)=>get("count_PS_qual_sist_prob",c)===1,
+                "setContext": (c)=>{c.count_PS_qual_sist_prob = add('count_PS_qual_sist_prob',c);return c},
+                "replies": [
+                    "Não entendi. Informe o sistema e o problema que você está tendo."
+                ]
+            },
+            {
+                "match":(c)=>get("count_PS_qual_sist_prob",c)>=2,
+                "setContext": clearAll,
                 "replies": [
                     "Infelizmente não consegui entender qual o problema ou o sistema informado. Estou aqui para o que precisar."
-                ]
+                ],
+                "goToDialog":"ROOT"
             }
         ]
     },
@@ -34,7 +42,7 @@ module.exports = [
         },
         "actions":[
             {
-                "match":(c)=>get("count_PS_qual_sist",c)===null,
+                "match":(c)=>get("count_PS_qual_sist",c)<1,
                 "replies": [
                     "Em qual sistema você está enfrentando esta dificuldade ?"
                 ]
@@ -68,19 +76,66 @@ module.exports = [
         },
         "actions":[
             {
-                "match":(c)=>get("count_PS_qual_prob",c)===null,
-                "setContext": (c)=>{c.count_PS_qual_prob = add('count_PS_qual_prob',c);return c},
+                "match":(c)=>get("count_PS_qual_prob",c)<1,
                 "replies": [
                     "Qual problema você está encontrando no sistema ?"
                 ]
             },
             {
-                "match":(c)=>get("count_PS_qual_prob",c)!==null,
-                "setContext": (c)=>{c.count_PS_qual_prob = null;return c},
+                "match":(c)=>get("count_PS_qual_prob",c)===1,
                 "replies": [
-                    "Não . Fale comigo se precisar de ajuda em outro ponto."
+                    "Não consegui identificar o problema informado. Poderia descrever de outra forma ?"
+                ]
+            },
+            {
+                "setContext": (c)=>{c.count_PS_qual_prob = add('count_PS_qual_prob',c);return c}
+            },
+            {
+                "match":(c)=>get("count_PS_qual_prob",c)>1,
+                "replies": [
+                    "Não entendi. Fale comigo se precisar de ajuda em outro ponto."
                 ]
             }
         ]
+    },
+    {
+        "id":"PS_sist_sap",
+        "dialog":"problema_sistema",
+        "match":(c)=>{
+            return get("entities.sistema",c)==='SAP'
+                && get("entities.problema_sistema",c)!==null
+        },
+        "actions":[
+            {
+                gotToDialog:"prob_sist_sap"
+            }
+        ]
+    },
+    {
+        "id":"PS_sist_logistica",
+        "dialog":"problema_sistema",
+        "match":(c)=>{
+            return get("entities.sistema",c)==='logistica'
+                && get("entities.problema_sistema",c)!==null
+        },
+        "actions":[
+            {
+                gotToDialog:"prob_sist_logistica"
+            }
+        ]
+    },
+    {
+        "id":"PS_sist_pereciveis",
+        "dialog":"problema_sistema",
+        "match":(c)=>{
+            return get("entities.sistema",c)==='logistica'
+                && get("entities.problema_sistema",c)!==null
+        },
+        "actions":[
+            {
+                gotToDialog:"prob_sist_pereciveis"
+            }
+        ]
     }
+
 ];
