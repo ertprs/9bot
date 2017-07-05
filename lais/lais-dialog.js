@@ -17,7 +17,7 @@ let LaisDialog = function(initArgs) {
   me.resolve(context, aiResponse) {
     let context = mergeContext(context, aiResponse);
     let rule = getMatchingRule(context);
-    { context, replies } = applyActions(rule, context)
+    return applyActions(rule, context);
   };
 
   let mergeContext = function(context, aiResponse) {
@@ -93,11 +93,12 @@ let LaisDialog = function(initArgs) {
     let replies = [];
 
     actions.forEach(function(action) {
-      { context, actionReplies } = applyAction(action, context);
-      replies = replies.concat(actionReplies);
+      actionResponse = applyAction(action, context);
+      context = actionResponse.context;
+      replies = replies.concat(actionResponse.replies);
     });
 
-    return { context: newContext, replies: replies };
+    return { context: context, replies: replies };
   };
 
   let getMatchingActions = function(rule, context) {
@@ -108,19 +109,19 @@ let LaisDialog = function(initArgs) {
   };
 
   let applyAction = function(action, context) {
-    let newContext = action.setContext(context);
-    newContext = setDialog(rule, newContext);
+    context = action.setContext(context);
+    context = setDialog(rule, context);
 
     let replies = [];
     actions.forEach(function(action) {
       replies = replies.concat(action.replies);
     });
 
-    return { context: newContext, replies: replies };
+    return { context: context, replies: replies };
   };
 
-  let setDialog = function(rule, context) {
-    context._dialog = rule.goToDialog;
+  let setDialog = function(action, context) {
+    context._dialog = action.goToDialog;
 
     return context;
   };
