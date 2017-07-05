@@ -5,6 +5,7 @@ const RTCompiler = function(args){
     const sandbox = vm.createContext(_.merge(args,{module:{exports:null}}));
     const me = {};
     me.require = function(code) {
+        if(!(typeof code === "string")) throw new Error(`Cannot compile code ${code}. Only strings allowed`);
         sandbox.module.exports = null;
         vm.runInNewContext(code,sandbox);
         return sandbox.module.exports;
@@ -13,7 +14,7 @@ const RTCompiler = function(args){
         attrs.forEach((attr)=>{
             let attrVal = obj[attr];
             if(!attrVal) return;
-            if(!(typeof attrVal === "string")) throw new Error(`Cannot compile attribute ${attr}. Only strings allowed`);
+            if(!(typeof attr === "string")) throw new Error(`Cannot compile attribute ${attr}. Only strings allowed`);
             let code = `module.exports = ${attrVal}`;
             obj[attr] = me.require(code);
         })
