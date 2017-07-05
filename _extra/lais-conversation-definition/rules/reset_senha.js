@@ -60,7 +60,7 @@ module.exports = [
                 "replies": [
                     "Informe o usuário do SAP para o qual deseja realizar o reset de senha."
                 ],
-                "gotToDialog":"reset_senha_sap"
+                "goToDialog":"reset_senha_sap"
             }
         ]
     }
