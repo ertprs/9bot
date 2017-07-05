@@ -1,78 +1,133 @@
-let laisDialog = function(initargs){
-    let me = {};
-    let regras = [];
+const _ = require('lodash');
 
+let LaisDialog = function(initArgs) {
+  let me = {};
+  let rules = [];
+  let dialogs = [];
 
-    function init(){
-        regras = initArgs.regras;
+  function init() {
+    if(!initArgs) {
+      throw new Error('É necessário informar as regras e diálogos.');
     }
 
-    /**
-     *
-     * return:
-     * {
-     *  replies:[{REPLIES}],
-     *  context:{}
-     * }
-     *
-     */
-    me.resolve(ctx,aiResponse){
+    rules = initArgs.rules;
+    dialogs = initArgs.dialogs;
+  }
 
-        //recuperar regra aplicada
-        //retornar contextonovo e  replies
+  me.resolve(context, aiResponse) {
+    let context = mergeContext(context, aiResponse);
+    let rule = getMatchingRule(context);
+    { context, replies } = applyActions(rule, context)
+  };
 
-    };
+  let mergeContext = function(context, aiResponse) {
+    let context = mergeIntents(context, aiResponse);
+    context = mergeEntities(context, aiResponse);
 
-    let mergeContexto = function(ctx,aiResponse){
-        // {intents:[],entities:[]}
-        // recupero objeto de dialogo atual
-        //realizo merge no contexto de acordo com definido no dialogo
-        //return NovoContexto
-    };
+    return context;
+  };
 
+  let mergeIntents = function(context, aiResponse) {
+    let currentDialog = context._dialog;
 
-    let getRegra = function (ctx,aiResponse) {
+    if(_.includes(currentDialog.listenTo, 'intents')) {
+      let filteredIntents = aiResponse.intents.filter(function(intent) {
+        return intent.confidence >= currentDialog.minConfidence;
+      });
+      let orderedIntents = _.orderBy(filteredIntents, ['confidence'], ['desc']);
 
-        // alterar contexto com aiResponse
-        //Novo contexto.
+      // As intenções anteriores são removidas antes de adicionar as novas
+      // intenções retornadas pela IA.
+      context.intents = [];
 
-        //recuperar regra candidatas
-        //filtrar regras pelo dialogo atual
-        //para cada regra, avaliar se é aplicavel
-        //filtrar regras aplicaveis peloa prioridade
-        // DEVE retornar só uma regra
+      orderedIntents.forEach(function(intent) {
+        context.intents.push(intent.intent);
+      });
+    }
 
-        //aplicar ações
-        // recupera contexto alterado e replies
+    return context;
+  };
 
-    };
+  let mergeEntities = function(context, aiResponse) {
+    let currentDialog = context._dialog;
 
-    /**
-     *
-     * @param regra
-     * @param contexto
-     * @return true|false
-     */
-    let isAplicavel = function(regra,contexto){
+    if(_.includes(currentDialog.listenTo, 'entities')) {
+      aiResponse.entities.forEach(function(entity) {
+        if(!context.entities[entity.entity]) {
+          context.entities[entity.entity] = [];
+        }
 
-    };
+        if(!_.includes(context.entities[entity.entity], entity.value)) {
+          context.entities[entity.entity].push(entity.value);
+        }
+      });
+    }
 
-    let aplicarAcoes = function(regra,ctx){
-        //recuperar actions
-        //decobrir action a ser aplicada
-        //DEVE retornar só uma regra
+    return context;
+  };
 
+  let getMatchingRule = function(context) {
+    let candidateRules = getCandidateRules(context);
+    let matchingRule = _.sortBy(candidateRules, ['priority'], ['desc']);
 
-        //executar setContext
-        //processar replies
-        //alterar o dialogo atual do contexto
+    // Retorna apenas uma regra, no caso a com a maior prioridade.
+    return matchingRule[0];
+  };
 
-        //return
-        // {contexto:{}, replies:[]}
+  let getCandidateRules = function(context) {
+    let candidateRules = rules.filter(function(rule) {
+      return isRuleApplicabe(rule, context);
+    });
 
-    };
+    return candidateRules;
+  };
 
+  let isRuleApplicabe = function(rule, context){
+    let isTheSameDialog = rule.dialog == context._dialog.id;
 
-    return me;
+    return isTheSameDialog && rule.match(context);
+  };
 
+  let applyActions = function(rule, context) {
+    let actions = getMatchingActions(rule, context);
+    let replies = [];
+
+    actions.forEach(function(action) {
+      { context, actionReplies } = applyAction(action, context);
+      replies = replies.concat(actionReplies);
+    });
+
+    return { context: newContext, replies: replies };
+  };
+
+  let getMatchingActions = function(rule, context) {
+    let matchingActions = rule.actions.filter(function(action) {
+      return action.match(context);
+    });
+    return matchingActions;
+  };
+
+  let applyAction = function(action, context) {
+    let newContext = action.setContext(context);
+    newContext = setDialog(rule, newContext);
+
+    let replies = [];
+    actions.forEach(function(action) {
+      replies = replies.concat(action.replies);
+    });
+
+    return { context: newContext, replies: replies };
+  };
+
+  let setDialog = function(rule, context) {
+    context._dialog = rule.goToDialog;
+
+    return context;
+  };
+
+  init();
+
+  return me;
 };
+
+module.exports = LaisDialog
