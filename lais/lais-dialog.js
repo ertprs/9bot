@@ -14,15 +14,16 @@ let LaisDialog = function(initArgs) {
     dialogs = initArgs.dialogs;
   }
 
-  me.resolve(context, aiResponse) {
-    let context = mergeContext(context, aiResponse);
+  me.resolve(context, aiResponse, userMessage) {
+    let context = mergeContext(context, aiResponse, userMessage);
     let rule = getMatchingRule(context);
     return applyActions(rule, context);
   };
 
-  let mergeContext = function(context, aiResponse) {
+  let mergeContext = function(context, aiResponse, userMessage) {
     let context = mergeIntents(context, aiResponse);
     context = mergeEntities(context, aiResponse);
+    context = addLastMessageFromUser(context, userMessage);
 
     return context;
   };
@@ -65,6 +66,12 @@ let LaisDialog = function(initArgs) {
 
     return context;
   };
+
+  let addLastMessageFromUser = function(context, userMessage) {
+    context.userMessage = userMessage;
+
+    return context;
+  }
 
   let getMatchingRule = function(context) {
     let candidateRules = getCandidateRules(context);
