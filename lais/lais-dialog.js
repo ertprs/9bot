@@ -121,7 +121,15 @@ let LaisDialog = function(initArgs) {
   };
 
   let setDialog = function(action, context) {
-    context._dialog = action.goToDialog;
+    if(_.isFunction(action.goToDialog)) {
+      let newDialogId = action.goToDialog(context);
+    } else {
+      let newDialogId = action.goToDialog;
+    }
+
+    context.dialog = dialogs.find(function(dialog) {
+      return dialog.id == newDialogId;
+    });
 
     return context;
   };
