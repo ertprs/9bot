@@ -75,10 +75,10 @@ let LaisDialog = function(initArgs) {
 
   let getMatchingRule = function(context) {
     let candidateRules = getCandidateRules(context);
-    let matchingRule = _.sortBy(candidateRules, ['priority'], ['desc']);
+    let matchingRules = _.sortBy(candidateRules, ['priority'], ['desc']);
 
-    // Retorna apenas uma regra, no caso a com a maior prioridade.
-    return matchingRule[0];
+    // Retorna apenas a regra com a maior prioridade.
+    return matchingRules[0];
   };
 
   let getCandidateRules = function(context) {
@@ -89,7 +89,7 @@ let LaisDialog = function(initArgs) {
     return candidateRules;
   };
 
-  let isRuleApplicabe = function(rule, context){
+  let isRuleApplicabe = function(rule, context) {
     let isTheSameDialog = rule.dialog == context._dialog.id;
 
     return isTheSameDialog && rule.match(context);
@@ -100,9 +100,8 @@ let LaisDialog = function(initArgs) {
     let replies = [];
 
     actions.forEach(function(action) {
-      actionResponse = applyAction(action, context);
-      context = actionResponse.context;
-      replies = replies.concat(actionResponse.replies);
+      context = applyAction(action, context);
+      replies = replies.concat(action.replies);
     });
 
     return { context: context, replies: replies };
@@ -110,33 +109,39 @@ let LaisDialog = function(initArgs) {
 
   let getMatchingActions = function(rule, context) {
     let matchingActions = rule.actions.filter(function(action) {
-      return action.match(context);
+      return !action.match || action.match(context);
     });
+
     return matchingActions;
   };
 
   let applyAction = function(action, context) {
-    context = action.setContext(context);
-    context = setDialog(rule, context);
+    context = setContext(action, context);
+    context = setDialog(action, context);
 
-    let replies = [];
-    actions.forEach(function(action) {
-      replies = replies.concat(action.replies);
-    });
-
-    return { context: context, replies: replies };
+    return context;
   };
 
-  let setDialog = function(action, context) {
-    if(_.isFunction(action.goToDialog)) {
-      let newDialogId = action.goToDialog(context);
-    } else {
-      let newDialogId = action.goToDialog;
+  let setContext = function(action, context) {
+    if(action.setContext && _.isFunction(action.setContext)) {
+      context = action.setContext(context);
     }
 
-    context.dialog = dialogs.find(function(dialog) {
-      return dialog.id == newDialogId;
-    });
+    return context
+  }
+
+  let setDialog = function(action, context) {
+    if(action.goToDialog) {
+      if(_.isFunction(action.goToDialog)) {
+        let newDialogId = action.goToDialog(context);
+      } else {
+        let newDialogId = action.goToDialog;
+      }
+
+      context.dialog = dialogs.find(function(dialog) {
+        return dialog.id == newDialogId;
+      });
+    }
 
     return context;
   };
@@ -146,4 +151,4 @@ let LaisDialog = function(initArgs) {
   return me;
 };
 
-module.exports = LaisDialog
+module.exports = LaisDialog;
