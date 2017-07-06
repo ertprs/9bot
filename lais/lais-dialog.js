@@ -14,14 +14,14 @@ let LaisDialog = function(initArgs) {
     dialogs = initArgs.dialogs;
   }
 
-  me.resolve(context, aiResponse, userMessage) {
-    let context = mergeContext(context, aiResponse, userMessage);
+  me.resolve = function(context, aiResponse, userMessage) {
+    context = mergeContext(context, aiResponse, userMessage);
     let rule = getMatchingRule(context);
     return applyActions(rule, context);
   };
 
   let mergeContext = function(context, aiResponse, userMessage) {
-    let context = mergeIntents(context, aiResponse);
+    context = mergeIntents(context, aiResponse);
     context = mergeEntities(context, aiResponse);
     context = addLastMessageFromUser(context, userMessage);
 
