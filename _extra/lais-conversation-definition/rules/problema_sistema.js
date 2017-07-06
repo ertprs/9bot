@@ -58,10 +58,11 @@ module.exports = [
             },
             {
                 "match":(c)=>get("count_PS_qual_sist",c)>1,
-                "setContext": (c)=>{c.count_PS_qual_sist = null;return c},
                 "replies": [
                     "Não consegui identificar o sistema ao qual você se refere. Fale comigo se precisar de ajuda em outro ponto."
-                ]
+                ],
+                "setContext":clearAll,
+                "goToDialog":"ROOT"
             },
 
 
@@ -94,7 +95,9 @@ module.exports = [
                 "match":(c)=>get("count_PS_qual_prob",c)>1,
                 "replies": [
                     "Não entendi. Fale comigo se precisar de ajuda em outro ponto."
-                ]
+                ],
+                "setContext":clearAll,
+                "goToDialog":"ROOT"
             }
         ]
     },
@@ -102,12 +105,12 @@ module.exports = [
         "id":"PS_sist_sap",
         "dialog":"problema_sistema",
         "match":(c)=>{
-            return get("entities.sistema",c)==='SAP'
+            return get("entities.sistema",c)==='sap'
                 && get("entities.problema_sistema",c)!==null
         },
         "actions":[
             {
-                gotToDialog:"prob_sist_sap"
+                "goToDialog":"prob_sist_sap"
             }
         ]
     },
@@ -120,7 +123,7 @@ module.exports = [
         },
         "actions":[
             {
-                gotToDialog:"prob_sist_logistica"
+                "goToDialog":"prob_sist_logistica"
             }
         ]
     },
@@ -133,7 +136,7 @@ module.exports = [
         },
         "actions":[
             {
-                gotToDialog:"prob_sist_pereciveis"
+                "goToDialog":"prob_sist_pereciveis"
             }
         ]
     }

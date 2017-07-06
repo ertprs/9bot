@@ -77,7 +77,7 @@ module.exports={
         {
             "id": "PLOG_login",
             "dialog": "prob_sist_logistica",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)==='login'\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)==='login'\r\n        }",
             "actions": [
                 {
                     "replies": [
@@ -91,13 +91,13 @@ module.exports={
             "id": "PLOG_problema_invalido",
             "dialog": "prob_sist_logistica",
             "priority": -1,
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)!==null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)!==null\r\n        }",
             "actions": [
                 {
                     "replies": [
                         "Infelizmente nÃ£o sei como te ajudar com este problema no LogÃ­stica Reversa. Me fale se precisar de ajuda com mais alguma coisa."
                     ],
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "goToDialog": "ROOT"
                 }
             ]
@@ -105,10 +105,10 @@ module.exports={
         {
             "id": "PLOGL_confirma",
             "dialog": "prob_sist_logistica_login",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.tipo_resposta.0\",c)==='sim'\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.tipo_resposta.0\",c)==='sim'\r\n        }",
             "actions": [
                 {
-                    "setContext": "_NuFrRa_(c)=>{c=clearAll(c);c.entities.sistema[0]=\"logistica_reversa\";return c}",
+                    "setContext": "(c)=>{c=clearAll(c);c.entities.sistema[0]=\"logistica_reversa\";return c}",
                     "goToDialog": "reset_senha"
                 }
             ]
@@ -116,13 +116,13 @@ module.exports={
         {
             "id": "PLOGL_cancela",
             "dialog": "prob_sist_sap_login",
-            "match": "_NuFrRa_(c) => {\r\n            return get(\"entities.tipo_resposta.0\", c) === 'nao'\r\n        }",
+            "match": "(c) => {\r\n            return get(\"entities.tipo_resposta.0\", c) === 'nao'\r\n        }",
             "actions": [
                 {
                     "replies": [
                         "Procedimento cancelado."
                     ],
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "goToDialog": "ROOT"
                 }
             ]
@@ -130,23 +130,23 @@ module.exports={
         {
             "id": "PLOGL_opt_invalida",
             "dialog": "prob_sist_sap_login",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.tipo_resposta.0\",c)===null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.tipo_resposta.0\",c)===null\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PLOGL_opt_invalida\",c)<=1",
+                    "match": "(c)=>get(\"count_PLOGL_opt_invalida\",c)<=1",
                     "replies": [
                         "Desculpe nÃ£o entendi. Gostaria de realizar o reset? (Responda com \"sim\" ou \"nÃ£o\")"
                     ]
                 },
                 {
-                    "setContext": "_NuFrRa_(c)=>add(\"count_PLOGL_opt_invalida\",c)"
+                    "setContext": "(c)=>add(\"count_PLOGL_opt_invalida\",c)"
                 },
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PLOGL_opt_invalida\",c)>1",
+                    "match": "(c)=>get(\"count_PLOGL_opt_invalida\",c)>1",
                     "replies": [
                         "Desculpe nÃ£o entendi. Vou cancelar o procedimento agora. Se vocÃª desejar, poderÃ¡ solicitar novamente."
                     ],
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "goToDialog": "ROOT"
                 }
             ]
@@ -154,13 +154,13 @@ module.exports={
         {
             "id": "PPER_login",
             "dialog": "prob_sist_pereciveis",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)==='login'\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)==='login'\r\n        }",
             "actions": [
                 {
                     "replies": [
                         "PROCEDIMENTO DE LOGIN."
                     ],
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "goToDialog": "ROOT"
                 }
             ]
@@ -168,13 +168,13 @@ module.exports={
         {
             "id": "PPER_camera",
             "dialog": "prob_sist_pereciveis",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)==='camera'\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)==='camera'\r\n        }",
             "actions": [
                 {
                     "replies": [
                         "PROCEDIMENTO DE CAMERA."
                     ],
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "goToDialog": "ROOT"
                 }
             ]
@@ -182,13 +182,13 @@ module.exports={
         {
             "id": "PPER_sincronizacao",
             "dialog": "prob_sist_pereciveis",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)==='sincronizacao'\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)==='sincronizacao'\r\n        }",
             "actions": [
                 {
                     "replies": [
                         "PROCEDIMENTO DE SINCRONIZACAO."
                     ],
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "goToDialog": "ROOT"
                 }
             ]
@@ -197,13 +197,13 @@ module.exports={
             "id": "PPER_invalido",
             "dialog": "prob_sist_pereciveis",
             "priority": -1,
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)!==null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)!==null\r\n        }",
             "actions": [
                 {
                     "replies": [
                         "Infelizmente nÃ£o sei como te ajudar com esse problema."
                     ],
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "goToDialog": "ROOT"
                 }
             ]
@@ -211,7 +211,7 @@ module.exports={
         {
             "id": "PSAP_login",
             "dialog": "prob_sist_sap",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)==='login'\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)==='login'\r\n        }",
             "actions": [
                 {
                     "replies": [
@@ -225,13 +225,13 @@ module.exports={
             "id": "PSAP_problema_invalido",
             "dialog": "prob_sist_sap",
             "priority": -1,
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)!==null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.problema_sistema.0\",c)!==null\r\n        }",
             "actions": [
                 {
                     "replies": [
                         "Infelizmente nÃ£o sei como te ajudar com este problema no SAP. Me fale se precisar de ajuda com mais alguma coisa."
                     ],
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "goToDialog": "ROOT"
                 }
             ]
@@ -239,10 +239,10 @@ module.exports={
         {
             "id": "PSAPL_confirma",
             "dialog": "prob_sist_sap_login",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.tipo_resposta.0\",c)==='sim'\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.tipo_resposta.0\",c)==='sim'\r\n        }",
             "actions": [
                 {
-                    "setContext": "_NuFrRa_(c)=>{c=clearAll(c);c.entities.sistema[0]=\"SAP\";return c}",
+                    "setContext": "(c)=>{c=clearAll(c);c.entities.sistema[0]=\"SAP\";return c}",
                     "goToDialog": "reset_senha"
                 }
             ]
@@ -250,13 +250,13 @@ module.exports={
         {
             "id": "PSAPL_cancela",
             "dialog": "prob_sist_sap_login",
-            "match": "_NuFrRa_(c) => {\r\n            return get(\"entities.tipo_resposta.0\", c) === 'nao'\r\n        }",
+            "match": "(c) => {\r\n            return get(\"entities.tipo_resposta.0\", c) === 'nao'\r\n        }",
             "actions": [
                 {
                     "replies": [
                         "Procedimento cancelado."
                     ],
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "goToDialog": "ROOT"
                 }
             ]
@@ -264,23 +264,23 @@ module.exports={
         {
             "id": "PSAPL_opt_invalida",
             "dialog": "prob_sist_sap_login",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.tipo_resposta.0\",c)===null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.tipo_resposta.0\",c)===null\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PSAPL_opt_invalida\",c)<=1",
+                    "match": "(c)=>get(\"count_PSAPL_opt_invalida\",c)<=1",
                     "replies": [
                         "Desculpe nÃ£o entendi. Gostaria de realizar o reset? (Responda com \"sim\" ou \"nÃ£o\")"
                     ]
                 },
                 {
-                    "setContext": "_NuFrRa_(c)=>add(\"count_PSAPL_opt_invalida\",c)"
+                    "setContext": "(c)=>add(\"count_PSAPL_opt_invalida\",c)"
                 },
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PSAPL_opt_invalida\",c)>1",
+                    "match": "(c)=>get(\"count_PSAPL_opt_invalida\",c)>1",
                     "replies": [
                         "Desculpe nÃ£o entendi. Vou cancelar o procedimento agora. Se vocÃª desejar, poderÃ¡ solicitar novamente."
                     ],
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "goToDialog": "ROOT"
                 }
             ]
@@ -288,25 +288,25 @@ module.exports={
         {
             "id": "PS_qual_sist_prob",
             "dialog": "problema_sistema",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.sistema\",c)===null\r\n                && get(\"entities.problema_sistema\",c)===null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.sistema\",c)===null\r\n                && get(\"entities.problema_sistema\",c)===null\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PS_qual_sist_prob\",c)<1",
-                    "setContext": "_NuFrRa_(c)=>{c.count_PS_qual_sist_prob = add('count_PS_qual_sist_prob',c);return c}",
+                    "match": "(c)=>get(\"count_PS_qual_sist_prob\",c)<1",
+                    "setContext": "(c)=>{c.count_PS_qual_sist_prob = add('count_PS_qual_sist_prob',c);return c}",
                     "replies": [
                         "Informe o sistema e o problema que vocÃª estÃ¡ tendo."
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PS_qual_sist_prob\",c)===1",
-                    "setContext": "_NuFrRa_(c)=>{c.count_PS_qual_sist_prob = add('count_PS_qual_sist_prob',c);return c}",
+                    "match": "(c)=>get(\"count_PS_qual_sist_prob\",c)===1",
+                    "setContext": "(c)=>{c.count_PS_qual_sist_prob = add('count_PS_qual_sist_prob',c);return c}",
                     "replies": [
                         "NÃ£o entendi. Informe o sistema e o problema que vocÃª estÃ¡ tendo."
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PS_qual_sist_prob\",c)>=2",
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "match": "(c)=>get(\"count_PS_qual_sist_prob\",c)>=2",
+                    "setContext": "()=>{return {}}",
                     "replies": [
                         "Infelizmente nÃ£o consegui entender qual o problema ou o sistema informado. Estou aqui para o que precisar."
                     ],
@@ -317,26 +317,26 @@ module.exports={
         {
             "id": "PS_qual_sist",
             "dialog": "problema_sistema",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.sistema\",c)===null\r\n                && get(\"entities.problema_sistema\",c)!==null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.sistema\",c)===null\r\n                && get(\"entities.problema_sistema\",c)!==null\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PS_qual_sist\",c)<1",
+                    "match": "(c)=>get(\"count_PS_qual_sist\",c)<1",
                     "replies": [
                         "Em qual sistema vocÃª estÃ¡ enfrentando esta dificuldade ?"
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PS_qual_sist\",c)===1",
+                    "match": "(c)=>get(\"count_PS_qual_sist\",c)===1",
                     "replies": [
                         "NÃ£o entendi. Preciso que me informe o nome do sistema."
                     ]
                 },
                 {
-                    "setContext": "_NuFrRa_(c)=>{c.count_PS_qual_sist = add('count_PS_qual_sist',c);return c}"
+                    "setContext": "(c)=>{c.count_PS_qual_sist = add('count_PS_qual_sist',c);return c}"
                 },
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PS_qual_sist\",c)>1",
-                    "setContext": "_NuFrRa_(c)=>{c.count_PS_qual_sist = null;return c}",
+                    "match": "(c)=>get(\"count_PS_qual_sist\",c)>1",
+                    "setContext": "(c)=>{c.count_PS_qual_sist = null;return c}",
                     "replies": [
                         "NÃ£o consegui identificar o sistema ao qual vocÃª se refere. Fale comigo se precisar de ajuda em outro ponto."
                     ]
@@ -346,25 +346,25 @@ module.exports={
         {
             "id": "PS_qual_prob",
             "dialog": "problema_sistema",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.sistema\",c)!==null\r\n                && get(\"entities.problema_sistema\",c)===null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.sistema\",c)!==null\r\n                && get(\"entities.problema_sistema\",c)===null\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PS_qual_prob\",c)<1",
+                    "match": "(c)=>get(\"count_PS_qual_prob\",c)<1",
                     "replies": [
                         "Qual problema vocÃª estÃ¡ encontrando no sistema ?"
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PS_qual_prob\",c)===1",
+                    "match": "(c)=>get(\"count_PS_qual_prob\",c)===1",
                     "replies": [
                         "NÃ£o consegui identificar o problema informado. Poderia descrever de outra forma ?"
                     ]
                 },
                 {
-                    "setContext": "_NuFrRa_(c)=>{c.count_PS_qual_prob = add('count_PS_qual_prob',c);return c}"
+                    "setContext": "(c)=>{c.count_PS_qual_prob = add('count_PS_qual_prob',c);return c}"
                 },
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PS_qual_prob\",c)>1",
+                    "match": "(c)=>get(\"count_PS_qual_prob\",c)>1",
                     "replies": [
                         "NÃ£o entendi. Fale comigo se precisar de ajuda em outro ponto."
                     ]
@@ -374,56 +374,56 @@ module.exports={
         {
             "id": "PS_sist_sap",
             "dialog": "problema_sistema",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.sistema\",c)==='SAP'\r\n                && get(\"entities.problema_sistema\",c)!==null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.sistema\",c)==='SAP'\r\n                && get(\"entities.problema_sistema\",c)!==null\r\n        }",
             "actions": [
                 {
-                    "gotToDialog": "prob_sist_sap"
+                    "goToDialog": "prob_sist_sap"
                 }
             ]
         },
         {
             "id": "PS_sist_logistica",
             "dialog": "problema_sistema",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.sistema\",c)==='logistica'\r\n                && get(\"entities.problema_sistema\",c)!==null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.sistema\",c)==='logistica'\r\n                && get(\"entities.problema_sistema\",c)!==null\r\n        }",
             "actions": [
                 {
-                    "gotToDialog": "prob_sist_logistica"
+                    "goToDialog": "prob_sist_logistica"
                 }
             ]
         },
         {
             "id": "PS_sist_pereciveis",
             "dialog": "problema_sistema",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.sistema\",c)==='logistica'\r\n                && get(\"entities.problema_sistema\",c)!==null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.sistema\",c)==='logistica'\r\n                && get(\"entities.problema_sistema\",c)!==null\r\n        }",
             "actions": [
                 {
-                    "gotToDialog": "prob_sist_pereciveis"
+                    "goToDialog": "prob_sist_pereciveis"
                 }
             ]
         },
         {
             "id": "RS_qual_sist",
             "dialog": "reset_senha",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.sistema\",c)===null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.sistema\",c)===null\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_RS_qual_sist\",c)===null",
+                    "match": "(c)=>get(\"count_RS_qual_sist\",c)===null",
                     "replies": [
                         "Informe para qual sistema vocÃª deseja realizar o reset de senha."
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_RS_qual_sist\",c)===1",
+                    "match": "(c)=>get(\"count_RS_qual_sist\",c)===1",
                     "replies": [
                         "NÃ£o entendi. Informe o nome do sistema."
                     ]
                 },
                 {
-                    "setContext": "_NuFrRa_(c)=>{c.count_RS_qual_sist = add('count_RS_qual_sist',c);return c}"
+                    "setContext": "(c)=>{c.count_RS_qual_sist = add('count_RS_qual_sist',c);return c}"
                 },
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_RS_qual_sist\",c)>=2",
-                    "setContext": "_NuFrRa_(c)=>{c.count_RS_qual_sist = null;return c}",
+                    "match": "(c)=>get(\"count_RS_qual_sist\",c)>=2",
+                    "setContext": "(c)=>{c.count_RS_qual_sist = null;return c}",
                     "replies": [
                         "Infelizmente nÃ£o conheÃ§o o sistema informado, mas estou aqui para o que precisar."
                     ]
@@ -434,10 +434,10 @@ module.exports={
             "id": "RS_sistema_invalido",
             "dialog": "reset_senha",
             "priority": -1,
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.sistema\",c)!==null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.sistema\",c)!==null\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>get(\"count_PS_qual_sist\",c)===null",
+                    "match": "(c)=>get(\"count_PS_qual_sist\",c)===null",
                     "replies": [
                         "Infelizmente nÃ£o posso realizar o reset de senha para este sistema."
                     ]
@@ -448,23 +448,23 @@ module.exports={
             "id": "RS_sap",
             "dialog": "reset_senha",
             "priority": -1,
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.sistema.0\",c)===\"SAP\"\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.sistema.0\",c)===\"SAP\"\r\n        }",
             "actions": [
                 {
                     "replies": [
                         "Informe o usuÃ¡rio do SAP para o qual deseja realizar o reset de senha."
                     ],
-                    "gotToDialog": "reset_senha_sap"
+                    "goToDialog": "reset_senha_sap"
                 }
             ]
         },
         {
             "id": "RLR_definir_usuario",
             "dialog": "reset_senha_logistica",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"usuario_logistica\",c)===null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"usuario_logistica\",c)===null\r\n        }",
             "actions": [
                 {
-                    "setContext": "_NuFrRa_(c)=>{c.usuario_logistica = get('userMessage',c);return c}",
+                    "setContext": "(c)=>{c.usuario_logistica = get('userMessage',c);return c}",
                     "evaluateNext": true
                 }
             ]
@@ -472,18 +472,18 @@ module.exports={
         {
             "id": "RLR_usuario_invalido",
             "dialog": "reset_senha_logistica",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"usuario_logistica\",c)==='invalido'\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"usuario_logistica\",c)==='invalido'\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>c.get(\"count_RLR_usuario_invalido\")<=1",
-                    "setContext": "_NuFrRa_(c)=>{c.count_RLR_usuario_invalido = add(\"count_RLR_usuario_invalido\",c); return clear(c,\"usuario_logistica\")}",
+                    "match": "(c)=>c.get(\"count_RLR_usuario_invalido\")<=1",
+                    "setContext": "(c)=>{c.count_RLR_usuario_invalido = add(\"count_RLR_usuario_invalido\",c); return clear(c,\"usuario_logistica\")}",
                     "replies": [
                         "UsuÃ¡rio invÃ¡lido. Por favor, verifique o usuÃ¡rio e tente novamente. Informe o usuÃ¡rio do LogÃ­stica Reversa:"
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>c.get(\"count_RLR_usuario_invalido\")>=2",
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "match": "(c)=>c.get(\"count_RLR_usuario_invalido\")>=2",
+                    "setContext": "()=>{return {}}",
                     "replies": [
                         "UsuÃ¡rio invÃ¡lido. Verifique o usuÃ¡rio e tente realizar o procedimento novamente. Em que mais posso ajudar?"
                     ],
@@ -495,25 +495,25 @@ module.exports={
             "id": "RLR_usuario_valido_confirm",
             "dialog": "reset_senha_logistica",
             "priority": -1,
-            "match": "_NuFrRa_(c)=>{\r\n            return (\r\n                get(\"usuario_logistica\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===null\r\n            )\r\n        }",
+            "match": "(c)=>{\r\n            return (\r\n                get(\"usuario_logistica\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===null\r\n            )\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>c.get(\"count_RLR_usuario_valido_confirm\")===null",
-                    "setContext": "_NuFrRa_(c)=>{c.count_RLR_usuario_valido_confirm = add(\"count_RLR_usuario_valido_confirm\",c); return c}",
+                    "match": "(c)=>c.get(\"count_RLR_usuario_valido_confirm\")===null",
+                    "setContext": "(c)=>{c.count_RLR_usuario_valido_confirm = add(\"count_RLR_usuario_valido_confirm\",c); return c}",
                     "replies": [
                         "Confirma o reset de senha para o SAP?"
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>c.get(\"count_RLR_usuario_valido_confirm\")===1",
-                    "setContext": "_NuFrRa_(c)=>{c.count_RLR_usuario_valido_confirm = add(\"count_RLR_usuario_valido_confirm\",c); return c}",
+                    "match": "(c)=>c.get(\"count_RLR_usuario_valido_confirm\")===1",
+                    "setContext": "(c)=>{c.count_RLR_usuario_valido_confirm = add(\"count_RLR_usuario_valido_confirm\",c); return c}",
                     "replies": [
                         "Confirma o reset de senha para o SAP?"
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>c.get(\"count_RLR_usuario_valido_confirm\")>=2",
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "match": "(c)=>c.get(\"count_RLR_usuario_valido_confirm\")>=2",
+                    "setContext": "()=>{return {}}",
                     "replies": [
                         "NÃ£o entendi. O processo foi abortado. Por favor tente novamente."
                     ],
@@ -524,10 +524,10 @@ module.exports={
         {
             "id": "RLR_reset_senha_confirmado",
             "dialog": "reset_senha_logistica",
-            "match": "_NuFrRa_(c)=>{\r\n            return (\r\n                get(\"usuario_logistica\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===true\r\n            )\r\n        }",
+            "match": "(c)=>{\r\n            return (\r\n                get(\"usuario_logistica\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===true\r\n            )\r\n        }",
             "actions": [
                 {
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "replies": [
                         "Reset de senha realizado com sucesso! A nova senha Ã©: #lasa2017"
                     ],
@@ -538,10 +538,10 @@ module.exports={
         {
             "id": "RLR_reset_senha_cancelado",
             "dialog": "reset_senha_logistica",
-            "match": "_NuFrRa_(c)=>{\r\n            return (\r\n                get(\"usuario_logistica\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===false\r\n            )\r\n        }",
+            "match": "(c)=>{\r\n            return (\r\n                get(\"usuario_logistica\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===false\r\n            )\r\n        }",
             "actions": [
                 {
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "replies": [
                         "Procedimento cancelado."
                     ],
@@ -552,10 +552,10 @@ module.exports={
         {
             "id": "RSAP_definir_usuario",
             "dialog": "reset_senha_sap",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"usuario_sap\",c)===null\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"usuario_sap\",c)===null\r\n        }",
             "actions": [
                 {
-                    "setContext": "_NuFrRa_(c)=>{c.usuario_sap = get('userMessage',c);return c}",
+                    "setContext": "(c)=>{c.usuario_sap = get('userMessage',c);return c}",
                     "evaluateNext": true
                 }
             ]
@@ -563,18 +563,18 @@ module.exports={
         {
             "id": "RSAP_usuario_invalido",
             "dialog": "reset_senha_sap",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"usuario_sap\",c)==='invalido'\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"usuario_sap\",c)==='invalido'\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>c.get(\"count_RSAP_usuario_invalido\")<=1",
-                    "setContext": "_NuFrRa_(c)=>{c.count_RSAP_usuario_invalido = add(\"count_RSAP_usuario_invalido\",c); return clear(c,\"usuario_sap\")}",
+                    "match": "(c)=>c.get(\"count_RSAP_usuario_invalido\")<=1",
+                    "setContext": "(c)=>{c.count_RSAP_usuario_invalido = add(\"count_RSAP_usuario_invalido\",c); return clear(c,\"usuario_sap\")}",
                     "replies": [
                         "UsuÃ¡rio invÃ¡lido. Por favor, verifique o usuÃ¡rio e tente novamente. Informe o usuÃ¡rio do SAP:"
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>c.get(\"count_RSAP_usuario_invalido\")>=2",
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "match": "(c)=>c.get(\"count_RSAP_usuario_invalido\")>=2",
+                    "setContext": "()=>{return {}}",
                     "replies": [
                         "UsuÃ¡rio invÃ¡lido. Verifique o usuÃ¡rio e tente realizar o procedimento novamente. Em que mais posso ajudar?"
                     ],
@@ -586,25 +586,25 @@ module.exports={
             "id": "RSAP_usuario_valido_confirm",
             "dialog": "reset_senha_sap",
             "priority": -1,
-            "match": "_NuFrRa_(c)=>{\r\n            return (\r\n                get(\"usuario_sap\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===null\r\n            )\r\n        }",
+            "match": "(c)=>{\r\n            return (\r\n                get(\"usuario_sap\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===null\r\n            )\r\n        }",
             "actions": [
                 {
-                    "match": "_NuFrRa_(c)=>c.get(\"count_RSAP_usuario_valido_confirm\")===null",
-                    "setContext": "_NuFrRa_(c)=>{c.count_RSAP_usuario_valido_confirm = add(\"count_RSAP_usuario_valido_confirm\",c); return c}",
+                    "match": "(c)=>c.get(\"count_RSAP_usuario_valido_confirm\")===null",
+                    "setContext": "(c)=>{c.count_RSAP_usuario_valido_confirm = add(\"count_RSAP_usuario_valido_confirm\",c); return c}",
                     "replies": [
                         "Confirma o reset de senha para o SAP?"
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>c.get(\"count_RSAP_usuario_valido_confirm\")===1",
-                    "setContext": "_NuFrRa_(c)=>{c.count_RSAP_usuario_valido_confirm = add(\"count_RSAP_usuario_valido_confirm\",c); return c}",
+                    "match": "(c)=>c.get(\"count_RSAP_usuario_valido_confirm\")===1",
+                    "setContext": "(c)=>{c.count_RSAP_usuario_valido_confirm = add(\"count_RSAP_usuario_valido_confirm\",c); return c}",
                     "replies": [
                         "Confirma o reset de senha para o SAP?"
                     ]
                 },
                 {
-                    "match": "_NuFrRa_(c)=>c.get(\"count_RSAP_usuario_valido_confirm\")>=2",
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "match": "(c)=>c.get(\"count_RSAP_usuario_valido_confirm\")>=2",
+                    "setContext": "()=>{return {}}",
                     "replies": [
                         "NÃ£o entendi. O processo foi abortado. Por favor tente novamente."
                     ],
@@ -615,10 +615,10 @@ module.exports={
         {
             "id": "RSAP_reset_senha_confirmado",
             "dialog": "reset_senha_sap",
-            "match": "_NuFrRa_(c)=>{\r\n            return (\r\n                get(\"usuario_sap\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===true\r\n            )\r\n        }",
+            "match": "(c)=>{\r\n            return (\r\n                get(\"usuario_sap\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===true\r\n            )\r\n        }",
             "actions": [
                 {
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "replies": [
                         "Reset de senha realizado com sucesso! A nova senha Ã©: #lasa2017"
                     ],
@@ -629,10 +629,10 @@ module.exports={
         {
             "id": "RSAP_reset_senha_cancelado",
             "dialog": "reset_senha_sap",
-            "match": "_NuFrRa_(c)=>{\r\n            return (\r\n                get(\"usuario_sap\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===false\r\n            )\r\n        }",
+            "match": "(c)=>{\r\n            return (\r\n                get(\"usuario_sap\",c)!==null\r\n                && get(\"entities.tipo_resposta.0\",c)===false\r\n            )\r\n        }",
             "actions": [
                 {
-                    "setContext": "_NuFrRa_()=>{return {}}",
+                    "setContext": "()=>{return {}}",
                     "replies": [
                         "Procedimento cancelado."
                     ],
@@ -643,7 +643,7 @@ module.exports={
         {
             "id": "ROOT_reset_senha",
             "dialog": "ROOT",
-            "match": "_NuFrRa_(c)=>{\r\n            return get(\"entities.intent.0\",c)===\"reset_senha\"\r\n        }",
+            "match": "(c)=>{\r\n            return get(\"entities.intent.0\",c)===\"reset_senha\"\r\n        }",
             "actions": [
                 {
                     "evaluateNext": true,
@@ -654,7 +654,7 @@ module.exports={
         {
             "id": "ROOT_problema_sistema",
             "dialog": "ROOT",
-            "match": "_NuFrRa_(c) => {\r\n            return get(\"entities.intent.0\", c) === \"problema_sistema\"\r\n        }",
+            "match": "(c) => {\r\n            return get(\"entities.intent.0\", c) === \"problema_sistema\"\r\n        }",
             "actions": [
                 {
                     "evaluateNext": true,
@@ -665,7 +665,7 @@ module.exports={
         {
             "id": "ROOT_saudacao",
             "dialog": "ROOT",
-            "match": "_NuFrRa_(c)=>get(\"entities.intent.0\", c) === \"saudacao\"",
+            "match": "(c)=>get(\"entities.intent.0\", c) === \"saudacao\"",
             "actions": [
                 {
                     "replies": [
@@ -678,7 +678,7 @@ module.exports={
             "id": "ROOT_fallback",
             "dialog": "ROOT",
             "priority": -9999,
-            "match": "_NuFrRa_()=>true",
+            "match": "()=>true",
             "actions": [
                 {
                     "replies": [

@@ -6,6 +6,8 @@ const builder = require('botbuilder');
 const nineBanner = require('./nine-banner');
 const ctxManager = require('./bot-context/UserContextManager');
 const LaisDialog = require('./lais/lais-dialog');
+const _ = require('lodash');
+const moment = require('moment');
 
 const VERSAO_REGRAS='1.3';
 
