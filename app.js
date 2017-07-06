@@ -5,6 +5,7 @@ const util = require('util');
 const builder = require('botbuilder');
 const nineBanner = require('./nine-banner');
 const ctxManager = require('./bot-context/UserContextManager');
+const LaisDialog = require('./lais/lais-dialog');
 
 const VERSAO_REGRAS='1.3';
 
@@ -37,6 +38,10 @@ server.get('/rules', function (req, res) {
     // next();
 });
 //--------------------------------
+
+// Instanciando a engine de resolução de regras, passando os diálogos e as regras.
+let dialogEngine = LaisDialog(laisDialog);
+
 server.listen(process.env.port || process.env.PORT || 3978, function () {
     // nineBanner.print(); Comentado a pedido do Alex
     console.log('%s listening to %s', server.name, server.url);
@@ -183,13 +188,12 @@ bot.dialog('lais', [
     function (session, result) {
         console.log("#####dialog.lais.message:", session.message);//, "######result:", result);
         let userId = session.message.address.user.id;
-        let context = ctxManager.getContext(userId);
+        let defaultDialog = laisDialog.dialogs.find(function(dialog) {
+          return dialog.id == "ROOT";
+        });
+        let context = ctxManager.getContext(userId, defaultDialog);
 
-
-
-        context.dialogFlowResolver = context.dialogFlowResolver || lais.DialogFlowResolver({ 'flowDefinition': botDialogFlow });
         _globalUserAddressIndex[session.message.address.user.id] = _globalUserAddressIndex[session.message.address.user.id] || session.message.address;
-        let dialogFlow = context.dialogFlowResolver;
 
         let message = session.message;
         let s = session;
@@ -199,11 +203,7 @@ bot.dialog('lais', [
         }
 
         laisClient.talk(message.text).then(data => {
-            let retorno = dialogFlow.resolve(data,ctx);
-
-            atualizarcontexto(retorno.contexto);
-            return retorno.replies;
-
+          return dialogEngine.resolve(context, data, message.text).replies;
         })
             .then(replyArr => {
                 if (replyArr.length > 0) {
