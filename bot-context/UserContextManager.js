@@ -6,7 +6,8 @@ let UserContextManager = function(){
       let context = contextMap[ctxId];
       if(!context){
           contextMap[ctxId] = {"intents": [], "entities": [],
-            "_dialog": defaultDialog, "__created":new Date()};
+            "_dialog": defaultDialog, "lastRules": [], "repeatCount": 0,
+            "__created":new Date()};
       }
       return contextMap[ctxId];
     };

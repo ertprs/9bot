@@ -17,6 +17,8 @@ let LaisDialog = function(initArgs) {
   me.resolve = function(context, aiResponse, userMessage) {
     context = mergeContext(context, aiResponse, userMessage);
     let rule = getMatchingRule(context);
+    context = updateRulesHistory(context, rule);
+
     return applyActions(rule, context);
   };
 
@@ -93,6 +95,22 @@ let LaisDialog = function(initArgs) {
     let isTheSameDialog = rule.dialog == context._dialog.id;
 
     return isTheSameDialog && rule.match(context);
+  };
+
+  let updateRulesHistory = function(context, rule) {
+    if(_.last(context.lastRules) == rule.id) {
+      context.repeatCount++;
+    } else {
+      context.repeatCount = 0;
+    }
+
+    context.lastRules.push(rule.id)
+
+    if(context.lastRules.length > 5) {
+      context.lastRules.shift();
+    }
+
+    return context;
   };
 
   let applyActions = function(rule, context) {
