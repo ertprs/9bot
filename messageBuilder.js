@@ -141,7 +141,7 @@ module.exports = {
         if(typeof reply ==="string"){
             reply = {'type':"text","content":reply};
         }else if(!_.isObject(reply)){
-            throw new Error("Unsupported reply type. Expected object{type,content,meta} or String.")
+            throw new Error("Unsupported reply type. Expected object{type,content,meta} or String. found:"+typeof reply)
         }
 
         let resolver = resolvers[reply.type];

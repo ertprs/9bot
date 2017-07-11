@@ -5,7 +5,7 @@ module.exports = [
         "id":"ROOT_reset_senha",
         "dialog":"ROOT",
         "match":(c)=>{
-            return get("entities.intent.0",c)==="reset_senha"
+            return get("intents.0",c)==="reset_senha"
         },
         "actions":[
             {
@@ -18,7 +18,7 @@ module.exports = [
         "id": "ROOT_problema_sistema",
         "dialog": "ROOT",
         "match": (c) => {
-            return get("entities.intent.0", c) === "problema_sistema"
+            return get("intents.0", c) === "problema_sistema"
         },
         "actions": [
             {
@@ -30,11 +30,13 @@ module.exports = [
     {
         "id":"ROOT_saudacao",
         "dialog":"ROOT",
-        "match":(c)=>get("entities.intent.0", c) === "saudacao",
+        "match":(c)=>{
+            return get("intents.0", c) === "saudacao"
+        },
         "actions":[
             {
                 "replies":[
-                    "Não entendi o que você disse."
+                    "Olá."
                 ]
             }
         ]

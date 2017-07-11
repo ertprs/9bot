@@ -118,7 +118,7 @@ module.exports = [
         "id":"PS_sist_logistica",
         "dialog":"problema_sistema",
         "match":(c)=>{
-            return get("entities.sistema",c)==='logistica'
+            return get("entities.sistema.0",c)==='logistica'
                 && get("entities.problema_sistema",c)!==null
         },
         "actions":[
@@ -131,12 +131,13 @@ module.exports = [
         "id":"PS_sist_pereciveis",
         "dialog":"problema_sistema",
         "match":(c)=>{
-            return get("entities.sistema",c)==='logistica'
+            return get("entities.sistema.0",c)==='pereciveis'
                 && get("entities.problema_sistema",c)!==null
         },
         "actions":[
             {
-                "goToDialog":"prob_sist_pereciveis"
+                "goToDialog":"prob_sist_pereciveis",
+                "evaluateNext":true
             }
         ]
     }

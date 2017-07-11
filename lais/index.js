@@ -1,10 +1,10 @@
 let _client = require('./Client');
 let _dictionary = require('./Dictionary');
-let _SimpleIntentResolver = require('./SimpleIntentResolver');
 let _DialogFlowResolver = require('./DialogFlowResolver');
+let laisDialog = require('./lais-dialog');
 module.exports = {
     "Client":_client.Client,
     "Dictionary": _dictionary.Dictionary,
-    "SimpleIntentResolver":_SimpleIntentResolver,
-    "DialogFlowResolver":_DialogFlowResolver
+    "DialogFlowResolver":_DialogFlowResolver,
+    laisDialog
 };

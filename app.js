@@ -3,13 +3,12 @@ const restify = require('restify');
 const fs = require('fs');
 const util = require('util');
 const builder = require('botbuilder');
-const nineBanner = require('./nine-banner');
 const ctxManager = require('./bot-context/UserContextManager');
 const LaisDialog = require('./lais/lais-dialog');
 const _ = require('lodash');
 const moment = require('moment');
 
-const VERSAO_REGRAS='1.3';
+const VERSAO_REGRAS='1.4';
 
 //carregar regras de dialogo
 const botDialogFlow = require('./bot-dialog');
@@ -35,6 +34,7 @@ server.post('/api/messages', connector.listen());
 //------------ rules ------------
 const JSONfn = require('./JSONfn');
 const laisDialog = require('./_extra/lais-conversation-definition/index');
+
 server.get('/rules', function (req, res) {
     res.send(JSONfn.stringify(laisDialog,null,2)/*.replace(/\\\\r\\\\n/g,"\r\n")*/);
     // next();
@@ -42,7 +42,7 @@ server.get('/rules', function (req, res) {
 //--------------------------------
 
 // Instanciando a engine de resolução de regras, passando os diálogos e as regras.
-let dialogEngine = LaisDialog(laisDialog);
+let dialogEngine = new LaisDialog(laisDialog);
 
 server.listen(process.env.port || process.env.PORT || 3978, function () {
     // nineBanner.print(); Comentado a pedido do Alex
@@ -165,7 +165,6 @@ let sendProactiveMessage = function (addr,textMessage) {
 };
 
 let runNotify = function(session){
-    console.log('running notify!!!!!!!!!!!!!!!!!!!!!!!!!!!11');
     if (session.message.text === '_notify') {
         for(let addrId in _globalUserAddressIndex){
             sendProactiveMessage(_globalUserAddressIndex[addrId],"Atenção item sem venda!")
@@ -188,13 +187,14 @@ let _globalUserAddressIndex = {};
 
 bot.dialog('lais', [
     function (session, result) {
-        console.log("#####dialog.lais.message:", session.message);//, "######result:", result);
+        // console.log("#####dialog.lais.message:", session.message);//, "######result:", result);
         let userId = session.message.address.user.id;
         let defaultDialog = laisDialog.dialogs.find(function(dialog) {
           return dialog.id == "ROOT";
         });
         let context = ctxManager.getContext(userId, defaultDialog);
 
+        // console.log("get context for %s >>> %s",userId,JSON.stringify(context));
         _globalUserAddressIndex[session.message.address.user.id] = _globalUserAddressIndex[session.message.address.user.id] || session.message.address;
 
         let message = session.message;
@@ -205,7 +205,11 @@ bot.dialog('lais', [
         }
 
         laisClient.talk(message.text).then(data => {
-          return dialogEngine.resolve(context, data, message.text).replies;
+          let ret =  dialogEngine.resolve(context, data, message.text);
+          // console.log("definined context for %s >>> %s",userId,JSON.stringify(ret.context));
+          ctxManager.setContextFor(userId,ret.context);
+          //   console.log("ret",ret);
+          return ret.replies;
         })
             .then(replyArr => {
                 if (replyArr.length > 0) {
@@ -223,7 +227,8 @@ bot.dialog('lais', [
             })
             // .then(msg => bot.reply(message, msg))
             .catch((err) => {
-                console.log("ERROR:" + err.message);
+                console.error(err);
+                // console.log("ERROR:" + err.message);
                 session.send("(puke) \n Opss... Não estou me sentindo muito bem. Tente mais tarde.");
             });
     },

@@ -1,9 +1,16 @@
 const _ = require('lodash');
-
+const chalk = require('chalk');
 let LaisDialog = function(initArgs) {
   let me = {};
   let rules = [];
   let dialogs = [];
+    let defaultRootDialog = {
+        "id":"ROOT",
+        "minConfidence": 0.6,
+        "listenTo":["intents","entities"]
+    };
+  let REPEAT_OVERFLOW = 5;
+  let PROTECTED_ATTRIBUTES = ["_dialog","lastRules","repeatCount","__created","userMessage"];
 
   function init() {
     if(!initArgs) {
@@ -15,14 +22,22 @@ let LaisDialog = function(initArgs) {
   }
 
   me.resolve = function(context, aiResponse, userMessage) {
+    console.log(chalk.blue("aiResponse: "+JSON.stringify(aiResponse)));
     context = mergeContext(context, aiResponse, userMessage);
-    let rule = getMatchingRule(context);
-    context = updateRulesHistory(context, rule);
+    console.log(chalk.cyan("context: "+JSON.stringify(context)));
+    return resolveWithContext(context);
+  };
 
-    return applyActions(rule, context);
+  let resolveWithContext = function(context){
+    console.log("resolveWithContext::context= "+JSON.stringify(context));
+      let rule = getMatchingRule(context);
+      context = updateRulesHistory(context, rule);
+      console.log("resolveWithContext(2)::context= "+JSON.stringify(context));
+      return applyActions(rule, context);
   };
 
   let mergeContext = function(context, aiResponse, userMessage) {
+    context = _.merge({},{"_dialog": defaultRootDialog,"entities":{}},context);//deveria realizar um clone do defaultRootDialog?
     context = mergeIntents(context, aiResponse);
     context = mergeEntities(context, aiResponse);
     context = addLastMessageFromUser(context, userMessage);
@@ -56,10 +71,11 @@ let LaisDialog = function(initArgs) {
 
     if(_.includes(currentDialog.listenTo, 'entities')) {
       aiResponse.entities.forEach(function(entity) {
+        console.log(chalk.green("mergeEntities::eval %s",JSON.stringify(entity)));
         if(!context.entities[entity.entity]) {
           context.entities[entity.entity] = [];
         }
-
+          console.log(chalk.green("mergeEntities::include ? %s",_.includes(context.entities[entity.entity], entity.value)));
         if(!_.includes(context.entities[entity.entity], entity.value)) {
           context.entities[entity.entity].push(entity.value);
         }
@@ -73,38 +89,49 @@ let LaisDialog = function(initArgs) {
     context.userMessage = userMessage;
 
     return context;
-  }
+  };
+
+  let reduceByPriority = function (a, b) {
+      let pa = (_.isNil(a.priority) ? 0 : a.priority), pb = (_.isNil(b.priority) ? 0 : b.priority);
+      if (pa === pb) throw new Error("Não é possível determinar uma única regra de dialogo");
+      return (pa > pb ? a : b);
+  };
 
   let getMatchingRule = function(context) {
     let candidateRules = getCandidateRules(context);
-    let matchingRules = _.sortBy(candidateRules, ['priority'], ['desc']);
-
+    console.log(chalk.gray("candidates:"+candidateRules.map((r)=>r.id)));
+    if(candidateRules.length===0)  throw new Error("No matching rule aplicable for context:"+JSON.stringify(context));
+    let matchingRule = candidateRules.reduce(reduceByPriority);
+    console.log(chalk.gray("matching rule="+matchingRule.id));
     // Retorna apenas a regra com a maior prioridade.
-    return matchingRules[0];
+    return matchingRule;
   };
 
   let getCandidateRules = function(context) {
-    let candidateRules = rules.filter(function(rule) {
+    return rules.filter(function(rule) {
       return isRuleApplicabe(rule, context);
     });
-
-    return candidateRules;
   };
 
-  let isRuleApplicabe = function(rule, context) {
-    let isTheSameDialog = rule.dialog == context._dialog.id;
+  let curryMatch = (f)=>(f ? f : _.stubTrue() );
 
-    return isTheSameDialog && rule.match(context);
+  let isRuleApplicabe = function(rule, context) {
+    let isTheSameDialog = rule.dialog === context._dialog.id;
+    if(isTheSameDialog){
+        console.log(chalk.yellow(rule.id+">>"+rule.match(context)));
+    }
+
+    return isTheSameDialog && curryMatch(rule.match)(context);
   };
 
   let updateRulesHistory = function(context, rule) {
-    if(_.last(context.lastRules) == rule.id) {
+    if(_.last(context.lastRules) === rule.id) {
       context.repeatCount++;
     } else {
       context.repeatCount = 0;
     }
 
-    context.lastRules.push(rule.id)
+    context.lastRules.push(rule.id);
 
     if(context.lastRules.length > 5) {
       context.lastRules.shift();
@@ -114,29 +141,44 @@ let LaisDialog = function(initArgs) {
   };
 
   let applyActions = function(rule, context) {
+      console.log("applyActions::context="+JSON.stringify(context));
     let actions = getMatchingActions(rule, context);
     let replies = [];
-
+    if(context.repeatCount>=REPEAT_OVERFLOW) throw new Error("Maximum repeat overflow reached on rule: "+rule.id);
     actions.forEach(function(action) {
-      context = applyAction(action, context);
-      replies = replies.concat(action.replies);
-    });
 
-    return { context: context, replies: replies };
+      context = applyAction(action, context);
+
+      if(action.replies){
+          replies = replies.concat(action.replies);
+      }
+
+      if(action.evaluateNext===true){
+        console.log("applyActions(2)::context="+JSON.stringify(context));
+        let ret = resolveWithContext(context);//recursion
+        context = ret.context;
+        if(ret.replies) replies = replies.concat(ret.replies);
+      }
+    });
+    console.log(chalk.grey("applyActions::retrun context="+JSON.stringify(context)));
+    return { context, replies };
   };
 
   let getMatchingActions = function(rule, context) {
-    let matchingActions = rule.actions.filter(function(action) {
+    return rule.actions.filter(function(action) {
       return !action.match || action.match(context);
     });
+  };
 
-    return matchingActions;
+  let getProtectedAttributes = function(context){
+    return _.pick(context,PROTECTED_ATTRIBUTES);
   };
 
   let applyAction = function(action, context) {
-    context = setContext(action, context);
+    let protectedAttributes = getProtectedAttributes(context);
+    let newContext = setContext(action, _.cloneDeep(context));
+    context = _.merge(newContext, protectedAttributes);
     context = setDialog(action, context);
-
     return context;
   };
 
@@ -146,19 +188,24 @@ let LaisDialog = function(initArgs) {
     }
 
     return context
-  }
+  };
 
   let setDialog = function(action, context) {
+    console.log(chalk.magenta("setDialog::context="+JSON.stringify(context)));
+    let newDialogId = context._dialog.id;
     if(action.goToDialog) {
       if(_.isFunction(action.goToDialog)) {
-        let newDialogId = action.goToDialog(context);
+        newDialogId = action.goToDialog(context);
       } else {
-        let newDialogId = action.goToDialog;
+        newDialogId = action.goToDialog;
       }
-
-      context.dialog = dialogs.find(function(dialog) {
-        return dialog.id == newDialogId;
+      let nextDialog = dialogs.find(function(dialog) {
+        return dialog.id === newDialogId;
       });
+      if(!nextDialog) throw new Error("Couldn't find dialog with id:"+newDialogId);
+      console.log(chalk.magenta("setDialog::nextDialog="+nextDialog.id));
+      context._dialog = _.cloneDeep(nextDialog);
+    }else{
     }
 
     return context;

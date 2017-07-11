@@ -5,7 +5,7 @@ let UserContextManager = function(){
     me.getContext = function(ctxId, defaultDialog){
       let context = contextMap[ctxId];
       if(!context){
-          contextMap[ctxId] = {"intents": [], "entities": [],
+          contextMap[ctxId] = {"intents": [], "entities": {},
             "_dialog": defaultDialog, "lastRules": [], "repeatCount": 0,
             "__created":new Date()};
       }
@@ -13,7 +13,6 @@ let UserContextManager = function(){
     };
 
     me.setContextFor = function(ctxId,ctx){
-        let context = contextMap[ctxId];
         contextMap[ctxId] = ctx;
     };
 
