@@ -52,7 +52,8 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 
-const msgBuilder = require('./messageBuilder');
+const BotFrameworkMessageBuilder = require('./bot_framework_message_builder');
+const messageBuilder = new BotFrameworkMessageBuilder();
 
 
 const bot = new builder.UniversalBot(connector,
@@ -215,8 +216,8 @@ bot.dialog('lais', [
                 if (replyArr.length > 0) {
                     // console.log("respondendo reply:" + JSON.stringify(replyArr));
                     replyArr.forEach(reply => {
-                        let msg = msgBuilder.build(session,reply,{"ctx":session.message});
-                        session.send(msg);
+                        let message = messageBuilder.build(session, reply, {"ctx": session.message});
+                        session.send(message);
                     });
                     console.log("respondido");
                 } else {
