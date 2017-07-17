@@ -1,6 +1,5 @@
 const mime = require('mime-types');
 const _ = require('lodash');
-const mb = require('../messageBuilder');
 const fs = require('fs');
 const path = require('path');
 const nodeUtil = require('util');
