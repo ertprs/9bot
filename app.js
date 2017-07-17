@@ -3,7 +3,10 @@ const restify = require('restify');
 const fs = require('fs');
 const util = require('util');
 const builder = require('botbuilder');
-const ctxManager = require('./bot-context/UserContextManager');
+
+const ContextManager = require('./models/context_manager');
+const contextManager = new ContextManager();
+
 const LaisDialog = require('./lais/lais-dialog');
 const _ = require('lodash');
 const moment = require('moment');
@@ -177,7 +180,7 @@ let runNotify = function(session){
 
 let runReset = function (session) {
     if (session.message.text === '_reset') {
-        ctxManager.clearAll();
+        contextManager.clearAll();
         session.send("(worry) Do que a gente estava falando mesmo?!?!");
         return true;
     }
@@ -190,10 +193,7 @@ bot.dialog('lais', [
     function (session, result) {
         // console.log("#####dialog.lais.message:", session.message);//, "######result:", result);
         let userId = session.message.address.user.id;
-        let defaultDialog = laisDialog.dialogs.find(function(dialog) {
-          return dialog.id == "ROOT";
-        });
-        let context = ctxManager.getContext(userId, defaultDialog);
+        let context = contextManager.getContext(userId);
 
         // console.log("get context for %s >>> %s",userId,JSON.stringify(context));
         _globalUserAddressIndex[session.message.address.user.id] = _globalUserAddressIndex[session.message.address.user.id] || session.message.address;
@@ -208,7 +208,7 @@ bot.dialog('lais', [
         laisClient.talk(userId, message.text).then(data => {
           let ret =  dialogEngine.resolve(context, data, message.text);
           // console.log("definined context for %s >>> %s",userId,JSON.stringify(ret.context));
-          ctxManager.setContextFor(userId,ret.context);
+          contextManager.setContext(userId,ret.context);
           //   console.log("ret",ret);
           return ret.replies;
         })
