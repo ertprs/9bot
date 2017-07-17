@@ -9,15 +9,19 @@ const laisClient = function (initArgs) {
     /*
      *   Retorna uma promisse com o resultado da chamada
      */
-    me.talk = function talk(message) {
+    me.talk = function talk(userId, message) {
         return fetch(endPointUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                'inputText':message.toString(),
-                'connectorId':connectorId
+                'appName': process.env.APP_NAME,
+                'token': process.env.token,
+                'connectorId':connectorId,
+                'contextId': userId,
+                'userId': userId,
+                'inputText': message.toString(),
             })
         }).then(fetchUtils.handleEnvelope);
     };

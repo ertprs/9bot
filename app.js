@@ -205,7 +205,7 @@ bot.dialog('lais', [
             return;
         }
 
-        laisClient.talk(message.text).then(data => {
+        laisClient.talk(userId, message.text).then(data => {
           let ret =  dialogEngine.resolve(context, data, message.text);
           // console.log("definined context for %s >>> %s",userId,JSON.stringify(ret.context));
           ctxManager.setContextFor(userId,ret.context);
