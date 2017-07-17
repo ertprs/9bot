@@ -9,7 +9,7 @@ class ContextManager {
     let context = this.contexts[userId];
 
     if(!context) {
-      context = this.contexts[userId] = new Context();
+      context = this.contexts[userId] = new Context(userId);
     }
 
     return context;

@@ -4,7 +4,7 @@
   "description": "Bot para POC da Lais",
   "engines": {
     "node": ">=6.10.2",
-    "npm":"4.x"
+    "npm": "4.x"
   },
   "main": "app.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "mustache": "^2.3.0",
     "node-fetch": "^1.7.1",
     "restify": "^4.3.0",
+    "sha1": "^1.1.1",
     "util": "^0.10.3"
   },
   "devDependencies": {
