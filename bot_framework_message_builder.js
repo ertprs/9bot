@@ -20,7 +20,7 @@ class BotFrameworkMessageBuilder {
 
   buildTextReply(session, reply, context) {
     let message = new builder.Message(session);
-    return message.text(laisDictionary.resolveWithContext(reply, context))
+    return message.text(laisDictionary.resolveWithContext(reply, context));
   }
 
   buildMediaReply(session, reply, context) {
