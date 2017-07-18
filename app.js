@@ -194,6 +194,7 @@ bot.dialog('lais', [
         // console.log("#####dialog.lais.message:", session.message);//, "######result:", result);
         let userId = session.message.address.user.id;
         let context = contextManager.getContext(userId);
+        context.updateLastMessageTime();
 
         // console.log("get context for %s >>> %s",userId,JSON.stringify(context));
         _globalUserAddressIndex[session.message.address.user.id] = _globalUserAddressIndex[session.message.address.user.id] || session.message.address;

@@ -37,7 +37,7 @@ let LaisDialog = function(initArgs) {
   };
 
   let mergeContext = function(context, aiResponse, userMessage) {
-    context = _.merge({},{"_dialog": defaultRootDialog,"entities":{}},context);//deveria realizar um clone do defaultRootDialog?
+    // context = _.merge({},{"_dialog": defaultRootDialog,"entities":{}},context);//deveria realizar um clone do defaultRootDialog?
     context = mergeIntents(context, aiResponse);
     context = mergeEntities(context, aiResponse);
     context = addLastMessageFromUser(context, userMessage);
