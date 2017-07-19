@@ -24,7 +24,7 @@ class Context {
     if(!this.lastMessageTime) {
       return false;
     } else {
-      return (new Date() - this.lastMessageTime) > conversationExpirationLimit;
+      return (new Date() - this.lastMessageTime) > conversationExpirationLimit * 1000;
     }
   }
 
