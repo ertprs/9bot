@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const chalk = require('chalk');
+const Context = require('./../models/context');
 
 let LaisDialog = function(initArgs) {
   let me = {};
@@ -7,7 +8,7 @@ let LaisDialog = function(initArgs) {
   let dialogs = [];
   let REPEAT_OVERFLOW = 5;
   let PROTECTED_ATTRIBUTES = ["_dialog", "lastRules", "repeatCount",
-    "__created", "userMessage"];
+    "__created", "userMessage", "lastMessageTime"];
 
   function init() {
     if(!initArgs) {
@@ -96,9 +97,14 @@ let LaisDialog = function(initArgs) {
   let getMatchingRule = function(context) {
     let candidateRules = getCandidateRules(context);
     console.log(chalk.gray("candidates:"+candidateRules.map((r)=>r.id)));
-    if(candidateRules.length===0)  throw new Error("No matching rule aplicable for context:"+JSON.stringify(context));
+
+    if(candidateRules.length === 0)  {
+      throw new Error("No matching rule aplicable for context:"+JSON.stringify(context));
+    }
+
     let matchingRule = candidateRules.reduce(reduceByPriority);
     console.log(chalk.gray("matching rule="+matchingRule.id));
+
     // Retorna apenas a regra com a maior prioridade.
     return matchingRule;
   };
@@ -113,8 +119,9 @@ let LaisDialog = function(initArgs) {
 
   let isRuleApplicabe = function(rule, context) {
     let isTheSameDialog = rule.dialog === context._dialog.id;
+
     if(isTheSameDialog){
-        console.log(chalk.yellow(rule.id+">>"+rule.match(context)));
+      console.log(chalk.yellow(rule.id+">>"+rule.match(context)));
     }
 
     return isTheSameDialog && curryMatch(rule.match)(context);
@@ -137,25 +144,32 @@ let LaisDialog = function(initArgs) {
   };
 
   let applyActions = function(rule, context) {
-      console.log("applyActions::context="+JSON.stringify(context));
+    console.log("applyActions::context="+JSON.stringify(context));
     let actions = getMatchingActions(rule, context);
     let replies = [];
-    if(context.repeatCount>=REPEAT_OVERFLOW) throw new Error("Maximum repeat overflow reached on rule: "+rule.id);
-    actions.forEach(function(action) {
 
+    if(context.repeatCount >= REPEAT_OVERFLOW) {
+      throw new Error("Maximum repeat overflow reached on rule: " + rule.id);
+    }
+
+    actions.forEach(function(action) {
       context = applyAction(action, context);
 
-      if(action.replies){
-          replies = replies.concat(action.replies);
+      if(action.replies) {
+        replies = replies.concat(action.replies);
       }
 
-      if(action.evaluateNext===true){
+      if(action.evaluateNext === true) {
         console.log("applyActions(2)::context="+JSON.stringify(context));
         let ret = resolveWithContext(context);//recursion
         context = ret.context;
-        if(ret.replies) replies = replies.concat(ret.replies);
+
+        if(ret.replies) {
+          replies = replies.concat(ret.replies);
+        }
       }
     });
+
     console.log(chalk.grey("applyActions::retrun context="+JSON.stringify(context)));
     return { context, replies };
   };
@@ -173,14 +187,22 @@ let LaisDialog = function(initArgs) {
   let applyAction = function(action, context) {
     let protectedAttributes = getProtectedAttributes(context);
     let newContext = setContext(action, _.cloneDeep(context));
-    context = _.merge(newContext, protectedAttributes);
+
+    // Não estou usando o _.merge porque usando ele está gerando um bug
+    // aonde o conteúdo do dialogs é modificado.
+    for(property in protectedAttributes) {
+      newContext[property] = protectedAttributes[property]
+    }
+
     context = setDialog(action, context);
+
     return context;
   };
 
   let setContext = function(action, context) {
     if(action.setContext && _.isFunction(action.setContext)) {
       let newContextAsPlainObject = action.setContext(context.asPlainObject());
+      _.merge(newContextAsPlainObject, { userId: context.userId });
       context = new Context(newContextAsPlainObject);
     }
 
@@ -190,6 +212,7 @@ let LaisDialog = function(initArgs) {
   let setDialog = function(action, context) {
     console.log(chalk.magenta("setDialog::context="+JSON.stringify(context)));
     let newDialogId = context._dialog.id;
+
     if(action.goToDialog) {
       if(_.isFunction(action.goToDialog)) {
         newDialogId = action.goToDialog(context.asPlainObject());
@@ -199,10 +222,14 @@ let LaisDialog = function(initArgs) {
       let nextDialog = dialogs.find(function(dialog) {
         return dialog.id === newDialogId;
       });
-      if(!nextDialog) throw new Error("Couldn't find dialog with id:"+newDialogId);
+
+      if(!nextDialog) {
+        throw new Error("Couldn't find dialog with id:"+newDialogId);
+      }
+
       console.log(chalk.magenta("setDialog::nextDialog="+nextDialog.id));
+
       context._dialog = _.cloneDeep(nextDialog);
-    }else{
     }
 
     return context;
