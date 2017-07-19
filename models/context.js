@@ -3,16 +3,21 @@ const dialogs = require('../_extra/lais-conversation-definition/dialogs');
 const conversationExpirationLimit = 7200; // Limite de tempo da conversação (em segundos).
 
 class Context {
-  constructor(userId) {
-    this.id = `${new Date().getTime()}${sha1(userId)}`;
-    this.userId = userId;
-    this.intents = [];
-    this.entities = {};
-    this._dialog = dialogs.find((dialog) => { return dialog.id == "ROOT" });
-    this.lastRules = [];
-    this.repeatCount = 0;
-    this.lastMessageTime = null;
-    this.__created = new Date();
+  constructor(options) {
+    this.userId = options.userId;
+
+    if(!this.userId) {
+      throw new Error('O id do usuário é uma informação obrigatória para o contexto');
+    }
+
+    this.id = options.id || `${new Date().getTime()}${sha1(this.userId)}`;
+    this.intents = options.intents || [];
+    this.entities = options.entities || {};
+    this._dialog = options._dialog || dialogs.find((dialog) => { return dialog.id == "ROOT" });
+    this.lastRules = options.lastRules || [];
+    this.repeatCount = options.repeatCount || 0;
+    this.lastMessageTime = options.lastMessageTime || null;
+    this.__created = options.__created || new Date();
   }
 
   isExpired() {
@@ -25,6 +30,18 @@ class Context {
 
   updateLastMessageTime() {
     this.lastMessageTime = new Date();
+  }
+
+  asPlainObject() {
+    let plainObject = {}
+
+    for(var property in this) {
+      if (this.hasOwnProperty(property)) {
+        plainObject[property] = this[property];
+      }
+    }
+
+    return plainObject;
   }
 }
 

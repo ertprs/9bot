@@ -1,16 +1,13 @@
 const _ = require('lodash');
 const chalk = require('chalk');
+
 let LaisDialog = function(initArgs) {
   let me = {};
   let rules = [];
   let dialogs = [];
-    let defaultRootDialog = {
-        "id":"ROOT",
-        "minConfidence": 0.6,
-        "listenTo":["intents","entities"]
-    };
   let REPEAT_OVERFLOW = 5;
-  let PROTECTED_ATTRIBUTES = ["_dialog","lastRules","repeatCount","__created","userMessage"];
+  let PROTECTED_ATTRIBUTES = ["_dialog", "lastRules", "repeatCount",
+    "__created", "userMessage"];
 
   function init() {
     if(!initArgs) {
@@ -37,7 +34,6 @@ let LaisDialog = function(initArgs) {
   };
 
   let mergeContext = function(context, aiResponse, userMessage) {
-    // context = _.merge({},{"_dialog": defaultRootDialog,"entities":{}},context);//deveria realizar um clone do defaultRootDialog?
     context = mergeIntents(context, aiResponse);
     context = mergeEntities(context, aiResponse);
     context = addLastMessageFromUser(context, userMessage);
@@ -184,7 +180,8 @@ let LaisDialog = function(initArgs) {
 
   let setContext = function(action, context) {
     if(action.setContext && _.isFunction(action.setContext)) {
-      context = action.setContext(context);
+      let newContextAsPlainObject = action.setContext(context.asPlainObject());
+      context = new Context(newContextAsPlainObject);
     }
 
     return context
@@ -195,7 +192,7 @@ let LaisDialog = function(initArgs) {
     let newDialogId = context._dialog.id;
     if(action.goToDialog) {
       if(_.isFunction(action.goToDialog)) {
-        newDialogId = action.goToDialog(context);
+        newDialogId = action.goToDialog(context.asPlainObject());
       } else {
         newDialogId = action.goToDialog;
       }

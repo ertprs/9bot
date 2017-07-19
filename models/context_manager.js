@@ -9,7 +9,7 @@ class ContextManager {
     let context = this.contexts[userId];
 
     if(!context || context.isExpired()) {
-      context = this.contexts[userId] = new Context(userId);
+      context = this.contexts[userId] = new Context({ userId: userId });
     }
 
     return context;
