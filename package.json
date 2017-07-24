@@ -9,7 +9,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo 'implement testing'",
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "keywords": [
     "bot",
@@ -29,6 +29,7 @@
     "mime-types": "^2.1.15",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
+    "mongodb": "^2.2.30",
     "mustache": "^2.3.0",
     "node-fetch": "^1.7.1",
     "restify": "^4.3.0",
