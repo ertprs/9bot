@@ -97,6 +97,16 @@ class BotFrameworkMessageBuilder {
   isChoiceReply(reply) {
     return _.isObject(reply) && reply.type == "choice";
   }
+
+  getType(reply) {
+    if(this.isTextReply(reply)) {
+      return "Texto";
+    } else if(this.isMediaReply(reply)) {
+      return "Mídia";
+    } else if(this.isChoiceReply(reply)) {
+      return "Escolha";
+    }
+  }
 }
 
 module.exports = BotFrameworkMessageBuilder;
