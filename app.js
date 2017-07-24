@@ -6,6 +6,7 @@ const builder = require('botbuilder');
 
 const ContextManager = require('./models/context_manager');
 const contextManager = new ContextManager();
+const Conversation = require('./models/Conversation');
 
 const LaisDialog = require('./lais/lais-dialog');
 const _ = require('lodash');
@@ -211,6 +212,9 @@ bot.dialog('lais', [
           // console.log("definined context for %s >>> %s",userId,JSON.stringify(ret.context));
           contextManager.setContext(userId,ret.context);
           //   console.log("ret",ret);
+          // Salvando a mensagem do usuário.
+          Conversation.save({ context: ret.context, session: session,
+            from: userId, to: "LAIS Bot", message: message.text });
           return ret.replies;
         })
             .then(replyArr => {
@@ -219,6 +223,8 @@ bot.dialog('lais', [
                     replyArr.forEach(reply => {
                         let message = messageBuilder.build(session, reply, {"ctx": session.message});
                         session.send(message);
+                        Conversation.save({ context: ret.context, session: session,
+                          from: "Lais Bot", to: userId, message: reply });
                     });
                     console.log("respondido");
                 } else {
