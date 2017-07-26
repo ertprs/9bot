@@ -192,7 +192,6 @@ let _globalUserAddressIndex = {};
 
 bot.dialog('lais', [
     function (session, result) {
-        console.log('INICIO');
         // console.log("#####dialog.lais.message:", session.message);//, "######result:", result);
         let userId = session.message.address.user.id;
         let context = contextManager.getContext(userId);
@@ -209,13 +208,14 @@ bot.dialog('lais', [
         }
 
         laisClient.talk(userId, message.text).then(data => {
-          let ret =  dialogEngine.resolve(context, data, message.text);
-          // console.log("definined context for %s >>> %s",userId,JSON.stringify(ret.context));
+          return dialogEngine.resolve(context, data, message.text);
+        }).then((ret) => {
           contextManager.setContext(userId,ret.context);
-          //   console.log("ret",ret);
+
           // Salvando a mensagem do usuário.
           // Conversation.save({ context: ret.context, session: session,
             // from: userId, to: "LAIS Bot", message: message.text });
+
           return ret.replies;
         })
             .then(replyArr => {

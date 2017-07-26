@@ -1,6 +1,8 @@
 const _ = require('lodash');
 const chalk = require('chalk');
 const Context = require('./../models/context');
+const Dialog = require('./../models/dialog');
+const Rule = require('./../models/rule');
 
 let LaisDialog = function(initArgs) {
   let me = {};
@@ -20,10 +22,18 @@ let LaisDialog = function(initArgs) {
   }
 
   me.resolve = function(context, aiResponse, userMessage) {
-    console.log(chalk.blue("aiResponse: "+JSON.stringify(aiResponse)));
-    context = mergeContext(context, aiResponse, userMessage);
-    console.log(chalk.cyan("context: "+JSON.stringify(context)));
-    return resolveWithContext(context);
+    return Dialog.getAll().then((documents) => {
+      dialogs = documents
+    }).then(() => {
+      return Rule.getAll().then((documents) => {
+        rules = documents
+      })
+    }).then(() => {
+      console.log(chalk.blue("aiResponse: "+JSON.stringify(aiResponse)));
+      context = mergeContext(context, aiResponse, userMessage);
+      console.log(chalk.cyan("context: "+JSON.stringify(context)));
+      return resolveWithContext(context);
+    })
   };
 
   let resolveWithContext = function(context){
