@@ -20,7 +20,16 @@ class BotFrameworkMessageBuilder {
 
   buildTextReply(session, reply, context) {
     let message = new builder.Message(session);
-    return message.text(laisDictionary.resolveWithContext(reply, context));
+    let messageContent = this.getTextReplyContent(reply);
+    return message.text(laisDictionary.resolveWithContext(messageContent, context));
+  }
+
+  getTextReplyContent(reply) {
+    if(_.isObject(reply)) {
+      return reply.content;
+    }
+    else
+      return reply;
   }
 
   buildMediaReply(session, reply, context) {
@@ -87,7 +96,7 @@ class BotFrameworkMessageBuilder {
   }
 
   isTextReply(reply) {
-    return _.isString(reply);
+    return _.isString(reply) || reply.type == 'text';
   }
 
   isMediaReply(reply) {
