@@ -1,10 +1,13 @@
-const monk = require('monk');
+const fetch = require('node-fetch');
 
 class Rule {
   static getAll() {
-    var db = monk(process.env.LAIS_ADM_MONGO_DB_URL);
-    const rules = db.get('Definicao_Regras')
-    return rules.find({})
+    return fetch(process.env.LAIS_ADM_GET_RULES_URL, {
+      method: "GET",
+      headers: { "Authorization": process.env.LAIS_ADM_TOKEN }
+      }).then((response) => {
+        return response.json();
+      });
   }
 }
 

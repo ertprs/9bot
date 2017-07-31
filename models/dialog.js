@@ -1,10 +1,13 @@
-const monk = require('monk');
+const fetch = require('node-fetch');
 
 class Dialog {
   static getAll() {
-    var db = monk(process.env.LAIS_ADM_MONGO_DB_URL);
-    const dialogs = db.get('Definicao_Dialogos')
-    return dialogs.find({})
+    return fetch(process.env.LAIS_ADM_GET_DIALOGS_URL, {
+      method: "GET",
+      headers: { "Authorization": process.env.LAIS_ADM_TOKEN }
+      }).then((response) => {
+        return response.json();
+      });
   }
 }
 
