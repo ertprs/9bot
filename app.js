@@ -17,9 +17,6 @@ const moment = require('moment');
 
 const VERSAO_REGRAS='1.4';
 
-//carregar regras de dialogo
-const botDialogFlow = require('./bot-dialog');
-
 //carregar lib da lais
 const lais = require('./lais');
 const laisClient = lais.Client();
@@ -52,13 +49,11 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     // nineBanner.print(); Comentado a pedido do Alex
     console.log('%s listening to %s', server.name, server.url);
     console.log('LAIS ver %s ONLINE', VERSAO_REGRAS);
-
     console.log('%s listening to %s', server.name, server.url);
 });
 
 const BotFrameworkMessageBuilder = require('./bot_framework_message_builder');
 const messageBuilder = new BotFrameworkMessageBuilder();
-
 
 const bot = new builder.UniversalBot(connector,
     [
@@ -136,7 +131,6 @@ let displayCarousel = function (session) {
 
 
 let sendProactiveMessage = function (addr,textMessage) {
-
     // let hc = new builder.HeroCard()
     //     .title('Atenção')
     //     .subtitle('Item Coca-cola EAN 7894900700046 com 500 unidades em estoque está sem venda!')
@@ -162,11 +156,8 @@ let sendProactiveMessage = function (addr,textMessage) {
     }
 
     bot.send(buildMsg('(n)'),function(){
-
         bot.send(buildMsg('Item Coca-cola EAN 7894900700046 com 500 unidades em estoque está sem venda!'));
     });
-
-
 };
 
 let runNotify = function(session){
@@ -189,7 +180,6 @@ let runReset = function (session) {
 };
 
 let _globalUserAddressIndex = {};
-
 
 let dialogs = []
 let rules = []
