@@ -7,6 +7,9 @@ const builder = require('botbuilder');
 const ContextManager = require('./models/context_manager');
 const contextManager = new ContextManager();
 const Conversation = require('./models/Conversation');
+const Dialog = require('./models/dialog');
+const Rule = require('./models/rule');
+const RuleFunctionCompiler = require('./lais/rule_function_compiler');
 
 const LaisDialog = require('./lais/lais-dialog');
 const _ = require('lodash');
@@ -44,9 +47,6 @@ server.get('/rules', function (req, res) {
     // next();
 });
 //--------------------------------
-
-// Instanciando a engine de resolução de regras, passando os diálogos e as regras.
-let dialogEngine = new LaisDialog(laisDialog);
 
 server.listen(process.env.port || process.env.PORT || 3978, function () {
     // nineBanner.print(); Comentado a pedido do Alex
@@ -190,60 +190,81 @@ let runReset = function (session) {
 
 let _globalUserAddressIndex = {};
 
-bot.dialog('lais', [
-    function (session, result) {
-        // console.log("#####dialog.lais.message:", session.message);//, "######result:", result);
-        let userId = session.message.address.user.id;
-        let context = contextManager.getContext(userId);
-        context.updateLastMessageTime();
 
-        // console.log("get context for %s >>> %s",userId,JSON.stringify(context));
-        _globalUserAddressIndex[session.message.address.user.id] = _globalUserAddressIndex[session.message.address.user.id] || session.message.address;
+let dialogs = []
+let rules = []
 
-        let message = session.message;
-        let s = session;
+Dialog.getAll().then((data) => {
+  dialogs = data
+  console.log('**********************************************************');
+  console.log('Dialogs');
+  console.log(data);
+}).then(() => {
+  return Rule.getAll().then((data) => {
+    rules = data
+    console.log('**********************************************************');
+    console.log('Rules');
+    console.log(data);
+    console.log('VAI COMPILAR');
+    rules = RuleFunctionCompiler.compile(rules)
+  })
+}).then(() => {
+    // Instanciando a engine de resolução de regras, passando os diálogos e as regras.
+    let dialogEngine = new LaisDialog({ dialogs: dialogs, rules: rules});
 
-        if ( runReset(session) || runVersion(session) || runNotify(session) || runMessageTypes(session) ){
-            return;
-        }
+    bot.dialog('lais', [
+        function (session, result) {
+            // console.log("#####dialog.lais.message:", session.message);//, "######result:", result);
+            let userId = session.message.address.user.id;
+            let context = contextManager.getContext(userId);
+            context.updateLastMessageTime();
 
-        laisClient.talk(userId, message.text).then(data => {
-          return dialogEngine.resolve(context, data, message.text);
-        }).then((ret) => {
-          contextManager.setContext(userId,ret.context);
+            // console.log("get context for %s >>> %s",userId,JSON.stringify(context));
+            _globalUserAddressIndex[session.message.address.user.id] = _globalUserAddressIndex[session.message.address.user.id] || session.message.address;
 
-          // Salvando a mensagem do usuário.
-          // Conversation.save({ context: ret.context, session: session,
-            // from: userId, to: "LAIS Bot", message: message.text });
+            let message = session.message;
+            let s = session;
 
-          return ret.replies;
-        })
-            .then(replyArr => {
-                if (replyArr.length > 0) {
-                    // console.log("respondendo reply:" + JSON.stringify(replyArr));
-                    replyArr.forEach(reply => {
-                        let message = messageBuilder.build(session, reply, {"ctx": session.message});
-                        session.send(message);
-                        // Conversation.save({ context: ret.context, session: session,
-                          // from: "Lais Bot", to: userId, message: reply });
-                    });
-                    console.log("respondido");
-                } else {
-                    console.log("Nenuma reply, responder mensagem padrão");
-                    session.send("(worry) humm... Não tenho uma resposta para isso!");
-                    console.log("respondido");
-                }
+            if ( runReset(session) || runVersion(session) || runNotify(session) || runMessageTypes(session) ){
+                return;
+            }
+
+            laisClient.talk(userId, message.text).then(data => {
+              return dialogEngine.resolve(context, data, message.text);
+            }).then((ret) => {
+              contextManager.setContext(userId,ret.context);
+
+              // Salvando a mensagem do usuário.
+              // Conversation.save({ context: ret.context, session: session,
+                // from: userId, to: "LAIS Bot", message: message.text });
+
+              return ret.replies;
             })
-            // .then(msg => bot.reply(message, msg))
-            .catch((err) => {
-                console.error(err);
-                // console.log("ERROR:" + err.message);
-                session.send("(puke) \n Opss... Não estou me sentindo muito bem. Tente mais tarde.");
-            });
-    },
+                .then(replyArr => {
+                    if (replyArr.length > 0) {
+                        // console.log("respondendo reply:" + JSON.stringify(replyArr));
+                        replyArr.forEach(reply => {
+                            let message = messageBuilder.build(session, reply, {"ctx": session.message});
+                            session.send(message);
+                            // Conversation.save({ context: ret.context, session: session,
+                              // from: "Lais Bot", to: userId, message: reply });
+                        });
+                        console.log("respondido");
+                    } else {
+                        console.log("Nenuma reply, responder mensagem padrão");
+                        session.send("(worry) humm... Não tenho uma resposta para isso!");
+                        console.log("respondido");
+                    }
+                })
+                // .then(msg => bot.reply(message, msg))
+                .catch((err) => {
+                    console.error(err);
+                    // console.log("ERROR:" + err.message);
+                    session.send("(puke) \n Opss... Não estou me sentindo muito bem. Tente mais tarde.");
+                });
+        },
 
-    function (session, results) {
-        session.replaceDialog('lais', results);
-    }
-]
-);
+        function (session, results) {
+            session.replaceDialog('lais', results);
+        }]);
+})
