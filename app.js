@@ -186,17 +186,9 @@ let rules = []
 
 Dialog.getAll().then((data) => {
   dialogs = data
-  console.log('**********************************************************');
-  console.log('Dialogs');
-  console.log(data);
 }).then(() => {
   return Rule.getAll().then((data) => {
-    rules = data
-    console.log('**********************************************************');
-    console.log('Rules');
-    console.log(data);
-    console.log('VAI COMPILAR');
-    rules = RuleFunctionCompiler.compile(rules)
+    rules = RuleFunctionCompiler.compile(data)
   })
 }).then(() => {
     // Instanciando a engine de resolução de regras, passando os diálogos e as regras.
