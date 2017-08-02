@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const fetch = require('node-fetch');
 const BotFrameworkMessageBuilder = require('./../bot_framework_message_builder');
-const endPointUrl = '';
+const endPointUrl = '/api/register/conversation';
 
 class Conversation {
   static save({ context, session, from, to, message }) {
@@ -12,22 +12,39 @@ class Conversation {
 
     let messageBuilder = new BotFrameworkMessageBuilder();
 
+    // console.log('**********************************************************');
+    // console.log({
+    //   'contextId': context.id,
+    //   'data': new Date(),
+    //   'from': from,
+    //   'para': to,
+    //   'regra': _.last(context.lastRules),
+    //   'tipoMessage': messageBuilder.getType(message),
+    //   'mensagem': message,
+    //   'tipocliente': session.message.address.channelId
+    // });
+
+    let params = { "contextId": context.id.toString(),
+      "dateCreate": context.__created.toString(),
+      "dialogs": [{
+         "dateCreate": new Date().toString(),
+         "dialogId": this._dialog.id.toString(),
+         "from": from,
+         "message": message,
+         "messageType": messageBuilder.getType(message).toString(),
+         "roleId": _.last(context.lastRules).toString(),
+         "to": to
+       }]
+    };
+
     return fetch(endPointUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': "application/json",
+        'Content-Type': 'application/json',
+        'Authorization': 'Authorization'
       },
-      body: JSON.stringify({
-        'contextId': context.id,
-        'data': new Date(),
-        'from': from,
-        'para': to,
-        'regra': _.last(context.lastRules),
-        'tipoMessage': messageBuilder.getType(message),
-        'mensagem': message,
-        'tipocliente': responseFromLAISCore.message.address.channel;
-      })
-    })
+      body: JSON.stringify(params)
+    })//.then(fetchUtils.handleEnvelope);
   }
 }
 
