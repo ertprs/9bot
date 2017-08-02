@@ -8,7 +8,7 @@ const builder = require('botbuilder');
 
 const ContextManager = require('./models/context_manager');
 const contextManager = new ContextManager();
-const Conversation = require('./models/Conversation');
+const Conversation = require('./models/conversation');
 const Dialog = require('./models/dialog');
 const Rule = require('./models/rule');
 const RuleFunctionCompiler = require('./lais/rule_function_compiler');
