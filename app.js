@@ -35,16 +35,6 @@ const connector = new builder.ChatConnector({
 const server = restify.createServer({ 'name': "lais-bot" });
 server.post('/api/messages', connector.listen());
 
-//------------ rules ------------
-const JSONfn = require('./JSONfn');
-const laisDialog = require('./_extra/lais-conversation-definition/index');
-
-server.get('/rules', function (req, res) {
-    res.send(JSONfn.stringify(laisDialog,null,2)/*.replace(/\\\\r\\\\n/g,"\r\n")*/);
-    // next();
-});
-//--------------------------------
-
 server.listen(process.env.port || process.env.PORT || 3978, function () {
     // nineBanner.print(); Comentado a pedido do Alex
     console.log('%s listening to %s', server.name, server.url);
@@ -128,7 +118,6 @@ let displayCarousel = function (session) {
         );
     session.send(carousselCards);
 };
-
 
 let sendProactiveMessage = function (addr,textMessage) {
     // let hc = new builder.HeroCard()
