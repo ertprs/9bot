@@ -42,6 +42,10 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 
+server.get('/version', function (req, res) {
+    res.send({ version: VERSAO_REGRAS });
+});
+
 const BotFrameworkMessageBuilder = require('./bot_framework_message_builder');
 const messageBuilder = new BotFrameworkMessageBuilder();
 
