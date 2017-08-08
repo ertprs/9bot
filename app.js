@@ -44,8 +44,19 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 
-server.get('/version', function (req, res) {
-    res.send({ version: VERSAO_REGRAS });
+let dialogs = []
+let rules = []
+
+server.get('/update_rules', function (req, res) {
+    Dialog.getAll().then((data) => {
+      dialogs = data
+    }).then(() => {
+      return Rule.getAll().then((data) => {
+        rules = RuleFunctionCompiler.compile(data)
+      })
+    }).then(() => {
+        res.send({ status: "Regras atualizadas" });
+    })
 });
 
 const BotFrameworkMessageBuilder = require('./bot_framework_message_builder');
@@ -175,9 +186,6 @@ let runReset = function (session) {
 };
 
 let _globalUserAddressIndex = {};
-
-let dialogs = []
-let rules = []
 
 Dialog.getAll().then((data) => {
   dialogs = data
