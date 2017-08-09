@@ -18,7 +18,7 @@ class Conversation {
          "dateCreate": new Date().toString(),
          "dialogId": context._dialog.id.toString(),
          "from": from,
-         "message": message,
+         "message": message.content || message,
          "messageType": messageBuilder.getType(message).toString(),
          "roleId": _.last(context.lastRules).toString(),
          "to": to
