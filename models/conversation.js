@@ -25,11 +25,11 @@ class Conversation {
        }]
     };
 
-    return fetch(process.env.LASA_CORE_SAVE_CONVERSATION_URL, {
+    return fetch(process.env.LAIS_CORE_SAVE_CONVERSATION_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Authorization'
+        'Authorization': process.env.LAIS_CORE_AUTHORIZATION
       },
       body: JSON.stringify(params)
     })

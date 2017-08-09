@@ -2,8 +2,8 @@ const fetch = require('node-fetch');
 const fetchUtils = require('./fetchUtils');
 
 const laisClient = function (initArgs) {
-    let endPointUrl = process.env.LAIS_END_POINT;
-    let connectorId = process.env.LAIS_CONNECTOR;
+    let endPointUrl = process.env.LAIS_CORE_FALA_API_URL;
+    let connectorId = process.env.LAIS_CORE_CONNECTOR_ID;
     let me = {};
 
     /*
@@ -14,8 +14,8 @@ const laisClient = function (initArgs) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                'AppName': process.env.APP_NAME,
-                'Authorization': process.env.LASA_CORE_AUTHORIZATION
+                'AppName': process.env.LAIS_CORE_APP_NAME,
+                'Authorization': process.env.LAIS_CORE_AUTHORIZATION
             },
             body: JSON.stringify({
                 'connectorId':connectorId,
