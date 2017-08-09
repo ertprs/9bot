@@ -44,21 +44,6 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 
-let dialogs = []
-let rules = []
-
-server.get('/update_rules', function (req, res) {
-    Dialog.getAll().then((data) => {
-      dialogs = data
-    }).then(() => {
-      return Rule.getAll().then((data) => {
-        rules = RuleFunctionCompiler.compile(data)
-      })
-    }).then(() => {
-        res.send({ status: "Regras atualizadas" });
-    })
-});
-
 const BotFrameworkMessageBuilder = require('./bot_framework_message_builder');
 const messageBuilder = new BotFrameworkMessageBuilder();
 
@@ -187,6 +172,9 @@ let runReset = function (session) {
 
 let _globalUserAddressIndex = {};
 
+let dialogs = [];
+let rules = [];
+
 Dialog.getAll().then((data) => {
   dialogs = data
 }).then(() => {
@@ -196,6 +184,18 @@ Dialog.getAll().then((data) => {
 }).then(() => {
     // Instanciando a engine de resolução de regras, passando os diálogos e as regras.
     let dialogEngine = new LaisDialog({ dialogs: dialogs, rules: rules});
+
+    server.get('/update_rules', function (req, res) {
+        Dialog.getAll().then((data) => {
+          dialogEngine.setDialogs(data);
+        }).then(() => {
+          return Rule.getAll().then((data) => {
+            dialogEngine.setRules(RuleFunctionCompiler.compile(data))
+          })
+        }).then(() => {
+            res.send({ status: "Regras atualizadas" });
+        })
+    });
 
     bot.dialog('lais', [
         function (session, result) {

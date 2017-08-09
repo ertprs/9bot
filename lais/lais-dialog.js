@@ -19,6 +19,14 @@ let LaisDialog = function(initArgs) {
     dialogs = initArgs.dialogs;
   }
 
+  me.setDialogs = function(data) {
+    dialogs = data;
+  }
+
+  me.setRules = function(data) {
+    rules = data;
+  }
+
   me.resolve = function(context, aiResponse, userMessage) {
     console.log(chalk.blue("aiResponse: "+JSON.stringify(aiResponse)));
     context = mergeContext(context, aiResponse, userMessage);
