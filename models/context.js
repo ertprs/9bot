@@ -16,6 +16,7 @@ class Context {
     this._dialog = options._dialog || dialogs.find((dialog) => { return dialog.id == "ROOT" });
     this.lastRules = options.lastRules || [];
     this.repeatCount = options.repeatCount || 0;
+    this.userMessage = options.userMessage || null;
     this.lastMessageTime = options.lastMessageTime || null;
     this.__created = options.__created || new Date();
   }
