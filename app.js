@@ -220,8 +220,8 @@ Dialog.getAll().then((data) => {
               contextManager.setContext(userId,ret.context);
 
               // Salvando a mensagem do usuário.
-              // Conversation.save({ context: ret.context, session: session,
-                // from: userId, to: "LAIS Bot", message: message.text });
+              Conversation.save({ context: ret.context, session: session,
+                from: userId, to: "LAIS Bot", message: message.text });
 
               return ret.replies;
             })
@@ -231,8 +231,10 @@ Dialog.getAll().then((data) => {
                         replyArr.forEach(reply => {
                             let message = messageBuilder.build(session, reply, {"ctx": session.message});
                             session.send(message);
-                            // Conversation.save({ context: ret.context, session: session,
-                              // from: "Lais Bot", to: userId, message: reply });
+
+                            // Salvando a mensagem do bot.
+                            Conversation.save({ context: contextManager.getContext(userId),
+                                session: session, from: "LAIS Bot", to: userId, message: reply });
                         });
                         console.log("respondido");
                     } else {

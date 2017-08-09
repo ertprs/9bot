@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const fetch = require('node-fetch');
 const BotFrameworkMessageBuilder = require('./../bot_framework_message_builder');
-const endPointUrl = '/api/register/conversation';
 
 class Conversation {
   static save({ context, session, from, to, message }) {
@@ -12,23 +11,12 @@ class Conversation {
 
     let messageBuilder = new BotFrameworkMessageBuilder();
 
-    // console.log('**********************************************************');
-    // console.log({
-    //   'contextId': context.id,
-    //   'data': new Date(),
-    //   'from': from,
-    //   'para': to,
-    //   'regra': _.last(context.lastRules),
-    //   'tipoMessage': messageBuilder.getType(message),
-    //   'mensagem': message,
-    //   'tipocliente': session.message.address.channelId
-    // });
-
     let params = { "contextId": context.id.toString(),
       "dateCreate": context.__created.toString(),
+      "userId": from,
       "dialogs": [{
          "dateCreate": new Date().toString(),
-         "dialogId": this._dialog.id.toString(),
+         "dialogId": context._dialog.id.toString(),
          "from": from,
          "message": message,
          "messageType": messageBuilder.getType(message).toString(),
@@ -37,14 +25,14 @@ class Conversation {
        }]
     };
 
-    return fetch(endPointUrl, {
+    return fetch(process.env.LASA_CORE_SAVE_CONVERSATION_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Authorization'
       },
       body: JSON.stringify(params)
-    })//.then(fetchUtils.handleEnvelope);
+    })
   }
 }
 
