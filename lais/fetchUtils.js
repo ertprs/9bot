@@ -21,7 +21,7 @@ const _handleError = (response) => {
 //retorna promisse para extração de dados do envelope
 const _extractData = (responseParsedPromisse)=>{
     //response.json() returns a Promisse
-    return responseParsedPromisse.then((envelope)=>envelope.data);
+    return responseParsedPromisse.then((envelope)=>envelope);
 };
 
 class FetchRequestError extends Error {

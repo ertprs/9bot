@@ -14,10 +14,10 @@ const laisClient = function (initArgs) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'AppName': process.env.APP_NAME,
+                'Authorization': process.env.LASA_CORE_AUTHORIZATION
             },
             body: JSON.stringify({
-                'appName': process.env.APP_NAME,
-                'token': process.env.token,
                 'connectorId':connectorId,
                 'contextId': userId,
                 'userId': userId,
