@@ -64,6 +64,10 @@ server.listen(process.env.port || process.env.PORT || 3978, function () {
     console.log('%s listening to %s', server.name, server.url);
 });
 
+server.get('/status', function (req, res) {
+    res.send({ status: "Ok" });
+});
+
 const BotFrameworkMessageBuilder = require('./bot_framework_message_builder');
 const messageBuilder = new BotFrameworkMessageBuilder();
 
