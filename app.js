@@ -5,6 +5,8 @@ const restify = require('restify');
 const fs = require('fs');
 const util = require('util');
 const builder = require('botbuilder');
+const teams = require("botbuilder-teams");
+
 
 const ContextManager = require('./models/context_manager');
 const contextManager = new ContextManager();
@@ -28,14 +30,32 @@ const ceatDictionary = require('./ceat-dictionary');
 const laisDictionary = lais.Dictionary(ceatDictionary);
 
 // Create bot and add dialogs
-const connector = new builder.ChatConnector({
+// const connector = new builder.ChatConnector({
+//     appId: process.env.MICROSOFT_APP_ID,
+//     appPassword: process.env.MICROSOFT_APP_PASSWORD
+// });
+
+// Create chat bot
+var connector = new teams.TeamsChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
     appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
+// this will receive nothing, you can put your tenant id in the list to listen
+connector.setAllowedTenants([]);
+// this will reset and allow to receive from any tenants
+connector.resetAllowedTenants();
+
+
+
 // Setup Restify Server
 const server = restify.createServer({ 'name': "lais-bot" });
 server.post('/api/messages', connector.listen());
+
+// server.post('/api/messages', function(req,res){
+//     console.log(req);
+//     res.send(200);
+// });
 
 server.listen(process.env.port || process.env.PORT || 3978, function () {
     // nineBanner.print(); Comentado a pedido do Alex
