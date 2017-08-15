@@ -194,12 +194,12 @@ let LaisDialog = function(initArgs) {
 
   let applyAction = function(action, context) {
     let protectedAttributes = getProtectedAttributes(context);
-    let newContext = setContext(action, _.cloneDeep(context));
+    context = setContext(action, _.cloneDeep(context));
 
     // Não estou usando o _.merge porque usando ele está gerando um bug
     // aonde o conteúdo do dialogs é modificado.
     for(property in protectedAttributes) {
-      newContext[property] = protectedAttributes[property]
+      context[property] = protectedAttributes[property]
     }
 
     context = setDialog(action, context);
