@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const sha1 = require('sha1');
 const dialogs = require('../_extra/lais-conversation-definition/dialogs');
 const conversationExpirationLimit = 7200; // Limite de tempo da conversação (em segundos).
@@ -19,6 +20,8 @@ class Context {
     this.userMessage = options.userMessage || null;
     this.lastMessageTime = options.lastMessageTime || null;
     this.__created = options.__created || new Date();
+
+    _.merge(this, options)
   }
 
   isExpired() {
