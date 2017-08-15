@@ -14,6 +14,7 @@ const Conversation = require('./models/conversation');
 const Dialog = require('./models/dialog');
 const Rule = require('./models/rule');
 const RuleFunctionCompiler = require('./lais/rule_function_compiler');
+const DialogsAndRulesUpdater = require('./lais/dialogs_and_rules_updater');
 
 const LaisDialog = require('./lais/lais-dialog');
 const _ = require('lodash');
@@ -208,6 +209,9 @@ Dialog.getAll().then((data) => {
 }).then(() => {
     // Instanciando a engine de resolução de regras, passando os diálogos e as regras.
     let dialogEngine = new LaisDialog({ dialogs: dialogs, rules: rules});
+
+    // Ativando o atualizador de diálogos e regras.
+    DialogsAndRulesUpdater.start(dialogs, rules);
 
     server.get('/update_rules', function (req, res) {
         Dialog.getAll().then((data) => {
