@@ -46,11 +46,13 @@ connector.setAllowedTenants([]);
 // this will reset and allow to receive from any tenants
 connector.resetAllowedTenants();
 
-
-
 // Setup Restify Server
 const server = restify.createServer({ 'name': "lais-bot" });
 server.post('/api/messages', connector.listen());
+
+//incluir mockreset end-point
+server.post('/mockreset',require('./mock/mockreset'));
+server.post('/mocklogger',require('./mock/mocklogger'));
 
 // server.post('/api/messages', function(req,res){
 //     console.log(req);
