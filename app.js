@@ -1,12 +1,11 @@
 require('dotenv').config();
-require('console-stamp')(console, { pattern: "dd/mm/yyyy HH:MM:ss", label: true })
+require('console-stamp')(console, { pattern: "dd/mm/yyyy HH:MM:ss", label: true });
 
 const restify = require('restify');
 const fs = require('fs');
 const util = require('util');
 const builder = require('botbuilder');
 const teams = require("botbuilder-teams");
-
 
 const ContextManager = require('./models/context_manager');
 const contextManager = new ContextManager();
@@ -198,9 +197,26 @@ let runReset = function (session) {
 };
 
 let _globalUserAddressIndex = {};
-
 let dialogs = [];
 let rules = [];
+
+server.get('/integration_callback', function(req, res) {
+  console.log('***********************************************************');
+  console.log(_globalUserAddressIndex);
+
+  for(let userId in _globalUserAddressIndex) {
+    let userAddress = _globalUserAddressIndex[userId]
+    let defaultDialog = dialogs.find((dialog) => { return dialog.id == "ROOT"});
+    let context = contextManager.getContext(userId);
+
+    let message = messageBuilder.build(null, "No callback", context);
+    message.address(userAddress);
+
+    bot.send(message);
+  }
+
+  res.send({ status: "Ok" });
+});
 
 Dialog.getAll().then((data) => {
   dialogs = data
