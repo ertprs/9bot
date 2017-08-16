@@ -46,8 +46,8 @@ class BotFrameworkMessageBuilder {
   }
 
   buildChoiceReply(session, reply, context) {
-    if(!_.isArray(reply.content)) {
-      throw new Error('Conteúdo inválido para resposta do tipo escolha. Deve-se fornecer um array.');
+    if(_.isString(reply.content)) {
+      reply.content = _.split(reply.content, '\n')
     }
 
     let meta = reply.meta || {};

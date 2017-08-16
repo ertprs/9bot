@@ -123,13 +123,13 @@ let LaisDialog = function(initArgs) {
     });
   };
 
-  let curryMatch = (f)=>(f ? f : _.stubTrue() );
+  let curryMatch = (f)=>(f ? f : _.stubTrue);
 
   let isRuleApplicabe = function(rule, context) {
     let isTheSameDialog = rule.dialog === context._dialog.id;
 
     if(isTheSameDialog){
-      console.log(chalk.yellow(rule.id+">>"+rule.match(context)));
+      console.log(chalk.yellow(rule.id+">>"+ curryMatch(rule.match)(context)));
     }
 
     return isTheSameDialog && curryMatch(rule.match)(context);
