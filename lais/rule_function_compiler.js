@@ -2,7 +2,7 @@ const util = require('util');
 const _ = require('lodash');
 const moment = require('moment');
 const { get, add, clear, clearAll } = require('./../_extra/lais-conversation-definition/rules/util');
-const RTCompiler = require('./../RTCompiler')({ get, add, clear, clearAll, util, _, moment});
+const RTCompiler = require('./../RTCompiler')({ get, add, clear, clearAll, util, _, moment, console, JSON});
 
 class RuleFunctionCompiler {
   static compile(rules) {
@@ -12,6 +12,10 @@ class RuleFunctionCompiler {
       rule.actions.forEach((action, i) => {
         // Não tem como saber se o goToDialog é uma string com o id do dialogo ou uma string com uma função.
         RTCompiler.compileAttributes(action, "match", "setContext"/*,"goToDialog"*/);
+
+        action.replies.filter((reply) => reply.type === "function").forEach((functionReply) => {
+          RTCompiler.compileAttributes(functionReply, "content");
+        })
       });
 
       return rule;

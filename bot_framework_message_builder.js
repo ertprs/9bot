@@ -5,13 +5,15 @@ const ceatDictionary = require('./ceat-dictionary');
 const laisDictionary = lais.Dictionary(ceatDictionary);
 
 class BotFrameworkMessageBuilder {
-  build(session, reply, context) {
+  build(session, reply, context, scripts) {
     if(this.isTextReply(reply)) {
       return this.buildTextReply(session, reply, context);
     } else if(this.isMediaReply(reply)) {
       return this.buildMediaReply(session, reply, context);
     } else if(this.isChoiceReply(reply)) {
       return this.buildChoiceReply(session, reply, context);
+    } else if(this.isFunctionReply(reply)) {
+      return this.buildFunctionReply(session, reply, context, scripts);
     } else {
       throw new Error("Tipo de resposta não suportado: " + typeof(reply) +
         ". A resposta deve ser uma String (texto) ou um objeto (escolha ou mídia).");
@@ -94,6 +96,12 @@ class BotFrameworkMessageBuilder {
 
     return message.attachments([card.buttons(cardActions)]);
   }
+//
+  buildFunctionReply(session, reply, context, scripts) {
+    reply = reply.content({session, context, scripts})
+
+    return this.build(session, reply, context, scripts);
+  }
 
   isTextReply(reply) {
     return _.isString(reply) || reply.type == 'text';
@@ -107,6 +115,10 @@ class BotFrameworkMessageBuilder {
     return _.isObject(reply) && reply.type == "choice";
   }
 
+  isFunctionReply(reply) {
+    return _.isObject(reply) && reply.type == "function";
+  }
+
   getType(reply) {
     if(this.isTextReply(reply)) {
       return "Texto";
@@ -114,6 +126,8 @@ class BotFrameworkMessageBuilder {
       return "Mídia";
     } else if(this.isChoiceReply(reply)) {
       return "Escolha";
+    } else if(this.isFunctionReply(reply)) {
+      return "Função"
     }
   }
 }

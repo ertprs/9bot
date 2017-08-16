@@ -259,7 +259,7 @@ Dialog.getAll().then((data) => {
                     if (replyArr.length > 0) {
                         // console.log("respondendo reply:" + JSON.stringify(replyArr));
                         replyArr.forEach(reply => {
-                            let message = messageBuilder.build(session, reply, {"ctx": session.message});
+                            let message = messageBuilder.build(session, reply, {"ctx": session.message}, {});
                             session.send(message);
 
                             // Salvando a mensagem do bot.
