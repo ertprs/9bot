@@ -6,7 +6,7 @@ let LaisDialog = function(initArgs) {
   let me = {};
   let rules = [];
   let dialogs = [];
-  let REPEAT_OVERFLOW = 5;
+  let REPEAT_OVERFLOW = 30;
   let PROTECTED_ATTRIBUTES = ["_dialog", "lastRules", "repeatCount",
     "__created", "userMessage", "lastMessageTime"];
 
