@@ -96,7 +96,7 @@ class BotFrameworkMessageBuilder {
 
     return message.attachments([card.buttons(cardActions)]);
   }
-//
+
   buildFunctionReply(session, reply, context, scripts) {
     reply = reply.content({session, context, scripts})
 
