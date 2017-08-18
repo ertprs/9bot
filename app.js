@@ -204,7 +204,7 @@ const scripts = require('./scripts');
 
 server.post('/integration_callback', [bodyParser.json(), function(req, res) {
   let userId = req.body.request.userId;
-  let messageContent = req.body.mensagem;
+  let messageContent = req.body.mensagem + ': ' + req.body.novaSenha;
   let userAddress = _globalUserAddressIndex[userId]
   let context = contextManager.getContext(userId);
 
@@ -273,7 +273,7 @@ Dialog.getAll().then((data) => {
                     if (replyArr.length > 0) {
                         // console.log("respondendo reply:" + JSON.stringify(replyArr));
                         replyArr.forEach(reply => {
-                            let message = messageBuilder.build(session, reply, {"ctx": session.message}, scripts);
+                            let message = messageBuilder.build(session, reply, {"ctx": context}, scripts);
                             session.send(message);
 
                             // Salvando a mensagem do bot.

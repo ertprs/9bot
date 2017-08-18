@@ -64,7 +64,8 @@ const DictionaryTemplate = function(dictionaryDefinition){
 
     me.resolveWithContext = function(srcTemplate,context){
         let _ctxDictionary = _.merge({},_dictionary,buildViewFromDictionary(context));
-        return Mustache.render(srcTemplate,_ctxDictionary);
+
+        return Mustache.render(srcTemplate, context);
     };
 
     init();
