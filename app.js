@@ -6,6 +6,7 @@ const fs = require('fs');
 const util = require('util');
 const builder = require('botbuilder');
 const teams = require("botbuilder-teams");
+const bodyParser = require('body-parser');
 
 const ContextManager = require('./models/context_manager');
 const contextManager = new ContextManager();
@@ -201,23 +202,19 @@ let dialogs = [];
 let rules = [];
 const scripts = require('./scripts');
 
-// server.post('/integration_callback', function(req, res) {
-//   console.log('***********************************************************');
-//   console.log(_globalUserAddressIndex);
+server.post('/integration_callback', [bodyParser.json(), function(req, res) {
+  let userId = req.body.request.userId;
+  let messageContent = req.body.mensagem;
+  let userAddress = _globalUserAddressIndex[userId]
+  let context = contextManager.getContext(userId);
 
-//   for(let userId in _globalUserAddressIndex) {
-//     let userAddress = _globalUserAddressIndex[userId]
-//     let defaultDialog = dialogs.find((dialog) => { return dialog.id == "ROOT"});
-//     let context = contextManager.getContext(userId);
+  let message = messageBuilder.build(null, messageContent, context, scripts);
+  message.address(userAddress);
 
-//     let message = messageBuilder.build(null, "No callback", context, scripts);
-//     message.address(userAddress);
+  bot.send(message);
 
-//     bot.send(message);
-//   }
-
-//   res.send({ status: "Ok" });
-// });
+  res.send({ status: "Mensagem enviada." });
+}]);
 
 Dialog.getAll().then((data) => {
   dialogs = data
