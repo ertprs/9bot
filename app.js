@@ -199,24 +199,25 @@ let runReset = function (session) {
 let _globalUserAddressIndex = {};
 let dialogs = [];
 let rules = [];
+const scripts = require('./scripts');
 
-server.get('/integration_callback', function(req, res) {
-  console.log('***********************************************************');
-  console.log(_globalUserAddressIndex);
+// server.post('/integration_callback', function(req, res) {
+//   console.log('***********************************************************');
+//   console.log(_globalUserAddressIndex);
 
-  for(let userId in _globalUserAddressIndex) {
-    let userAddress = _globalUserAddressIndex[userId]
-    let defaultDialog = dialogs.find((dialog) => { return dialog.id == "ROOT"});
-    let context = contextManager.getContext(userId);
+//   for(let userId in _globalUserAddressIndex) {
+//     let userAddress = _globalUserAddressIndex[userId]
+//     let defaultDialog = dialogs.find((dialog) => { return dialog.id == "ROOT"});
+//     let context = contextManager.getContext(userId);
 
-    let message = messageBuilder.build(null, "No callback", context);
-    message.address(userAddress);
+//     let message = messageBuilder.build(null, "No callback", context, scripts);
+//     message.address(userAddress);
 
-    bot.send(message);
-  }
+//     bot.send(message);
+//   }
 
-  res.send({ status: "Ok" });
-});
+//   res.send({ status: "Ok" });
+// });
 
 Dialog.getAll().then((data) => {
   dialogs = data
@@ -275,7 +276,7 @@ Dialog.getAll().then((data) => {
                     if (replyArr.length > 0) {
                         // console.log("respondendo reply:" + JSON.stringify(replyArr));
                         replyArr.forEach(reply => {
-                            let message = messageBuilder.build(session, reply, {"ctx": session.message}, {});
+                            let message = messageBuilder.build(session, reply, {"ctx": session.message}, scripts);
                             session.send(message);
 
                             // Salvando a mensagem do bot.
